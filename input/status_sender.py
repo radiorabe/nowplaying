@@ -7,13 +7,11 @@ import socket
 
 import input.observer
 
-
-logger = logging.getLogger('now-playing')
+logger = logging.getLogger("now-playing")
 
 
 class StatusSender(input.observer.InputObserver):
-    """Observer that opens a TCP port and sends the current Saemubox ID to
-    all connected clients.
+    """Observer that opens a TCP port and sends the current Saemubox ID to all connected clients.
 
     The sent message is exacly one byte long, and contains nothing more than
     the Saemubox ID.
@@ -27,7 +25,7 @@ class StatusSender(input.observer.InputObserver):
     Use select/selector for asynchronous processing.
     """
 
-    def __init__(self, bind_ip='0.0.0.0', port=9999):
+    def __init__(self, bind_ip="0.0.0.0", port=9999):
         self.clients = []
         self.current_saemubox_id = None
         self.bind_ip = bind_ip
@@ -37,24 +35,27 @@ class StatusSender(input.observer.InputObserver):
     def setup_socket(self):
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            self.sock.bind((self.bind_ip,  self.port))
+            self.sock.bind((self.bind_ip, self.port))
             self.sock.listen(5)
-            logger.info("StatusSender: bound to %s:%i." \
-                        % (self.bind_ip, self.port))
+            logger.info("StatusSender: bound to %s:%i." % (self.bind_ip, self.port))
         except socket.error:
             self.sock = None
-            logger.error("StatusSender: cannot bind to %s:%i." \
-                         % (self.bind_ip, self.port))
+            logger.error(
+                "StatusSender: cannot bind to %s:%i." % (self.bind_ip, self.port)
+            )
 
-    def update(self, saemubox_id):
+    def update(self, saemubox_id):  # noqa ignore=C901
         # gets called once a second
+        # TODO: refactor for less complexity re noqa above
         if self.sock is None:
             self.setup_socket()
 
         if saemubox_id != self.current_saemubox_id:
             self.current_saemubox_id = saemubox_id
-            logger.info("Sending new Saemubox status (%i) to %i clients." \
-                        % (saemubox_id, len(self.clients)))
+            logger.info(
+                "Sending new Saemubox status (%i) to %i clients."
+                % (saemubox_id, len(self.clients))
+            )
             for client in self.clients:
                 try:
                     client.sendall(bytearray([saemubox_id]))
@@ -74,7 +75,7 @@ class StatusSender(input.observer.InputObserver):
                     client.sendall(bytearray([saemubox_id]))
                 except socket.error:
                     logger.warn("Connection closed.")
-                    clinet.close()
+                    client.close()
                     self.clients.remove(client)
             except socket.error:
                 logger.error("Cannot accept client.")
@@ -86,12 +87,14 @@ class StatusSender(input.observer.InputObserver):
                 client.close()
                 self.clients.remove(client)
             else:
-                logger.warn("Got unexpected data from %s:%i." \
-                            % client.getpeername())
+                logger.warn("Got unexpected data from %s:%i." % client.getpeername())
 
 
-if __name__ == '__main__':
-    import time, random, sys
+if __name__ == "__main__":
+    import time
+    import random
+    import sys
+
     logger.addHandler(logging.StreamHandler(sys.stdout))
     logger.setLevel(logging.INFO)
     s = StatusSender()
