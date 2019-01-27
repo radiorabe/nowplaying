@@ -15,7 +15,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-from nowplaying import input, track
+import input
+import track
 
 SAEMUBOX_STATUS_CMD = "/usr/local/scripts/songticker/get-saemubox-status.sh"
 SAEMUBOX_KLANGBECKEN_ID = "1"
