@@ -8,7 +8,7 @@ import select
 import socket
 import time
 
-import commands
+import subprocess
 import logging
 import logging.handlers
 
@@ -60,7 +60,7 @@ class SaemuBox():
             self.sock.bind((self.bind_ip,  self.port))
             logger.info("SaemuBox: listening on %s:%i." \
                         % (self.bind_ip, self.port))
-        except socket.error, e:
+        except socket.error as e:
             self.sock = None
             logger.error("SaemuBox: cannot bind to %s:%i." \
                          % (self.bind_ip, self.port))

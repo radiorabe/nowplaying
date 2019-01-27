@@ -8,7 +8,7 @@ import os
 import logging
 import logging.handlers
 import xml.dom.minidom
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import isodate
 import datetime
 import time
@@ -143,7 +143,7 @@ class KlangbeckenInputObserver(InputObserver):
         song = song[0]
 
 
-        for name in track_info.keys():
+        for name in list(track_info.keys()):
             elements = song.getElementsByTagName(name)
 
             if len(elements) == 0:

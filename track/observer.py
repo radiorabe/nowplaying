@@ -6,8 +6,8 @@ __version__ = "$Revision$"
 
 import logging
 import logging.handlers
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 import datetime
 import pytz
 import calendar
@@ -73,7 +73,7 @@ class ScrobblerTrackObserver(TrackObserver):
         # the track.set_duration() method only accepts seconds, therefore it's
         # safe to read track.get_duration().seconds. Python 2.7 will bring the
         # proper solution with its timedelta.total_seconds() method.
-        for k, scrobbler in self.scrobblers.iteritems():
+        for k, scrobbler in self.scrobblers.items():
             scrobbler.report_now_playing(track.artist,
                                          track.title,
 	                                 track.album, 
@@ -108,7 +108,7 @@ class ScrobblerTrackObserver(TrackObserver):
         # the track.set_duration() method only accepts seconds, therefore it's
         # safe to read track.get_duration().seconds. Python 2.7 will bring the
         # proper solution with its timedelta.total_seconds() method.
-        for k, scrobbler in self.scrobblers.iteritems():
+        for k, scrobbler in self.scrobblers.items():
             scrobbler.scrobble(track.artist,
                                track.title,
                                int(timestamp),
@@ -141,7 +141,7 @@ class IcecastTrackObserver(TrackObserver):
 
         # artist is an unicode string which we have to encode into UTF-8
         # http://bugs.python.org/issue216716
-        song_string = urllib.quote_plus('%s - %s' %
+        song_string = urllib.parse.quote_plus('%s - %s' %
                           (track.artist.encode('utf8'),
                            title.encode('utf8')))
 
@@ -149,7 +149,7 @@ class IcecastTrackObserver(TrackObserver):
 
         logger.info('Icecast Update URL: ' + update_url)
 
-        fp = urllib2.urlopen(update_url)
+        fp = urllib.request.urlopen(update_url)
 
 
     def track_finished(self, track):
@@ -306,7 +306,7 @@ class DabAudioCompanionTrackObserver(TrackObserver):
 
         # artist is an unicode string which we have to encode into UTF-8
         # http://bugs.python.org/issue216716
-        song_string = urllib.quote_plus('%s - %s' %
+        song_string = urllib.parse.quote_plus('%s - %s' %
                           (track.artist.encode('utf8'),
                            title.encode('utf8')))
 
@@ -314,7 +314,7 @@ class DabAudioCompanionTrackObserver(TrackObserver):
 
         logger.info('DAB+ Audio Companion URL: ' + update_url)
 
-        fp = urllib2.urlopen(update_url)
+        fp = urllib.request.urlopen(update_url)
 
 
     def track_finished(self, track):

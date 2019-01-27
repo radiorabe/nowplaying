@@ -9,7 +9,7 @@ import sys
 import signal
 import socket
 import time
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import logging
 import logging.handlers
 
@@ -233,13 +233,13 @@ if __name__ == "__main__":
     # endless hangs on HTTP requests.
     socket.setdefaulttimeout(120)
 
-    http_password_manager = urllib2.HTTPPasswordMgrWithDefaultRealm()
+    http_password_manager = urllib.request.HTTPPasswordMgrWithDefaultRealm()
 
     http_password_manager.add_password(None,
         'http://stream-master.audio.int.rabe.ch:8000/admin/',
         'source', os.getenv('STREAMMASTER_PASSWORD'))
 
-    urllib2.install_opener(urllib2.build_opener(urllib2.HTTPBasicAuthHandler(
+    urllib.request.install_opener(urllib.request.build_opener(urllib.request.HTTPBasicAuthHandler(
                                                     http_password_manager)))
 
     logger = logging.getLogger('now-playing')

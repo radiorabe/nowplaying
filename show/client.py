@@ -10,12 +10,12 @@ import datetime
 import isodate
 import pytz
 import xml.dom.minidom
-import urllib2
-import show
+import urllib.request, urllib.error, urllib.parse
+from . import show
 
 logger = logging.getLogger('now-playing')
 
-DEFAULT_SHOW_NAME = u'Sendung gemäss Programm'
+DEFAULT_SHOW_NAME = 'Sendung gemäss Programm'
 DEFAULT_SHOW_URL  = 'http://www.rabe.ch'
 DEFAULT_SHOW_DURATION = 30 # 30 seconds
 
@@ -70,7 +70,7 @@ class ShowClient():
         try:
             # try to get the current show informations from loopy's cast web
             # service
-            dom = xml.dom.minidom.parse(urllib2.urlopen(self.current_show_url))
+            dom = xml.dom.minidom.parse(urllib.request.urlopen(self.current_show_url))
 
         except Exception as e:
             logger.error('%s: Unable to get current show informations' % \

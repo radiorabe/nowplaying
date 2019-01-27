@@ -8,7 +8,7 @@ import logging
 import logging.handlers
 
 #import track.observer
-import observer
+from . import observer
 
 logger = logging.getLogger('now-playing')
 
