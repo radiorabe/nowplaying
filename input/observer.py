@@ -4,40 +4,39 @@
 __version__ = "$Revision$"
 # $Id$
 
-import os
 import logging
 import logging.handlers
-import xml.dom.minidom
-import urllib2
-import isodate
-import datetime
+import os
 import time
+import xml.dom.minidom
+
+import isodate
 import pytz
+
 import show.client
 import show.show
 import track.track
 
-logger = logging.getLogger('now-playing')
+logger = logging.getLogger("now-playing")
 
-SHOW_NAME_KLANGBECKEN='Klangbecken'
-SHOW_URL_KLANGBECKEN='http://www.rabe.ch/sendungen/musik/klangbecken.html'
+SHOW_NAME_KLANGBECKEN = "Klangbecken"
+SHOW_URL_KLANGBECKEN = "http://www.rabe.ch/sendungen/musik/klangbecken.html"
 
-class InputObserver():
 
+class InputObserver:
     def __init__(self, current_show_url):
         # http://intranet.rabe.ch/mantisbt/view.php?id=20
-        self.current_show_url     = current_show_url
+        self.current_show_url = current_show_url
 
-	self.first_run            = True
-	self.previous_saemubox_id = None
-        self.show                 = None
-        self.showclient           = show.client.ShowClient(current_show_url)
-        self.show                 = self.showclient.get_show_info()
+        self.first_run = True
+        self.previous_saemubox_id = None
+        self.show = None
+        self.showclient = show.client.ShowClient(current_show_url)
+        self.show = self.showclient.get_show_info()
 
-        self.previous_show_uuid   = None
+        self.previous_show_uuid = None
 
         self.track_handler = None
-
 
     def add_track_handler(self, track_handler):
         self.track_handler = track_handler
@@ -47,54 +46,48 @@ class InputObserver():
 
     def update(self, saemubox_id):
         if self.handle_id(saemubox_id):
-	    self.handle()
+            self.handle()
 
     def handle(self):
         pass
 
 
-
 class KlangbeckenInputObserver(InputObserver):
-
     def __init__(self, current_show_url, input_file):
         InputObserver.__init__(self, current_show_url)
 
-        self.input_file       = input_file
-	self.last_modify_time = os.stat(self.input_file).st_mtime
+        self.input_file = input_file
+        self.last_modify_time = os.stat(self.input_file).st_mtime
 
         self.track = None
-
 
     def handle_id(self, saemubox_id):
         # only handle Klangbecken output
         if saemubox_id == 1:
-	    return True
+            return True
 
-	return False
-
+        return False
 
     def handle(self):
         # @TODO: replace the stat method with inotify
         modify_time = os.stat(self.input_file).st_mtime
-        
+
         # @TODO: Need to check if we have a stale file and send default
         #        track infos in this case. This might happend if loopy
         #        went out for lunch...
         #        pseudo code: now > modify_time + self.track.get_duration()
 
         if self.first_run or modify_time > self.last_modify_time:
-            logger.info('Now playing file changed')
+            logger.info("Now playing file changed")
 
-            self.show             = self.showclient.get_show_info()
+            self.show = self.showclient.get_show_info()
             self.last_modify_time = modify_time
 
-
-            logger.info('First run: %s' % self.first_run)
+            logger.info("First run: %s" % self.first_run)
 
             if not self.first_run:
-                logger.info('calling track_finished')
-                self.track_handler.track_finished(self.track)  
-
+                logger.info("calling track_finished")
+                self.track_handler.track_finished(self.track)
 
             self.track = self.get_track_info()
 
@@ -103,7 +96,10 @@ class KlangbeckenInputObserver(InputObserver):
             # Therefore the show's name should always be Klangbecken, regardless
             # of what loopy thinks.
             if self.show.name != SHOW_NAME_KLANGBECKEN:
-                logger.info("Klangbecken Input active, overriding current show '%s' with '%s'" % (self.show.name, SHOW_NAME_KLANGBECKEN))
+                logger.info(
+                    "Klangbecken Input active, overriding current show '%s' with '%s'"
+                    % (self.show.name, SHOW_NAME_KLANGBECKEN)
+                )
 
                 self.show = show.show.Show()
                 self.show.set_name(SHOW_NAME_KLANGBECKEN)
@@ -114,36 +110,32 @@ class KlangbeckenInputObserver(InputObserver):
                 # The show's start time is initially set to now.
                 self.show.set_endtime(self.track.endtime)
 
-
             self.track.set_show(self.show)
-				  
-	    self.track_handler.track_started(self.track)
 
-	    self.first_run = False
+            self.track_handler.track_started(self.track)
 
-
+            self.first_run = False
 
     def get_track_info(self):
         dom = xml.dom.minidom.parse(self.input_file)
 
-
         # default track info
-        track_info = { 'artist':          track.track.DEFAULT_ARTIST,
-                       'title':           track.track.DEFAULT_TITLE,
-                       'album':           '',
-                       'track':           '',
-                       'time':            ''
-                     }
+        track_info = {
+            "artist": track.track.DEFAULT_ARTIST,
+            "title": track.track.DEFAULT_TITLE,
+            "album": "",
+            "track": "",
+            "time": "",
+        }
 
-        song = dom.getElementsByTagName('song')
+        song = dom.getElementsByTagName("song")
 
-        if len(song) == 0 or song[0].hasChildNodes() == False:
+        if len(song) == 0 or song[0].hasChildNodes() is False:
             raise Exception("No <song> tag found")
 
         song = song[0]
 
-
-        for name in track_info.keys():
+        for name in list(track_info.keys()):
             elements = song.getElementsByTagName(name)
 
             if len(elements) == 0:
@@ -151,43 +143,45 @@ class KlangbeckenInputObserver(InputObserver):
             elif elements[0].hasChildNodes():
                 element_data = elements[0].firstChild.data.strip()
 
-                if element_data != '':
+                if element_data != "":
                     track_info[name] = element_data
                 else:
-                    logger.info('Element %s has empty value, ignoring' % name)
+                    logger.info("Element %s has empty value, ignoring" % name)
 
-        if not song.hasAttribute('timestamp'):
+        if not song.hasAttribute("timestamp"):
             raise Exception("Song timestamp attribute is missing")
 
         # set the start time and append the missing UTC offset
         # @TODO: The UTC offset should be provided by the now playing XML
         #        generated by Thomas
         # ex.: 2012-05-15T09:47:07+02:00
-        track_info['start_timestamp'] = \
-            song.getAttribute('timestamp') + time.strftime('%z')
-
+        track_info["start_timestamp"] = song.getAttribute("timestamp") + time.strftime(
+            "%z"
+        )
 
         current_track = track.track.Track()
 
-        current_track.set_artist(track_info['artist'])
-        current_track.set_title(track_info['title'])
-        current_track.set_album(track_info['album'])
+        current_track.set_artist(track_info["artist"])
+        current_track.set_title(track_info["title"])
+        current_track.set_album(track_info["album"])
 
         # Store as UTC datetime object
         current_track.set_starttime(
-            isodate.parse_datetime(
-                track_info['start_timestamp']).astimezone(pytz.timezone('UTC')))
+            isodate.parse_datetime(track_info["start_timestamp"]).astimezone(
+                pytz.timezone("UTC")
+            )
+        )
 
-        current_track.set_duration(track_info['time'])
+        current_track.set_duration(track_info["time"])
 
         return current_track
 
 
 class NonKlangbeckenInputObserver(InputObserver):
-    '''Observer for input that doesn't originate from klangbecken,
-       and therefore misses the track information.
-       Uses the show's name instead of the actual track infos'''
+    """Observer for input that doesn't originate from klangbecken and therefore misses the track information.
 
+    Uses the show's name instead of the actual track infos
+    """
 
     def handle_id(self, saemubox_id):
 
@@ -197,25 +191,22 @@ class NonKlangbeckenInputObserver(InputObserver):
             # nonsense ;)
             self.show = self.showclient.get_show_info(True)
 
-
         self.previous_saemubox_id = saemubox_id
 
         # only handle non-Klangbecken
         if saemubox_id != 1:
-	    return True
+            return True
 
-	return False
-
+        return False
 
     def handle(self):
         self.show = self.showclient.get_show_info()
 
-        # only handle if a new show has started 
+        # only handle if a new show has started
         if self.show.uuid != self.previous_show_uuid:
-            logger.info('Show changed')
+            logger.info("Show changed")
             self.track_handler.track_started(self.get_track_info())
             self.previous_show_uuid = self.show.uuid
-
 
     def get_track_info(self):
         current_track = track.track.Track()
