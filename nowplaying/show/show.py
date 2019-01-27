@@ -14,7 +14,7 @@ import pytz
 
 logger = logging.getLogger("now-playing")
 
-DEFAULT_SHOW_URL = "http://www.rabe.ch"
+DEFAULT_SHOW_URL = "https://www.rabe.ch"
 
 
 class ShowError(Exception):
