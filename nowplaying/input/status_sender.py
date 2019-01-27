@@ -5,7 +5,7 @@ import logging
 import select
 import socket
 
-import input.observer
+from nowplaying import input
 
 logger = logging.getLogger("now-playing")
 

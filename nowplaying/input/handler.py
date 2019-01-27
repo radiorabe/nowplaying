@@ -7,8 +7,7 @@ __version__ = "$Revision$"
 import logging
 import logging.handlers
 
-import input.observer
-import misc.saemubox
+from nowplaying import input, misc
 
 logger = logging.getLogger("now-playing")
 

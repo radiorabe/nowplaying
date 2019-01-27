@@ -13,9 +13,7 @@ import xml.dom.minidom
 import isodate
 import pytz
 
-import show.client
-import show.show
-import track.track
+from nowplaying import show, track
 
 logger = logging.getLogger("now-playing")
 
