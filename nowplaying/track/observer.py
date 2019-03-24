@@ -14,10 +14,10 @@ import urllib.request
 import uuid
 
 import isodate
+import lxml.builder
+import lxml.etree
 import pylast
 import pytz
-
-from elementtree.SimpleXMLWriter import XMLWriter
 
 logger = logging.getLogger("now-playing")
 
@@ -233,80 +233,60 @@ class TickerTrackObserver(TrackObserver):
         logger.info(
             "Updating Ticker XML file for track: %s - %s" % (track.artist, track.title)
         )
+        try:
+            tz = pytz.timezone("Europe/Zurich")
+        except pytz.exceptions.UnknownTimeZoneError:
+            tz = pytz.timezone("UTC")
 
-        now = isodate.datetime_isoformat(
-            datetime.datetime.now(pytz.timezone("Europe/Zurich"))
+        now = isodate.datetime_isoformat(datetime.datetime.now(tz))
+
+        MAIN_NAMESPACE = "http://rabe.ch/schema/ticker.xsd"
+        XLINK_NAMESPACE = "http://www.w3.org/1999/xlink"
+        XLINK = "{%s}" % XLINK_NAMESPACE
+
+        E = lxml.builder.ElementMaker(
+            namespace=MAIN_NAMESPACE,
+            nsmap={None: MAIN_NAMESPACE, "xlink": XLINK_NAMESPACE},
         )
+        show_ref = E.link(track.show.url)
+        show_ref.attrib[XLINK + "type"] = "simple"
+        show_ref.attrib[XLINK + "href"] = track.show.url
+        show_ref.attrib[XLINK + "show"] = "replace"
 
-        xml = XMLWriter(self.ticker_file_path, "utf-8")
-
-        xml.declaration()
-        ticker = xml.start(
-            "ticker",
-            {
-                "xmlns": "http://rabe.ch/schema/ticker.xsd",
-                "xmlns:xlink": "http://www.w3.org/1999/xlink",
-            },
+        ticker = E.ticker(
+            E.ticker(
+                E.identifier("ticker-%s" % uuid.uuid4()),
+                E.creator("now-playing daemon v2"),
+                E.date(now),
+                E.show(
+                    E.name(track.show.name),
+                    show_ref,
+                    E.startTime(
+                        isodate.datetime_isoformat(track.show.starttime.astimezone(tz))
+                    ),
+                    E.endTime(
+                        isodate.datetime_isoformat(track.show.endtime.astimezone(tz))
+                    ),
+                    id=track.show.uuid,
+                ),
+                E.track(
+                    E.show(track.show.name, ref=track.show.uuid),
+                    E.artist(track.artist),
+                    E.title(track.title),
+                    E.startTime(
+                        isodate.datetime_isoformat(track.starttime.astimezone(tz))
+                    ),
+                    E.endTime(isodate.datetime_isoformat(track.endtime.astimezone(tz))),
+                    id=track.uuid,
+                ),
+            )
         )
-
-        xml.element("identifier", "ticker-%s" % uuid.uuid4())
-        xml.element("creator", "now-playing daemon")
-        xml.element("date", now)
-
-        xml.start("show", id=track.show.uuid)
-        xml.element("name", track.show.name)
-        xml.element(
-            "link",
-            track.show.url,
-            {
-                "xlink:type": "simple",
-                "xlink:href": track.show.url,
-                "xlink:show": "replace",
-            },
+        lxml.etree.ElementTree(ticker).write(
+            self.ticker_file_path,
+            pretty_print=True,
+            xml_declaration=True,
+            encoding="utf-8",
         )
-
-        # Get ISO 8601 date string (2012-04-28T18:00:00+0200)
-        xml.element(
-            "startTime",
-            isodate.datetime_isoformat(
-                track.show.starttime.astimezone(pytz.timezone("Europe/Zurich"))
-            ),
-        )
-
-        # Get ISO 8601 date string (2012-04-28T18:00:00+0200)
-        xml.element(
-            "endTime",
-            isodate.datetime_isoformat(
-                track.show.endtime.astimezone(pytz.timezone("Europe/Zurich"))
-            ),
-        )
-
-        xml.end()
-
-        xml.start("track", id=track.uuid)
-        xml.element("show", track.show.name, ref=track.show.uuid)
-        xml.element("artist", track.artist)
-        xml.element("title", track.title)
-
-        # Get ISO 8601 date string (2012-04-28T18:00:00+0200)
-        xml.element(
-            "startTime",
-            isodate.datetime_isoformat(
-                track.starttime.astimezone(pytz.timezone("Europe/Zurich"))
-            ),
-        )
-
-        # Get ISO 8601 date string (2012-04-28T18:00:00+0200)
-        xml.element(
-            "endTime",
-            isodate.datetime_isoformat(
-                track.endtime.astimezone(pytz.timezone("Europe/Zurich"))
-            ),
-        )
-
-        xml.end()
-
-        xml.close(ticker)
 
     def track_finished(self, track):
         return True
