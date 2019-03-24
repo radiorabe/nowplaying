@@ -19,8 +19,6 @@ from . import show
 
 logger = logging.getLogger("now-playing")
 
-DEFAULT_SHOW_NAME = "Sendung gemäss Programm"
-DEFAULT_SHOW_URL = "http://www.rabe.ch"
 DEFAULT_SHOW_DURATION = 30  # 30 seconds
 
 

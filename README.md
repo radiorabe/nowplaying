@@ -9,3 +9,9 @@ pip install pre-commit
 pip install -r requirements-dev.txt -U
 pre-commit install
 ```
+
+### testing
+
+```bash
+pytest
+```
