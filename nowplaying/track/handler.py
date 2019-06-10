@@ -30,6 +30,10 @@ class TrackEventHandler:
     def remove_observer(self, observer):
         self.__observers.remove(observer)
 
+    def get_observers(self):
+        """Return register observers to allow inspecting them."""
+        return self.__observers
+
     def track_started(self, track):
         logger.info("Track started: %s" % track)
 
