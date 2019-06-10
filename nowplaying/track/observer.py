@@ -35,7 +35,7 @@ class TrackObserver:
         pass
 
 
-class ScrobblerTrackObserver(TrackObserver):
+class ScrobblerTrackObserver(TrackObserver):  # pragma: no cover
     name = "Audioscrobbler"
 
     lastfm_api_key = ""
@@ -45,6 +45,7 @@ class ScrobblerTrackObserver(TrackObserver):
     librefm_api_secret = ""
 
     def __init__(self, user, password):
+        raise Exception("Unmaintained ScrobblerTrackObserver called")
 
         password = pylast.md5(password)
 
