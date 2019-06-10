@@ -28,10 +28,10 @@ class TrackObserver:
     def get_name(self):
         return self.name
 
-    def track_started(self, track):
+    def track_started(self, track):  # pragma: no cover
         pass
 
-    def track_finished(self, track):
+    def track_finished(self, track):  # pragma: no cover
         pass
 
 
