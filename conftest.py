@@ -1,6 +1,19 @@
 import pytest
 
+from nowplaying.show import show
 from nowplaying.track import track
+
+
+def new_show(name="Hairmare Traveling Medicine Show"):
+    s = show.Show()
+    s.set_name("Hairmare Traveling Medicine Show")
+    return s
+
+
+@pytest.fixture()
+def show_factory():
+    """Return a method to help creating new show objects for tests."""
+    return new_show
 
 
 def new_track(

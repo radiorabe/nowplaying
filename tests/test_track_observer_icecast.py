@@ -3,10 +3,13 @@ from unittest.mock import MagicMock, patch
 from nowplaying.track import observer, track
 
 
-class TestDabAudioCompanionTrackObserver:
+class TestIcecastTrackObserver:
     def test_init(self):
-        o = observer.DabAudioCompanionTrackObserver(baseUrl="http://localhost:80")
-        assert o.baseUrl == "http://localhost:80/api/setDLS?dls="
+        o = observer.IcecastTrackObserver(baseUrl="http://localhost:80/?stream=foo.mp3")
+        assert (
+            o.baseUrl
+            == "http://localhost:80/?stream=foo.mp3&mode=updinfo&charset=utf-8&song="
+        )
 
     @patch("urllib.request.urlopen")
     def test_track_started(self, mock_urlopen, track_factory, show_factory):
@@ -20,13 +23,13 @@ class TestDabAudioCompanionTrackObserver:
         track = track_factory()
         track.show = show_factory()
 
-        o = observer.DabAudioCompanionTrackObserver(baseUrl="http://localhost:80")
+        o = observer.IcecastTrackObserver(baseUrl="http://localhost:80/?stream=foo.mp3")
         o.track_started(track)
 
         mock_urlopen.assert_called_with(
-            "http://localhost:80/api/setDLS?dls=b%27Hairmare+and+the+Band%27+-+b%27An+Ode+to+legacy+Python+Code%27"
+            "http://localhost:80/?stream=foo.mp3&mode=updinfo&charset=utf-8&song=b%27Hairmare+and+the+Band%27+-+b%27An+Ode+to+legacy+Python+Code%27"
         )
 
     def test_track_finished(self):
-        o = observer.DabAudioCompanionTrackObserver(baseUrl="http://localhost:80")
+        o = observer.IcecastTrackObserver(baseUrl="http://localhost:80")
         assert o.track_finished(track.Track())
