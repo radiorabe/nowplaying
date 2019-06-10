@@ -178,7 +178,7 @@ class TickerTrackObserver(TrackObserver):
         )
         try:
             tz = pytz.timezone("Europe/Zurich")
-        except pytz.exceptions.UnknownTimeZoneError:
+        except pytz.exceptions.UnknownTimeZoneError:  # pragma: no coverage due to not knowing how to trigger
             tz = pytz.timezone("UTC")
 
         now = isodate.datetime_isoformat(datetime.datetime.now(tz))

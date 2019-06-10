@@ -16,3 +16,9 @@ class TestTickerTrackObserver:
         o.track_started(t)
 
         assert os.path.exists("/tmp/track_started.xml")
+
+    def test_track_finished(self, track_factory):
+        t = track_factory()
+
+        o = observer.TickerTrackObserver(ticker_file_path="/tmp/dummy.xml")
+        assert o.track_finished(t)
