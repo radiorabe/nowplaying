@@ -158,70 +158,12 @@ class IcecastTrackObserver(TrackObserver):
         return True
 
 
-class PseudoRssTrackObserver(TrackObserver):
-    """Writes the RSS feed file.
-
-    The RSS was originally consumed by the song-ticker
-    on the RaBe website. Unfortunately the ticker expects some broken RSS
-    format, therefore we can't use a proper RSS generator such as PyRSS2Gen.
-
-    This output *should* be obsolete!
-    """
-
-    name = "RSS"
-
-    # Crappy non-standard RSS XML string with string replacement patterns
-    xml = '<?xml version="1.0" encoding="UTF-8"?>\n<rss xmlns:xs="http://www.w3.org/2001/XMLSchema" version="2.0"><title>RaBe Songticker</title><link>http://rabe.ch</link><description>playlist</description><language>de</language><ttl>1</ttl><generator>now-playing</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><lastBuildDate>%s</lastBuildDate><item><guid>rabe-songticker-%s</guid><title>%s</title><link/><description>%s</description><pubDate>%s</pubDate></item></rss>'
-
-    def __init__(self, rssFilePath):
-        self.rssFilePath = rssFilePath
-
-    def track_started(self, track):
-        # Artist and title are unicode strings which we have to encode into UTF-8
-        artist = track.artist.encode("utf8")
-        title = track.title.encode("utf8")
-
-        # Get ISO 8601 date string (2012-04-28T18:00:00+0200)
-        starttime = track.starttime.astimezone(
-            pytz.timezone("Europe/Zurich")
-        ).isoformat()
-
-        logger.info("Updating RSS file for track: %s - %s" % (artist, title))
-
-        if track.has_default_title():
-            if track.has_default_artist():
-                logger.info(
-                    "%s: Track has default info, using show instead" % self.__class__
-                )
-
-                title = track.show.name
-
-            else:
-                logger.info(
-                    "%s: Replacing default title with empty string" % self.__class__
-                )
-                title = ""
-
-        # @TODO: Timezone should be configurable
-        now = isodate.datetime_isoformat(
-            datetime.datetime.now(pytz.timezone("Europe/Zurich"))
-        )
-
-        rssFile = open(self.rssFilePath, "w")
-
-        # substitue all patterns within the XML with their actual values
-        rssFile.write(self.xml % (starttime, now, title, artist, starttime))
-        rssFile.close()
-
-    def track_finished(self, track):
-        return True
-
-
 class TickerTrackObserver(TrackObserver):
     """Writes the new ticker feed file.
 
     The feed file will be consumed by the song-ticker on the RaBe website. This is the
-    successor of the PseudoRssTrackObserver format.
+    successor of the long gone PseudoRssTrackObserver format used by the pre-WordPress
+    website. This version here gets consumed by the WordPress website.
     """
 
     name = "Ticker"

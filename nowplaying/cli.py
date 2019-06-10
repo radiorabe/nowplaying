@@ -147,10 +147,6 @@ class NowPlaying:
         )
 
         handler.register_observer(
-            track.observer.PseudoRssTrackObserver(RSS_OUTPUT_FILE)
-        )
-
-        handler.register_observer(
             track.observer.TickerTrackObserver(TICKER_OUTPUT_FILE)
         )
 
