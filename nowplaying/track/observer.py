@@ -1,9 +1,3 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-
-__version__ = "$Revision$"
-# $Id$
-
 import calendar
 import datetime
 import logging
@@ -12,6 +6,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import uuid
+import warnings
+from abc import ABC, abstractmethod
 
 import isodate
 import lxml.builder
@@ -22,20 +18,26 @@ import pytz
 logger = logging.getLogger("now-playing")
 
 
-class TrackObserver:
+class TrackObserver(ABC):
+    """Abstract base class for all TrackObservers."""
+
     name = "TrackObserver"
 
     def get_name(self):
         return self.name
 
+    @abstractmethod
     def track_started(self, track):  # pragma: no cover
         pass
 
+    @abstractmethod
     def track_finished(self, track):  # pragma: no cover
         pass
 
 
 class ScrobblerTrackObserver(TrackObserver):  # pragma: no cover
+    """Scrobble track information to last.fm and libre.fm."""
+
     name = "Audioscrobbler"
 
     lastfm_api_key = ""
@@ -124,6 +126,8 @@ class ScrobblerTrackObserver(TrackObserver):  # pragma: no cover
 
 
 class IcecastTrackObserver(TrackObserver):
+    """Update track metadata on an icecast mountpoint."""
+
     name = "Icecast"
 
     def __init__(self, baseUrl):
@@ -170,6 +174,10 @@ class TickerTrackObserver(TrackObserver):
     name = "Ticker"
 
     def __init__(self, ticker_file_path):
+        warnings.warn(
+            "The XML ticker format will be replaced with a JSON variant in the future",
+            PendingDeprecationWarning,
+        )
         self.ticker_file_path = ticker_file_path
 
     def track_started(self, track):
@@ -236,6 +244,8 @@ class TickerTrackObserver(TrackObserver):
 
 
 class DabAudioCompanionTrackObserver(TrackObserver):
+    """Update track metadata in a DAB+ tranmission through the 'Audio Companion' API."""
+
     name = "DAB+ Audio Companion"
 
     def __init__(self, baseUrl):

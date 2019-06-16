@@ -1,30 +1,28 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-
-__version__ = "$Revision$"
-# $Id$
-
 import logging
 import logging.handlers
 import os
 import time
+import warnings
 import xml.dom.minidom
+from abc import ABC, abstractmethod
 
 import isodate
 import pytz
 
-from nowplaying import show, track
-from nowplaying.show import client
+from show import client
+from show.show import Show
+from track.track import DEFAULT_ARTIST, DEFAULT_TITLE, Track
 
 logger = logging.getLogger("now-playing")
 
-SHOW_NAME_KLANGBECKEN = "Klangbecken"
-SHOW_URL_KLANGBECKEN = "http://www.rabe.ch/sendungen/musik/klangbecken.html"
 
+class InputObserver(ABC):
+    """Abstract base for all InputObservers."""
 
-class InputObserver:
+    _SHOW_NAME_KLANGBECKEN = "Klangbecken"
+    _SHOW_URL_KLANGBECKEN = "http://www.rabe.ch/sendungen/musik/klangbecken.html"
+
     def __init__(self, current_show_url):
-        # http://intranet.rabe.ch/mantisbt/view.php?id=20
         self.current_show_url = current_show_url
 
         self.first_run = True
@@ -40,19 +38,27 @@ class InputObserver:
     def add_track_handler(self, track_handler):
         self.track_handler = track_handler
 
-    def handle_id(self, saemubox_id):
-        return False
-
     def update(self, saemubox_id):
         if self.handle_id(saemubox_id):
             self.handle()
 
-    def handle(self):
+    @abstractmethod
+    def handle_id(self, saemubox_id):  # pragma: no coverage
+        pass
+
+    @abstractmethod
+    def handle(self):  # pragma: no coverage
         pass
 
 
 class KlangbeckenInputObserver(InputObserver):
+    """Observe cases where Sämu Box says Klangbecken is running and we can consume now-playing.xml input."""
+
     def __init__(self, current_show_url, input_file):
+        warnings.warn(
+            "The now-playing.xml format from Loopy/Klangbecken will be replaced in the future",
+            PendingDeprecationWarning,
+        )
         InputObserver.__init__(self, current_show_url)
 
         self.input_file = input_file
@@ -94,15 +100,15 @@ class KlangbeckenInputObserver(InputObserver):
             # active inputs are silent or have problems.
             # Therefore the show's name should always be Klangbecken, regardless
             # of what loopy thinks.
-            if self.show.name != SHOW_NAME_KLANGBECKEN:
+            if self.show.name != self._SHOW_NAME_KLANGBECKEN:
                 logger.info(
                     "Klangbecken Input active, overriding current show '%s' with '%s'"
-                    % (self.show.name, SHOW_NAME_KLANGBECKEN)
+                    % (self.show.name, self._SHOW_NAME_KLANGBECKEN)
                 )
 
-                self.show = show.show.Show()
-                self.show.set_name(SHOW_NAME_KLANGBECKEN)
-                self.show.set_url(SHOW_URL_KLANGBECKEN)
+                self.show = Show()
+                self.show.set_name(self._SHOW_NAME_KLANGBECKEN)
+                self.show.set_url(self._SHOW_URL_KLANGBECKEN)
 
                 # Set the show's end time to the one of the track, as we have
                 # no idea for how long the Klangbecken input will be active.
@@ -120,8 +126,8 @@ class KlangbeckenInputObserver(InputObserver):
 
         # default track info
         track_info = {
-            "artist": track.track.DEFAULT_ARTIST,
-            "title": track.track.DEFAULT_TITLE,
+            "artist": DEFAULT_ARTIST,
+            "title": DEFAULT_TITLE,
             "album": "",
             "track": "",
             "time": "",
@@ -158,7 +164,7 @@ class KlangbeckenInputObserver(InputObserver):
             "%z"
         )
 
-        current_track = track.track.Track()
+        current_track = Track()
 
         current_track.set_artist(track_info["artist"])
         current_track.set_title(track_info["title"])
@@ -208,10 +214,10 @@ class NonKlangbeckenInputObserver(InputObserver):
             self.previous_show_uuid = self.show.uuid
 
     def get_track_info(self):
-        current_track = track.track.Track()
+        current_track = Track()
 
-        current_track.set_artist(track.track.DEFAULT_ARTIST)
-        current_track.set_title(track.track.DEFAULT_TITLE)
+        current_track.set_artist(DEFAULT_ARTIST)
+        current_track.set_title(DEFAULT_TITLE)
 
         # Set the track's start/end time to the start/end time of the show
         current_track.set_starttime(self.show.starttime)

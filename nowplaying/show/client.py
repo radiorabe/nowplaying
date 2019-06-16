@@ -1,9 +1,3 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-
-__version__ = "$Revision$"
-# $Id$
-
 import datetime
 import logging
 import logging.handlers
@@ -19,8 +13,6 @@ from . import show
 
 logger = logging.getLogger("now-playing")
 
-DEFAULT_SHOW_DURATION = 30  # 30 seconds
-
 
 class ShowClientError(Exception):
     """ShowClient related exception."""
@@ -33,6 +25,8 @@ class ShowClient:
 
     Every show has a name, a start and endtime and an optional URL.
     """
+
+    __DEFAULT_SHOW_DURATION = 30  # 30 seconds
 
     def __init__(self, current_show_url):
 
@@ -67,7 +61,7 @@ class ShowClient:
         # goes wrong later.
         self.show.set_endtime(
             datetime.datetime.now(pytz.timezone("UTC"))
-            + datetime.timedelta(seconds=DEFAULT_SHOW_DURATION)
+            + datetime.timedelta(seconds=self.__DEFAULT_SHOW_DURATION)
         )
 
         try:

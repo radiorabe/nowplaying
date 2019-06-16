@@ -1,14 +1,9 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-
-__version__ = "$Revision$"
-# $Id$
-
 import logging
 import logging.handlers
 import select
 import socket
 import time
+import warnings
 
 logger = logging.getLogger("now-playing")
 
@@ -20,6 +15,7 @@ class SaemuBoxError(Exception):
 
 
 class SaemuBox:
+    """Receive and validate info from Sämu Box for nowplaying."""
 
     output_mapping = {
         1: "Klangbecken",
@@ -31,6 +27,9 @@ class SaemuBox:
     }
 
     def __init__(self):
+        warnings.warn(
+            "Saemubox will be replaced with Pathfinder", PendingDeprecationWarning
+        )
         self.output = ""
 
         # listening ip adress (all)
@@ -78,9 +77,10 @@ class SaemuBox:
 
             ids = data.split()  # several saemubox ids might come in one packet
             if ids:
-                if ids[-1] in self.valid_ids:  # only take last id
+                id = ids[-1].decode("utf-8")  # only take last id
+                if id in self.valid_ids:
                     seen_senders.add(addr[0])
-                    output = ids[-1]
+                    output = id
                 else:
                     logger.warn("SaemuBox: received invalid data: %s" % data)
 

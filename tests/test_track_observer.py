@@ -1,7 +1,3 @@
-from nowplaying.track import observer
-
-
 class TestTrackObserver:
-    def test_init(self):
-        o = observer.TrackObserver()
-        assert o.get_name() == "TrackObserver"
+    def test_get_name(self, dummy_observer):
+        assert dummy_observer.get_name() == "TrackObserver"

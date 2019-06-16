@@ -1,11 +1,7 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-
-__version__ = "$Revision$"
-# $Id$
-
 import logging
 import logging.handlers
+
+from track.observer import TrackObserver
 
 logger = logging.getLogger("now-playing")
 
@@ -19,14 +15,11 @@ class TrackEventHandler:
     def __init__(self):
         self.__observers = []
 
-    def register_observer(self, observer):
-        # if not isinstance(observer, track.observer.TrackObserver):
-        # if not isinstance(observer, observer.TrackObserver):
-        #    raise Exception('Only TrackObserver objects can be registered')
+    def register_observer(self, observer: TrackObserver):
         logger.info("Registering TrackObserver '%s'" % observer.__class__.__name__)
         self.__observers.append(observer)
 
-    def remove_observer(self, observer):
+    def remove_observer(self, observer: TrackObserver):
         self.__observers.remove(observer)
 
     def get_observers(self):
