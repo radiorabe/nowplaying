@@ -10,7 +10,7 @@ setup(
     url="http://github.com/radiorabe/nowplaying",
     author="RaBe IT-Reaktion",
     author_email="it@rabe.ch",
-    license="MIT",
+    license="AGPL-3",
     install_requires=requirements,
     packages=[
         "nowplaying",
@@ -21,4 +21,8 @@ setup(
     ],
     entry_points={"console_scripts": ["now-playing=nowplaying.cli:main"]},
     zip_safe=True,
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "License :: OSI Approved :: AGPL License",
+    ],
 )
