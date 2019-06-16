@@ -48,9 +48,6 @@ DAB_AUDIO_COMPANION_BASE_URL_1 = "http://dab-04.audio.int.rabe.ch:8080"
 
 SLEEP_SECONDS = 1
 
-# STATUS_SENDER_PORT = 9999
-# STATUS_SENDER_BIND_IP = '0.0.0.0'
-
 
 class NowPlaying:
     def __init__(self):
@@ -222,13 +219,9 @@ class NowPlaying:
 
         nonklangbecken.add_track_handler(self.get_nonklangbecken_track_handler())
 
-        # status_sender = input.status_sender.StatusSender(STATUS_SENDER_BIND_IP,
-        #                                                 STATUS_SENDER_PORT)
-
         handler = input.handler.InputHandler()
         handler.register_observer(klangbecken)
         handler.register_observer(nonklangbecken)
-        # handler.register_observer(status_sender)
 
         return handler
 
