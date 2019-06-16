@@ -14,6 +14,7 @@ import isodate
 import pytz
 
 from nowplaying import show, track
+from nowplaying.show import client
 
 logger = logging.getLogger("now-playing")
 
@@ -29,7 +30,7 @@ class InputObserver:
         self.first_run = True
         self.previous_saemubox_id = None
         self.show = None
-        self.showclient = show.client.ShowClient(current_show_url)
+        self.showclient = client.ShowClient(current_show_url)
         self.show = self.showclient.get_show_info()
 
         self.previous_show_uuid = None

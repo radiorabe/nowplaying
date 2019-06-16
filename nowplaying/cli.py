@@ -16,7 +16,10 @@ import urllib.parse
 import urllib.request
 
 import input
-import track
+import input.handler
+import input.observer
+import track.handler
+import track.observer
 
 SAEMUBOX_STATUS_CMD = "/usr/local/scripts/songticker/get-saemubox-status.sh"
 SAEMUBOX_KLANGBECKEN_ID = "1"
@@ -195,10 +198,6 @@ class NowPlaying:
 
         handler.register_observer(
             track.observer.IcecastTrackObserver(ICECAST_BASE_URL_10)
-        )
-
-        handler.register_observer(
-            track.observer.PseudoRssTrackObserver(RSS_OUTPUT_FILE)
         )
 
         handler.register_observer(

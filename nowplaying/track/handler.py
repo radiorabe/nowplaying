@@ -23,7 +23,6 @@ class TrackEventHandler:
         # if not isinstance(observer, track.observer.TrackObserver):
         # if not isinstance(observer, observer.TrackObserver):
         #    raise Exception('Only TrackObserver objects can be registered')
-        logger.info("Registering TrackObserver")
         logger.info("Registering TrackObserver '%s'" % observer.__class__.__name__)
         self.__observers.append(observer)
 
