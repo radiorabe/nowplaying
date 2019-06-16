@@ -89,16 +89,19 @@ class NowPlaying:
             sys.exit(os.EX_OK)
 
     def setup_logging(self):
-        logger.setLevel(logging.DEBUG)
+        root = logging.getLogger()
+        root.setLevel(logging.DEBUG)
 
-        syslog_handler = logging.handlers.SysLogHandler("/dev/log")
+        stdout_handler = logging.StreamHandler(sys.stdout)
 
-        syslog_formatter = logging.Formatter("now-playing: %(levelname)s %(message)s")
+        stdout_formatter = logging.Formatter(
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        )
 
-        syslog_handler.setLevel(logging.INFO)
-        syslog_handler.setFormatter(syslog_formatter)
+        stdout_handler.setLevel(logging.INFO)
+        stdout_handler.setFormatter(stdout_formatter)
 
-        logger.addHandler(syslog_handler)
+        root.addHandler(stdout_handler)
 
     def get_klangbecken_track_handler(self):
         handler = track.handler.TrackEventHandler()
