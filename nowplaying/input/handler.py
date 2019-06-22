@@ -7,7 +7,7 @@ __version__ = "$Revision$"
 import logging
 import logging.handlers
 
-from nowplaying import input, misc
+from nowplaying.misc.saemubox import SaemuBox
 
 logger = logging.getLogger("now-playing")
 
@@ -22,12 +22,12 @@ class InputHandler:
         self.__observers = []
         self.last_input = 1
 
-        self.saemubox = misc.saemubox.SaemuBox()
+        self.saemubox = SaemuBox()
 
     def register_observer(self, observer):
-        if not isinstance(observer, input.observer.InputObserver):
-            raise Exception("Only InputObserver objects can be registered")
-
+        # if not isinstance(observer, InputObserver):
+        #     raise Exception("Only InputObserver objects can be registered")
+        logger.info("Registering InputObserver '%s'" % observer.__class__.__name__)
         self.__observers.append(observer)
 
     def remove_observer(self, observer):
