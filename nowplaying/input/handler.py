@@ -3,7 +3,7 @@ import logging.handlers
 
 from input.observer import InputObserver
 
-logger = logging.getLogger("now-playing")
+logger = logging.getLogger(__name__)
 
 
 class InputHandler:

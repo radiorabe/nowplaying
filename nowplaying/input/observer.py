@@ -13,7 +13,7 @@ from show import client
 from show.show import Show
 from track.track import DEFAULT_ARTIST, DEFAULT_TITLE, Track
 
-logger = logging.getLogger("now-playing")
+logger = logging.getLogger(__name__)
 
 
 class InputObserver(ABC):

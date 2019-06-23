@@ -10,7 +10,7 @@ from misc.saemubox import SaemuBox
 from track import observer as trackObservers
 from track.handler import TrackEventHandler
 
-logger = logging.getLogger("now-playing")
+logger = logging.getLogger(__name__)
 
 
 class NowPlayingDaemon:
