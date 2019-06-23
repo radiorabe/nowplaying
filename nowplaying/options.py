@@ -66,6 +66,15 @@ class Options(object):
             help="ticker XML output format",
             default="/var/www/localhost/htdocs/songticker/0.9.3/current.xml",
         )
+        self.__args.add_argument(
+            "--debug",
+            type=bool,
+            nargs="?",
+            const=True,
+            dest="debug",
+            help="Show debug messages",
+            default=False,
+        )
 
     def parse_known_args(self):
         """Parse known args with configargparse."""
