@@ -1,13 +1,7 @@
-#! /usr/bin/env python
-# -*- coding: utf-8 -*-
-
-__version__ = "$Revision$"
-# $Id$
-
 import logging
 import logging.handlers
 
-from nowplaying.misc.saemubox import SaemuBox
+from input.observer import InputObserver
 
 logger = logging.getLogger("now-playing")
 
@@ -20,34 +14,15 @@ class InputHandler:
 
     def __init__(self):
         self.__observers = []
-        self.last_input = 1
 
-        self.saemubox = SaemuBox()
-
-    def register_observer(self, observer):
-        # if not isinstance(observer, InputObserver):
-        #     raise Exception("Only InputObserver objects can be registered")
+    def register_observer(self, observer: InputObserver):
         logger.info("Registering InputObserver '%s'" % observer.__class__.__name__)
         self.__observers.append(observer)
 
-    def remove_observer(self, observer):
+    def remove_observer(self, observer: InputObserver):
         self.__observers.remove(observer)
 
-    def update(self):
-        saemubox_id = self.saemubox.get_active_output_id()
-        logger.debug("Sämubox id: %i" % saemubox_id)
-
-        if self.last_input != saemubox_id:
-            logger.info(
-                'Sämubox changed from "%s" to "%s"'
-                % (
-                    self.saemubox.get_id_as_name(self.last_input),
-                    self.saemubox.get_id_as_name(saemubox_id),
-                )
-            )
-
-        self.last_input = saemubox_id
-
+    def update(self, saemubox_id: int):
         for observer in self.__observers:
             logger.debug("Sending update event to observer %s" % observer.__class__)
 

@@ -41,7 +41,5 @@ The `--copy` flag may be omitted if you are not building a local dev image.
 You can run the resulting image using Docker.
 
 ```bash
-docker run -e APP_SCRIPT=nowplaying/cli.py now-playing:dev
+docker run now-playing:dev
 ```
-
-The `APP_SCRIPT` argument makes the S2I image call the CLI entrypoint, supplying it will be optional in production.

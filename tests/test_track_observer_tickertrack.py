@@ -1,8 +1,13 @@
 import os
 
+import pytest
+
 from nowplaying.track import observer
 
 
+@pytest.mark.filterwarnings(
+    "ignore:The XML ticker format will be replaced:PendingDeprecationWarning:nowplaying.track.observer"
+)
 class TestTickerTrackObserver:
     def test_init(self):
         o = observer.TickerTrackObserver(ticker_file_path="")

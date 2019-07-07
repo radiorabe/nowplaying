@@ -1,6 +1,6 @@
 from unittest.mock import Mock
 
-from nowplaying.track import handler, observer
+from nowplaying.track import handler
 
 
 class TestTrackEventHandler:
@@ -9,17 +9,13 @@ class TestTrackEventHandler:
 
         assert len(h.get_observers()) == 0
 
-    def test_register_observer(self):
-        dummy_observer = observer.TrackObserver()
-
+    def test_register_observer(self, dummy_observer):
         h = handler.TrackEventHandler()
         h.register_observer(dummy_observer)
 
         assert len(h.get_observers()) == 1
 
-    def test_remove_observer(self):
-        dummy_observer = observer.TrackObserver()
-
+    def test_remove_observer(self, dummy_observer):
         h = handler.TrackEventHandler()
         h.register_observer(dummy_observer)
 
