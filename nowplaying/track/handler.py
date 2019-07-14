@@ -3,7 +3,7 @@ import logging.handlers
 
 from track.observer import TrackObserver
 
-logger = logging.getLogger("now-playing")
+logger = logging.getLogger(__name__)
 
 
 class TrackEventHandler:

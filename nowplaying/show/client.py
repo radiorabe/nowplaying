@@ -11,7 +11,7 @@ import pytz
 
 from . import show
 
-logger = logging.getLogger("now-playing")
+logger = logging.getLogger(__name__)
 
 
 class ShowClientError(Exception):

@@ -15,7 +15,7 @@ import lxml.etree
 import pylast
 import pytz
 
-logger = logging.getLogger("now-playing")
+logger = logging.getLogger(__name__)
 
 
 class TrackObserver(ABC):

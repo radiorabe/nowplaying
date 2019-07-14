@@ -5,7 +5,7 @@ import socket
 import time
 import warnings
 
-logger = logging.getLogger("now-playing")
+logger = logging.getLogger(__name__)
 
 
 class SaemuBoxError(Exception):

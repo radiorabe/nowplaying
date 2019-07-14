@@ -5,7 +5,7 @@ import uuid
 
 import pytz
 
-logger = logging.getLogger("now-playing")
+logger = logging.getLogger(__name__)
 
 DEFAULT_SHOW_URL = "https://www.rabe.ch"
 
