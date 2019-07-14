@@ -12,11 +12,10 @@ from options import Options
 class NowPlaying:
     def run(self):
         """Load configuration, initialize environment and start nowplaying daemon."""
-        self.setup_logging()
-
         self.options = Options()
         self.options.parse_known_args()
 
+        self.setup_logging()
         self.setup_urllib()
         socket.setdefaulttimeout(self.options.socketDefaultTimeout)
 
@@ -34,6 +33,8 @@ class NowPlaying:
         )
 
         stdout_handler.setLevel(logging.INFO)
+        if self.options.debug:
+            stdout_handler.setLevel(logging.DEBUG)
         stdout_handler.setFormatter(stdout_formatter)
 
         root.addHandler(stdout_handler)
