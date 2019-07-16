@@ -11,7 +11,7 @@ LABEL "io.k8s.display-name"="now-playing" \
 
 USER root
 # Copying in source code
-COPY upload/src /tmp/src
+COPY . /tmp/src
 # Change file ownership to the assemble user. Builder image must support chown command.
 RUN chown -R 1001:0 /tmp/src
 USER 1001
