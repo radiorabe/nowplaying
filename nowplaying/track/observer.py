@@ -205,32 +205,28 @@ class TickerTrackObserver(TrackObserver):
         show_ref.attrib[XLINK + "show"] = "replace"
 
         ticker = E.ticker(
-            E.ticker(
-                E.identifier("ticker-%s" % uuid.uuid4()),
-                E.creator("now-playing daemon v2"),
-                E.date(now),
-                E.show(
-                    E.name(track.show.name),
-                    show_ref,
-                    E.startTime(
-                        isodate.datetime_isoformat(track.show.starttime.astimezone(tz))
-                    ),
-                    E.endTime(
-                        isodate.datetime_isoformat(track.show.endtime.astimezone(tz))
-                    ),
-                    id=track.show.uuid,
+            E.identifier("ticker-%s" % uuid.uuid4()),
+            E.creator("now-playing daemon v2"),
+            E.date(now),
+            E.show(
+                E.name(track.show.name),
+                show_ref,
+                E.startTime(
+                    isodate.datetime_isoformat(track.show.starttime.astimezone(tz))
                 ),
-                E.track(
-                    E.show(track.show.name, ref=track.show.uuid),
-                    E.artist(track.artist),
-                    E.title(track.title),
-                    E.startTime(
-                        isodate.datetime_isoformat(track.starttime.astimezone(tz))
-                    ),
-                    E.endTime(isodate.datetime_isoformat(track.endtime.astimezone(tz))),
-                    id=track.uuid,
+                E.endTime(
+                    isodate.datetime_isoformat(track.show.endtime.astimezone(tz))
                 ),
-            )
+                id=track.show.uuid,
+            ),
+            E.track(
+                E.show(track.show.name, ref=track.show.uuid),
+                E.artist(track.artist),
+                E.title(track.title),
+                E.startTime(isodate.datetime_isoformat(track.starttime.astimezone(tz))),
+                E.endTime(isodate.datetime_isoformat(track.endtime.astimezone(tz))),
+                id=track.uuid,
+            ),
         )
         lxml.etree.ElementTree(ticker).write(
             self.ticker_file_path,
