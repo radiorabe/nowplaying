@@ -4,6 +4,9 @@ This repo contains the tool we use to grab, aggregate and publish show, artist a
 
 The nowplaying project grabs info from RaBes playout solution and publishes them to broadcast vectors like DAB+ and Webstreams.
 
+**Warning** The default branch of this repository contains a broken WIP version of nowplaying which is under heavy development.
+All current development is happening on the `develop` branch. Currently, no stable version of nowplaying is available.
+
 ## Usage
 
 ## Contributing
@@ -20,26 +23,4 @@ pre-commit install
 
 ```bash
 pytest
-```
-
-## Building
-
-### Building a Container Image using S2I
-
-You can use the [sclorg S2I Python Container](https://github.com/sclorg/s2i-python-container) to build a container image.
-
-```bash
-# Build a FROM centos container image
-s2i build --copy . registry.centos.org/centos/python-36-centos7 now-playing:dev
-
-# Build a FROM rhel container image
-s2i build --copy . registry.access.redhat.com/rhscl/python-36-rhel7 now-playing:dev
-```
-
-The `--copy` flag may be omitted if you are not building a local dev image.
-
-You can run the resulting image using Docker.
-
-```bash
-docker run now-playing:dev
 ```
