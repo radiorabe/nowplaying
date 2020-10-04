@@ -4,7 +4,7 @@
 # s2i base image is updated. In the long run this should get replaced with a toolchain
 # that runs docker builds on travis and then pushes them to a registry that allows for
 # pushing with an API key or token (like I'm assuming the github registry will allow).
-FROM registry.centos.org/centos/python-36-centos7
+FROM centos/python-36-centos7
 LABEL "io.k8s.display-name"="now-playing" \
       "io.openshift.s2i.build.image"="registry.centos.org/centos/python-36-centos7" \
       "io.openshift.s2i.build.source-location"="."
