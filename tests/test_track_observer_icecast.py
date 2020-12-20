@@ -27,7 +27,7 @@ class TestIcecastTrackObserver:
         o.track_started(track)
 
         mock_urlopen.assert_called_with(
-            "http://localhost:80/?stream=foo.mp3&mode=updinfo&charset=utf-8&song=b%27Hairmare+and+the+Band%27+-+b%27An+Ode+to+legacy+Python+Code%27"
+            "http://localhost:80/?stream=foo.mp3&mode=updinfo&charset=utf-8&song=Hairmare+and+the+Band+-+An+Ode+to+legacy+Python+Code"
         )
 
         track = track_factory(artist="Radio Bern", title="Livestream")
@@ -35,7 +35,7 @@ class TestIcecastTrackObserver:
 
         o.track_started(track)
         mock_urlopen.assert_called_with(
-            "http://localhost:80/?stream=foo.mp3&mode=updinfo&charset=utf-8&song=b%27Radio+Bern%27+-+b%27Hairmare+Traveling+Medicine+Show%27"
+            "http://localhost:80/?stream=foo.mp3&mode=updinfo&charset=utf-8&song=Radio+Bern+-+Hairmare+Traveling+Medicine+Show"
         )
 
     def test_track_finished(self):
