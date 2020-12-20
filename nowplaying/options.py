@@ -30,15 +30,7 @@ class Options(object):
             "--icecast",
             action="append",
             help="Icecast base URL, allowed multiple times",
-            default=[
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-hd.mp3",
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-high.mp3",
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-mid.mp3",
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-low.mp3",
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-ultra-low.mp3",
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-high.opus",
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-low.opus",
-            ],
+            default=[],
         )
         self.__args.add_argument(
             "-d",
