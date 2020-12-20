@@ -147,10 +147,8 @@ class IcecastTrackObserver(TrackObserver):
 
             title = track.show.name
 
-        # artist is an unicode string which we have to encode into UTF-8
-        # http://bugs.python.org/issue216716
         song_string = urllib.parse.quote_plus(
-            "%s - %s" % (track.artist.encode("utf8"), title.encode("utf8"))
+            "%s - %s" % (track.artist, title)
         )
 
         update_url = self.baseUrl + song_string
