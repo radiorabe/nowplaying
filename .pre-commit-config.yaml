@@ -16,3 +16,17 @@ repos:
         language: system
         entry: flake8
         types: [python]
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.4.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^src/api/client.js$
+      - id: end-of-file-fixer
+        exclude: ^src/api/client.js$
+      - id: check-symlinks
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: detect-aws-credentials
+        args:
+          - --allow-missing-credentials
+      - id: detect-private-key
