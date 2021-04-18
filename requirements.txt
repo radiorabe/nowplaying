@@ -1,4 +1,4 @@
-ConfigArgParse==0.14.0
+ConfigArgParse==1.4
 pytz==2021.1
 isodate==0.6.0
 pylast==3.0.0
