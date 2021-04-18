@@ -147,9 +147,7 @@ class IcecastTrackObserver(TrackObserver):
 
             title = track.show.name
 
-        song_string = urllib.parse.quote_plus(
-            "%s - %s" % (track.artist, title)
-        )
+        song_string = urllib.parse.quote_plus("%s - %s" % (track.artist, title))
 
         update_url = self.baseUrl + song_string
 
