@@ -1,5 +1,5 @@
 ConfigArgParse==0.14.0
-pytz==2017.2
+pytz==2021.1
 isodate==0.6.0
 pylast==3.0.0
 lxml==4.6.3
