@@ -22,4 +22,3 @@ jobs:
         with:
           github-token: ${{ secrets.GH_PAT_TOKEN }}
           allow-initial-development-versions: true
-          prerelease: true
