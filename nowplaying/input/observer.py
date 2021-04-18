@@ -8,7 +8,6 @@ from abc import ABC, abstractmethod
 
 import isodate
 import pytz
-
 from show import client
 from show.show import Show
 from track.track import DEFAULT_ARTIST, DEFAULT_TITLE, Track

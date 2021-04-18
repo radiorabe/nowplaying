@@ -108,8 +108,8 @@ class SaemuBox:
 
 if __name__ == "__main__":
     # Test code
-    from random import randint
     import sys
+    from random import randint
 
     logger.addHandler(logging.StreamHandler(sys.stdout))
     logger.setLevel(logging.INFO)
