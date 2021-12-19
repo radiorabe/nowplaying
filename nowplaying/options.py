@@ -52,7 +52,7 @@ class Options(object):
             "--show",
             dest="currentShowUrl",
             help="Current Show URL",
-            default="http://intranet.rabe.ch/pub/show.php",
+            default="https://airtime.service.int.rabe.ch/api/live-info-v2/format/json",
         )
         self.__args.add_argument(
             "--input-file",

@@ -5,6 +5,7 @@ on:
     branches-ignore:
       - main
       - gh-pages
+  pull_request:
 
 jobs:
   pre-commit:

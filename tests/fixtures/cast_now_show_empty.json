@@ -1,0 +1,19 @@
+{
+  "station": {
+    "env": "production",
+    "schedulerTime": "2019-01-27 16:44:44",
+    "source_enabled": "Scheduled",
+    "timezone": "Europe/Zurich",
+    "AIRTIME_API_VERSION": "1.1"
+  },
+  "tracks": {
+    "previous": null,
+    "current": null,
+    "next": null
+  },
+  "shows": {
+    "previous": [],
+    "current": {},
+    "next": []
+  }
+}
