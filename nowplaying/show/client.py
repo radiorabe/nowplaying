@@ -1,13 +1,9 @@
 import datetime
 import logging
 import logging.handlers
-import urllib.error
-import urllib.parse
-import urllib.request
-import xml.dom.minidom
 
-import isodate
 import pytz
+import requests
 
 from . import show
 
@@ -21,7 +17,7 @@ class ShowClientError(Exception):
 
 
 class ShowClient:
-    """Client which fetches the show informations from the cast-web-service.
+    """Client which fetches the show informations from the LibreTime now-playing v2 endpoint.
 
     Every show has a name, a start and endtime and an optional URL.
     """
@@ -67,7 +63,7 @@ class ShowClient:
         try:
             # try to get the current show informations from loopy's cast web
             # service
-            dom = xml.dom.minidom.parse(urllib.request.urlopen(self.current_show_url))
+            data = requests.get(self.current_show_url).json()
 
         except Exception as e:
             logger.error("%s: Unable to get current show informations" % self.__class__)
@@ -77,39 +73,49 @@ class ShowClient:
             # raise ShowClientError('Unable to get show informations: %s' % e)
             return
 
+        if not data["shows"]["current"]:
+            # ignore if no current show is playing
+            return
+
         # get the name of the show, aka real_name
         # ex.: Stereo Freeze
-        real_name = dom.getElementsByTagName("real_name")
+        real_name = data["shows"]["current"]["name"]
 
-        if len(real_name) == 0 or real_name[0].hasChildNodes() is False:
+        if len(real_name) == 0:
             # keep the default show information
-            logger.error("%s: No <real_name> tag found" % self.__class__)
+            logger.error("%s: No show name found" % self.__class__)
             raise ShowClientError("Missing show name")
 
-        self.show.set_name(real_name[0].firstChild.data.strip())
+        self.show.set_name(real_name)
+
+        showtz = pytz.timezone(data["station"]["timezone"])
 
         # get the show's end time in order to time the next lookup.
-        # ex.: 2012-04-28T19:00:00+0200
-        end_time = dom.getElementsByTagName("end_time")
+        # ex.: 2012-04-28 19:00:00 (missing a tzoffset and localized!)
+        end_time = data["shows"]["current"]["ends"]
 
-        if len(end_time) == 0 or end_time[0].hasChildNodes() is False:
-            logger.error("%s: No <end_time> tag found" % self.__class__)
+        if len(end_time) == 0:
+            logger.error("%s: No end found" % self.__class__)
             raise ShowClientError("Missing show end time")
 
-        endtime = isodate.parse_datetime(end_time[0].firstChild.data.strip())
+        endtime = showtz.localize(
+            datetime.datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+        )
 
         # store as UTC datetime object
         self.show.set_endtime(endtime.astimezone(pytz.timezone("UTC")))
 
         # get the show's start time
-        # ex.: 2012-04-28T18:00:00+0200
-        start_time = dom.getElementsByTagName("start_time")
+        # ex.: 2012-04-28 18:00:00
+        start_time = data["shows"]["current"]["starts"]
 
-        if len(start_time) == 0 or start_time[0].hasChildNodes() is False:
-            logger.error("%s: No <start_time> tag found" % self.__class__)
+        if len(start_time) == 0:
+            logger.error("%s: No start found" % self.__class__)
             raise ShowClientError("Missing show start time")
 
-        starttime = isodate.parse_datetime(start_time[0].firstChild.data.strip())
+        starttime = showtz.localize(
+            datetime.datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+        )
 
         # store as UTC datetime object
         self.show.set_starttime(starttime.astimezone(pytz.timezone("UTC")))
@@ -129,12 +135,12 @@ class ShowClient:
 
         # get the show's URL
         # ex.: http://www.rabe.ch/sendungen/entertainment/onda-libera.html
-        url = dom.getElementsByTagName("url")
+        url = data["shows"]["current"]["url"]
 
-        if len(url) == 0 or start_time[0].hasChildNodes() is False:
-            logger.error("%s: No <url> tag found" % self.__class__)
+        if len(url) == 0:
+            logger.error("%s: No url found" % self.__class__)
         else:
-            self.show.set_url(url[0].firstChild.data.strip())
+            self.show.set_url(url)
 
         logger.info(
             'Show "%s" started and runs from %s till %s'
