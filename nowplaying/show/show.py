@@ -3,41 +3,29 @@ import logging
 import logging.handlers
 import uuid
 
-import pytz
+from nowplaypadgen.show import Show as PadGenShow, ShowError as PadGenShowError
 
 logger = logging.getLogger(__name__)
 
 DEFAULT_SHOW_URL = "https://www.rabe.ch"
 
 
-class ShowError(Exception):
+class ShowError(PadGenShowError):
     """Show related exception."""
 
-    pass
 
-
-class Show:
+class Show(PadGenShow):
     """Show object which has a start and end time and an optional URL."""
 
     def __init__(self):
-        self.name = None
+        """Initialize a new Show object."""
+        super().__init__()
 
         self.url = DEFAULT_SHOW_URL
-
-        # The show's global unique identifier
-        self.uuid = str(uuid.uuid4())
-
-        # Get current datetime object in UTC timezone
-        now = datetime.datetime.now(pytz.timezone("UTC"))
-
-        # The show's start time, initially set to now
-        self.starttime = now
-
-        # The show's end time, initially set to to now
-        self.endtime = now
+        self.uuid = str(uuid.uuid4())  #: The show's global unique identifier
 
     def set_name(self, name):
-        # The name of the show
+        """Set the show's name."""
         self.name = name
 
     def set_url(self, url):
