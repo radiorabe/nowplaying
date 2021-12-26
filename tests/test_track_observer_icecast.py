@@ -1,43 +1,60 @@
+"""Tests for :class:`observer.IcecastTrackObserver`."""
+
 from unittest.mock import MagicMock, patch
 
-from nowplaying.track import observer, track
+from nowplaying.track import observer
+from nowplaying.track.track import Track
 
 
-class TestIcecastTrackObserver:
-    def test_init(self):
-        o = observer.IcecastTrackObserver(baseUrl="http://localhost:80/?stream=foo.mp3")
-        assert (
-            o.baseUrl
-            == "http://localhost:80/?stream=foo.mp3&mode=updinfo&charset=utf-8&song="
-        )
+def test_init():
+    """Test class:`observer.IcecastTrackObserver`'s :meth:`.__init__` method."""
+    icecast_track_observer = observer.IcecastTrackObserver(
+        baseUrl="http://localhost:80/?stream=foo.mp3"
+    )
+    assert (
+        icecast_track_observer.baseUrl
+        == "http://localhost:80/?stream=foo.mp3&mode=updinfo&charset=utf-8&song="
+    )
 
-    @patch("urllib.request.urlopen")
-    def test_track_started(self, mock_urlopen, track_factory, show_factory):
-        cm = MagicMock()
-        cm.getcode.return_value = 200
-        # TODO: mock and test real return value
-        cm.read.return_value = "contents"
-        cm.__enter__.return_value = cm
-        mock_urlopen.return_value = cm
 
-        track = track_factory()
-        track.show = show_factory()
+@patch("urllib.request.urlopen")
+def test_track_started(mock_urlopen, track_factory, show_factory):
+    """Test :class:`observer.IcecastTrackObserver`'s :meth:`track_started` method."""
+    mock_resp = MagicMock()
+    mock_resp.getcode.return_value = 200
+    # TODO: mock and test real return value
+    mock_resp.read.return_value = "contents"
+    mock_resp.__enter__.return_value = mock_resp
+    mock_urlopen.return_value = mock_resp
 
-        o = observer.IcecastTrackObserver(baseUrl="http://localhost:80/?stream=foo.mp3")
-        o.track_started(track)
+    track = track_factory()
+    track.show = show_factory()
 
-        mock_urlopen.assert_called_with(
-            "http://localhost:80/?stream=foo.mp3&mode=updinfo&charset=utf-8&song=Hairmare+and+the+Band+-+An+Ode+to+legacy+Python+Code"
-        )
+    icecast_track_observer = observer.IcecastTrackObserver(
+        baseUrl="http://localhost:80/?stream=foo.mp3"
+    )
+    icecast_track_observer.track_started(track)
 
-        track = track_factory(artist="Radio Bern", title="Livestream")
-        track.show = show_factory()
+    base_request = (
+        "http://localhost:80/?stream=foo.mp3&mode=updinfo&charset=utf-8&song="
+    )
 
-        o.track_started(track)
-        mock_urlopen.assert_called_with(
-            "http://localhost:80/?stream=foo.mp3&mode=updinfo&charset=utf-8&song=Radio+Bern+-+Hairmare+Traveling+Medicine+Show"
-        )
+    mock_urlopen.assert_called_with(
+        f"{base_request}Hairmare+and+the+Band+-+An+Ode+to+legacy+Python+Code"
+    )
 
-    def test_track_finished(self):
-        o = observer.IcecastTrackObserver(baseUrl="http://localhost:80")
-        assert o.track_finished(track.Track())
+    track = track_factory(artist="Radio Bern", title="Livestream")
+    track.show = show_factory()
+
+    icecast_track_observer.track_started(track)
+    mock_urlopen.assert_called_with(
+        f"{base_request}Radio+Bern+-+Hairmare+Traveling+Medicine+Show"
+    )
+
+
+def test_track_finished():
+    """Test :class:`observer.IcecastTrackObserver`'s :meth:`track_finished` method."""
+    icecast_track_observer = observer.IcecastTrackObserver(
+        baseUrl="http://localhost:80"
+    )
+    assert icecast_track_observer.track_finished(Track())

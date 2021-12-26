@@ -1,51 +1,60 @@
+"""Tests for :class:`Show`."""
+
 from datetime import datetime
 
 import pytest
 import pytz
 
-from nowplaying.show import show
+from nowplaying.show.show import DEFAULT_SHOW_URL, Show, ShowError
 
 
-class TestShow:
-    def test_init(self):
-        s = show.Show()
-        assert s.starttime == s.endtime
+def test_init():
+    """Test :class:`Show`'s :meth:`.__init__` method."""
+    show = Show()
+    assert show.starttime == show.endtime
 
-    def test_name(self):
-        s = show.Show()
-        assert s.name is None
-        s.set_name("Test")
-        assert s.name == "Test"
 
-    def test_url(self):
-        s = show.Show()
-        assert s.url == show.DEFAULT_SHOW_URL
-        s.set_url("http://example.com/show")
-        assert s.url == "http://example.com/show"
+def test_name():
+    """Test :class:`Show`'s :meth:`name` property."""
+    show = Show()
+    assert show.name is None
+    show.set_name("Test")
+    assert show.name == "Test"
 
-    def test_rabe_default_url(self):
-        assert show.DEFAULT_SHOW_URL == "https://www.rabe.ch"
 
-    def test_starttime(self):
-        s = show.Show()
-        t = datetime.now(pytz.timezone("UTC"))
-        o = s.starttime
-        s.set_starttime(t)
-        assert s.starttime == t
-        assert s.starttime != o
-        with pytest.raises(show.ShowError):
-            s.set_starttime("2019-01-01")
+def test_url():
+    """Test :class:`Show`'s :meth:`url` property."""
+    show = Show()
+    assert show.url == DEFAULT_SHOW_URL
+    show.set_url("http://example.com/show")
+    assert show.url == "http://example.com/show"
 
-    def test_endtime(self):
-        s = show.Show()
-        t = datetime.now(pytz.timezone("UTC"))
-        o = s.endtime
-        s.set_endtime(t)
-        assert s.endtime == t
-        assert s.endtime != o
-        with pytest.raises(show.ShowError):
-            s.set_endtime("2019-01-01")
 
-    def test_prettyprinting(self):
-        s = show.Show()
-        assert "Show 'None'" in str(s)
+def test_starttime():
+    """Test :class:`Show`'s :meth:`starttime` property."""
+    show = Show()
+    time = datetime.now(pytz.timezone("UTC"))
+    original_time = show.starttime
+    show.set_starttime(time)
+    assert show.starttime == time
+    assert show.starttime != original_time
+    with pytest.raises(ShowError):
+        show.set_starttime("2019-01-01")
+
+
+def test_endtime():
+    """Test :class:`Show`'s :meth:`endtime` property."""
+    show = Show()
+    time = datetime.now(pytz.timezone("UTC"))
+    original_time = show.endtime
+    show.set_endtime(time)
+    assert show.endtime == time
+    assert show.endtime != original_time
+    with pytest.raises(ShowError):
+        show.set_endtime("2019-01-01")
+
+
+def test_prettyprinting():
+    """Test :class:`Show`'s :meth:`__str__` method."""
+    show = Show()
+    assert "Show 'None'" in str(show)

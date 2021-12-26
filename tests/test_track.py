@@ -1,89 +1,105 @@
+"""Test for :class:`Track`."""
+
 from datetime import datetime, timedelta
 
 import pytest
 import pytz
 
-from nowplaying.show import show
-from nowplaying.track import track
+from nowplaying.show.show import Show
+from nowplaying.track.track import DEFAULT_ARTIST, DEFAULT_TITLE, Track, TrackError
 
 
-class TestTrack:
-    def test_default_globals(self):
-        assert track.DEFAULT_ARTIST == "Radio Bern"
-        assert track.DEFAULT_TITLE == "Livestream"
+def test_init():
+    """Test :class:`Track`'s :meth:`.__init__` method."""
+    track = Track()
+    assert track.starttime == track.endtime
 
-    def test_init(self):
-        t = track.Track()
-        assert t.starttime == t.endtime
 
-    def test_artist(self):
-        t = track.Track()
-        assert t.artist is None
-        assert not t.has_default_artist()
-        t.set_artist("Test")
-        assert t.artist == "Test"
-        assert not t.has_default_artist()
-        t.set_artist(track.DEFAULT_ARTIST)
-        assert t.has_default_artist()
+def test_artist():
+    """Test :class:`Track`'s :meth:`artist` property."""
+    track = Track()
+    assert track.artist is None
+    assert not track.has_default_artist()
+    track.set_artist("Test")
+    assert track.artist == "Test"
+    assert not track.has_default_artist()
+    track.set_artist(DEFAULT_ARTIST)
+    assert track.has_default_artist()
 
-    def test_title(self):
-        t = track.Track()
-        assert t.title is None
-        assert not t.has_default_title()
-        t.set_title("Test Title")
-        assert t.title == "Test Title"
-        assert not t.has_default_title()
-        t.set_title(track.DEFAULT_TITLE)
-        assert t.has_default_title()
 
-    def test_album(self):
-        t = track.Track()
-        assert t.album is None
-        t.set_album("Test Album")
-        assert t.album == "Test Album"
+def test_title():
+    """Test :class:`Track`'s :meth:`title` property."""
+    track = Track()
+    assert track.title is None
+    assert not track.has_default_title()
+    track.set_title("Test Title")
+    assert track.title == "Test Title"
+    assert not track.has_default_title()
+    track.set_title(DEFAULT_TITLE)
+    assert track.has_default_title()
 
-    def test_track(self):
-        t = track.Track()
-        assert t.track == 1
-        t.set_track(2)
-        assert t.track == 2
-        with pytest.raises(TypeError):
-            t.set_track("no strings allowed")
-        with pytest.raises(track.TrackError):
-            t.set_track(-1)
 
-    def test_starttime(self):
-        t = track.Track()
-        d = datetime.now(pytz.timezone("UTC"))
-        o = t.starttime
-        t.set_starttime(d)
-        assert t.starttime == d
-        assert t.starttime != o
-        with pytest.raises(track.TrackError):
-            t.set_starttime("2019-01-01")
+def test_album():
+    """Test :class:`Track`'s :meth:`album` property."""
+    track = Track()
+    assert track.album is None
+    track.set_album("Test Album")
+    assert track.album == "Test Album"
 
-    def test_endtime(self):
-        t = track.Track()
-        d = datetime.now(pytz.timezone("UTC"))
-        o = t.endtime
-        t.set_endtime(d)
-        assert t.endtime == d
-        assert t.endtime != o
-        with pytest.raises(track.TrackError):
-            t.set_endtime("2019-01-01")
 
-    def test_show(self):
-        t = track.Track()
-        s = show.Show()
-        t.set_show(s)
-        assert t.show == s
+def test_track():
+    """Test :class:`Track`'s :meth:`track` property."""
+    track = Track()
+    assert track.track == 1
+    track.set_track(2)
+    assert track.track == 2
+    with pytest.raises(TypeError):
+        track.set_track("no strings allowed")
+    with pytest.raises(TrackError):
+        track.set_track(-1)
 
-    def test_duration(self):
-        t = track.Track()
-        assert t.get_duration() == timedelta(0)
-        t.set_duration(60)
-        assert t.get_duration() == timedelta(-1, 86340)
 
-    def test_prettyprinting(self):
-        t = track.Track()
-        assert "Track 'None'" in str(t)
+def test_starttime():
+    """Test :class:`Track`'s :meth:`starttime` property."""
+    track = Track()
+    time = datetime.now(pytz.timezone("UTC"))
+    original_time = track.starttime
+    track.set_starttime(time)
+    assert track.starttime == time
+    assert track.starttime != original_time
+    with pytest.raises(TrackError):
+        track.set_starttime("2019-01-01")
+
+
+def test_endtime():
+    """Test :class:`Track`'s :meth:`endtime` property."""
+    track = Track()
+    time = datetime.now(pytz.timezone("UTC"))
+    original_time = track.endtime
+    track.set_endtime(time)
+    assert track.endtime == time
+    assert track.endtime != original_time
+    with pytest.raises(TrackError):
+        track.set_endtime("2019-01-01")
+
+
+def test_show():
+    """Test :class:`Track`'s :meth:`show` property."""
+    track = Track()
+    show = Show()
+    track.set_show(show)
+    assert track.show == show
+
+
+def test_duration():
+    """Test :class:`Track`'s :meth:`duration` property."""
+    track = Track()
+    assert track.get_duration() == timedelta(0)
+    track.set_duration(60)
+    assert track.get_duration() == timedelta(-1, 86340)
+
+
+def test_prettyprinting():
+    """Test :class:`Track`'s :meth:`__str__` method."""
+    track = Track()
+    assert "Track 'None'" in str(track)
