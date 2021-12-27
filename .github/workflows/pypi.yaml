@@ -20,7 +20,7 @@ jobs:
 
       - run: pip install -r requirements-dev.txt
 
-      - run: make clean
+      - run: rm -rf dist/ build/ .eggs/
 
       - name: Run twine
         env:
