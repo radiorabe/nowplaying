@@ -7,7 +7,7 @@ with open("requirements.txt") as file:
 
 
 setup(
-    name="nowplaying",
+    name="rabe-nowplaying",
     description="Now Playing RaBe Songticker",
     url="http://github.com/radiorabe/nowplaying",
     author="RaBe IT-Reaktion",
