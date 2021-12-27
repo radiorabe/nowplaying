@@ -1,6 +1,5 @@
 -r requirements.txt
 black==21.12b0
-factory-boy==3.2.1
 flake8==4.0.1
 flake8-debugger==4.0.0
 flake8-docstrings==1.6.0
@@ -12,3 +11,5 @@ pytest==6.2.5
 pytest-cov==3.0.0
 pytest-env==0.6.2
 mock==4.0.3
+twine==3.7.1
+wheel==0.37.1

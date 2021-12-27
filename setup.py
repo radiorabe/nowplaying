@@ -1,7 +1,9 @@
-from setuptools import setup
+"""Set up nowplaying."""
 
-with open("requirements.txt") as f:
-    requirements = f.read().splitlines()
+from setuptools import find_packages, setup
+
+with open("requirements.txt") as file:
+    requirements = file.read().splitlines()
 
 
 setup(
@@ -11,18 +13,14 @@ setup(
     author="RaBe IT-Reaktion",
     author_email="it@rabe.ch",
     license="AGPL-3",
+    version_config=True,
+    setup_requires=["setuptools-git-versioning"],
     install_requires=requirements,
-    packages=[
-        "nowplaying",
-        "nowplaying.misc",
-        "nowplaying.input",
-        "nowplaying.track",
-        "nowplaying.show",
-    ],
+    packages=find_packages(exclude=("tests",)),
     entry_points={"console_scripts": ["now-playing=nowplaying.cli:main"]},
     zip_safe=True,
     classifiers=[
         "Development Status :: 3 - Alpha",
-        "License :: OSI Approved :: AGPL License",
+        "License :: OSI Approved :: GNU Affero General Public License v3",
     ],
 )
