@@ -1,7 +1,7 @@
 """Tests for :class:`ShowClient`."""
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from unittest.mock import Mock
 
 import mock
@@ -10,6 +10,7 @@ import pytz
 import requests
 
 from nowplaying.show.client import ShowClient, ShowClientError
+from nowplaying.show.show import Show
 
 _BASE_URL = "http://example.com/api/live-info-v2/format/json"
 
@@ -24,6 +25,57 @@ def test_init():
     """Test :class:`ShowClient`'s :meth:`.__init__` method."""
     show_client = ShowClient(_BASE_URL)
     assert show_client.current_show_url == _BASE_URL
+
+
+def test_get_show_info():
+    """Test :class:`ShowClient`'s :meth:`get_show_info` method."""
+    show_client = ShowClient(_BASE_URL)
+    show_client.lazy_update = Mock()
+    show_client.update = Mock()
+
+    show_client.get_show_info()
+    show_client.lazy_update.assert_called_once()
+    show_client.update.assert_not_called()
+
+
+def test_get_show_info_with_force_update_true():
+    """Test :class:`ShowClient`'s :meth:`get_show_info` method with force_update=True."""
+    show_client = ShowClient(_BASE_URL)
+    show_client.lazy_update = Mock()
+    show_client.update = Mock()
+
+    show_client.get_show_info(force_update=True)
+    show_client.lazy_update.assert_not_called()
+    show_client.update.assert_called_once()
+
+
+def test_lazy_update():
+    """Test :class:`ShowClient`'s :meth:`lazy_update` method."""
+    show_client = ShowClient(_BASE_URL)
+    show_client.update = Mock()
+    show_client.get_show_info = Mock()
+
+    # it calls update if the show is not set
+    show_client.lazy_update()
+    show_client.update.assert_called_once()
+
+
+@mock.patch("logging.Logger.debug")
+def test_lazy_update_with_show_set(mock_logger_debug):
+    """Test :class:`ShowClient`'s :meth:`lazy_update` method with a show set."""
+    show_client = ShowClient(_BASE_URL)
+    show_client.update = Mock()
+    show_client.get_show_info = Mock()
+    show = Show()
+    show.endtime = datetime.now(pytz.timezone("UTC")) + timedelta(hours=1)
+    show_client.show = show
+
+    # it does not call update if the show is set and the show has not ended
+    show_client.lazy_update()
+    show_client.update.assert_not_called()
+    mock_logger_debug.assert_called_once_with(
+        "Show still running, won't update show info"
+    )
 
 
 @mock.patch("requests.get")
