@@ -67,6 +67,30 @@ class Options(object):
             default="/var/www/localhost/htdocs/songticker/0.9.3/current.xml",
         )
         self.__args.add_argument(
+            "--api-bind-address",
+            dest="apiBindAddress",
+            help="Bind address for the API server",
+            default="0.0.0.0",
+        )
+        self.__args.add_argument(
+            "--api-port",
+            dest="apiPort",
+            help="Bind port for the API server",
+            default=8080,
+        )
+        self.__args.add_argument(
+            "--digest-auth-key",
+            dest="digestAuthKey",
+            help="Digest Auth Key",
+            default="a565c27146791cfb",
+        )
+        self.__args.add_argument(
+            "--digest-auth-users",
+            dest="digestAuthUsers",
+            help="Digest Auth Users",
+            default={"rabe": "rabe"},
+        )
+        self.__args.add_argument(
             "--debug",
             type=bool,
             nargs="?",

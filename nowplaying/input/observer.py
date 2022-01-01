@@ -8,8 +8,10 @@ from abc import ABC, abstractmethod
 
 import isodate
 import pytz
+from cloudevents.http.event import CloudEvent
 from show import client
 from show.show import Show
+from track.handler import TrackEventHandler
 from track.track import DEFAULT_ARTIST, DEFAULT_TITLE, Track
 
 logger = logging.getLogger(__name__)
@@ -21,71 +23,98 @@ class InputObserver(ABC):
     _SHOW_NAME_KLANGBECKEN = "Klangbecken"
     _SHOW_URL_KLANGBECKEN = "http://www.rabe.ch/sendungen/musik/klangbecken.html"
 
-    def __init__(self, current_show_url):
+    def __init__(self, current_show_url: str):
+        self.show: Show
+        self.track_handler: TrackEventHandler
+        self.previous_saemubox_id: int = -1
+        self.first_run = True
+        self.previous_show_uuid = ""
+
         self.current_show_url = current_show_url
 
-        self.first_run = True
-        self.previous_saemubox_id = None
-        self.show = None
         self.showclient = client.ShowClient(current_show_url)
         self.show = self.showclient.get_show_info()
 
-        self.previous_show_uuid = None
-
-        self.track_handler = None
-
-    def add_track_handler(self, track_handler):
+    def add_track_handler(self, track_handler: TrackEventHandler):
         self.track_handler = track_handler
 
-    def update(self, saemubox_id):
-        if self.handle_id(saemubox_id):
-            self.handle()
+    def update(self, saemubox_id: int, event: CloudEvent = None):
+        if self.handle_id(saemubox_id, event):
+            self.handle(event)
 
     @abstractmethod
-    def handle_id(self, saemubox_id):  # pragma: no coverage
+    # TODO Deprecate this method
+    def handle_id(
+        self, saemubox_id: int, event: CloudEvent = None
+    ):  # pragma: no coverage
         pass
 
     @abstractmethod
-    def handle(self):  # pragma: no coverage
+    # TODO Deprecate this method
+    def handle(self, event: CloudEvent = None):  # pragma: no coverage
+        pass
+
+    @abstractmethod
+    def handles(self, event: CloudEvent) -> bool:  # pragma: no coverage
+        pass
+
+    @abstractmethod
+    def event(self, event: CloudEvent):  # pragma: no coverage
         pass
 
 
 class KlangbeckenInputObserver(InputObserver):
     """Observe cases where Sämu Box says Klangbecken is running and we can consume now-playing.xml input."""
 
-    def __init__(self, current_show_url, input_file):
-        warnings.warn(
-            "The now-playing.xml format from Loopy/Klangbecken will be replaced in the future",
-            PendingDeprecationWarning,
-        )
-        InputObserver.__init__(self, current_show_url)
+    def __init__(self, current_show_url: str, input_file: str = None):
+        if input_file:
+            warnings.warn(
+                "The now-playing.xml format from Loopy/Klangbecken will be replaced in the future",
+                PendingDeprecationWarning,
+            )
+            self.input_file = input_file
+            self.last_modify_time = os.stat(self.input_file).st_mtime
 
-        self.input_file = input_file
-        self.last_modify_time = os.stat(self.input_file).st_mtime
+        self.track: Track
+        super().__init__(current_show_url)
 
-        self.track = None
+    def handles(self, event: CloudEvent) -> bool:
+        # TODO make magic string configurable
+        # TODO check if source is currently on-air
+        return event["source"] == "https://github/radiorabe/klangbecken"
 
-    def handle_id(self, saemubox_id):
+    def event(self, event: CloudEvent):
+        self._handle(event)
+
+    def handle_id(self, saemubox_id: int, event: CloudEvent = None):
         # only handle Klangbecken output
         if saemubox_id == 1:
             return True
 
-        return False
+        return self.handles(event)
 
-    def handle(self):
-        # @TODO: replace the stat method with inotify
-        modify_time = os.stat(self.input_file).st_mtime
+    def handle(self, event: CloudEvent = None):
+        self._handle(event)
+
+    def _handle(self, event: CloudEvent = None):
+        if not event:
+            # @TODO: replace the stat method with inotify
+            modify_time = os.stat(self.input_file).st_mtime
 
         # @TODO: Need to check if we have a stale file and send default
         #        track infos in this case. This might happend if loopy
         #        went out for lunch...
         #        pseudo code: now > modify_time + self.track.get_duration()
 
-        if self.first_run or modify_time > self.last_modify_time:
+        if self.first_run or event or modify_time > self.last_modify_time:
             logger.info("Now playing file changed")
 
             self.show = self.showclient.get_show_info()
             self.last_modify_time = modify_time
+
+            if event:
+                self.track = self.parse_event(event)
+                self.first_run = False
 
             logger.info("First run: %s" % self.first_run)
 
@@ -93,7 +122,9 @@ class KlangbeckenInputObserver(InputObserver):
                 logger.info("calling track_finished")
                 self.track_handler.track_finished(self.track)
 
-            self.track = self.get_track_info()
+            if not event:
+                # TODO remove once legacy xml is gone
+                self.track = self.get_track_info()
 
             # Klangbecken acts as a failover and last resort input, if other
             # active inputs are silent or have problems.
@@ -116,6 +147,7 @@ class KlangbeckenInputObserver(InputObserver):
 
             self.track.set_show(self.show)
 
+            # TODO: or finished?
             self.track_handler.track_started(self.track)
 
             self.first_run = False
@@ -180,6 +212,25 @@ class KlangbeckenInputObserver(InputObserver):
 
         return current_track
 
+    def parse_event(self, event: CloudEvent) -> Track:
+        track = Track()
+        logger.info("Parsing event: %s" % event)
+
+        track.set_artist(event.data["item.artist"])
+        track.set_title(event.data["item.title"])
+
+        if event["type"] == "ch.rabe.api.events.track.v1.trackStarted":
+            track.set_starttime(event["time"])
+        elif event["type"] == "ch.rabe.api.events.track.v1.trackFinished":
+            # TODO consider using now() instead of event['time']
+            track.set_endtime(event["time"])
+
+        if "item.length" in event.data:
+            track.set_duration(event.data["item.length"])
+
+        logger.info("Track: %s" % track)
+        return track
+
 
 class NonKlangbeckenInputObserver(InputObserver):
     """Observer for input that doesn't originate from klangbecken and therefore misses the track information.
@@ -187,7 +238,21 @@ class NonKlangbeckenInputObserver(InputObserver):
     Uses the show's name instead of the actual track infos
     """
 
-    def handle_id(self, saemubox_id):
+    def handles(self, event: CloudEvent) -> bool:
+        """Do not handle events yet.
+
+        TODO implement this method
+        """
+        return False
+
+    def event(self, event: CloudEvent):
+        """Do not handle events yet.
+
+        TODO implement this method
+        """
+        super().event(event)
+
+    def handle_id(self, saemubox_id: int, event: CloudEvent = None):
 
         if saemubox_id != self.previous_saemubox_id:
             # If sämubox changes, force a show update, this acts as

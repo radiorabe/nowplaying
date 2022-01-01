@@ -3,7 +3,12 @@ import os
 import signal
 import sys
 import time
+from queue import Queue
+from threading import Thread
 
+import cherrypy
+from api import ApiServer
+from cloudevents.http.event import CloudEvent
 from input import observer as inputObservers
 from input.handler import InputHandler
 from misc.saemubox import SaemuBox
@@ -35,9 +40,50 @@ class NowPlayingDaemon:
             logger.exception("Error: %s", e)
             sys.exit(-1)
 
+        self.event_queue = Queue()
+
+        _thread = Thread(target=self._main_loop, args=(input_handler,))
+        _thread.daemon = True
+        _thread.start()
+
+        self._start_apiserver()
+
+    def _start_apiserver(self):
+        conf = {
+            "/": {
+                "tools.auth_digest.on": True,
+                "tools.auth_digest.realm": "localhost",
+                "tools.auth_digest.get_ha1": cherrypy.lib.auth_digest.get_ha1_dict_plain(
+                    self.options.digestAuthUsers
+                ),
+                "tools.auth_digest.key": self.options.digestAuthKey,
+                "tools.auth_digest.accept_charset": "UTF-8",
+            }
+        }
+        cherrypy.config.update({"server.socket_host": self.options.apiBindAddress})
+        cherrypy.config.update({"server.socket_port": self.options.apiPort})
+        logger.info("Starting web server")
+        cherrypy.quickstart(ApiServer(self.event_queue), "/", conf)
+
+    def _main_loop(self, input_handler: InputHandler):
+        """
+        Main loop of the daemon.
+
+        Should be run in a thread.
+        """
+        logger.info("Starting main loop")
         while True:
             try:
                 saemubox_id = self.poll_saemubox()
+
+                while not self.event_queue.empty():
+                    logger.debug("Queue size: %i" % self.event_queue.qsize())
+                    event: CloudEvent = self.event_queue.get()
+                    logger.info(
+                        "Handling update from event: %s, source: %s"
+                        % (event["type"], event["source"])
+                    )
+                    input_handler.update(saemubox_id, event)
 
                 input_handler.update(saemubox_id)
             except Exception as e:
@@ -92,7 +138,7 @@ class NowPlayingDaemon:
 
         return handler
 
-    def poll_saemubox(self):
+    def poll_saemubox(self) -> int:
         """
         Poll Saemubox for new data.
 
