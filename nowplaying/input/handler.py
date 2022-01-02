@@ -14,17 +14,17 @@ class InputHandler:
     """
 
     def __init__(self):
-        self.__observers: list[InputObserver] = []
+        self._observers: list[InputObserver] = []
 
     def register_observer(self, observer: InputObserver):
         logger.info("Registering InputObserver '%s'" % observer.__class__.__name__)
-        self.__observers.append(observer)
+        self._observers.append(observer)
 
     def remove_observer(self, observer: InputObserver):
-        self.__observers.remove(observer)
+        self._observers.remove(observer)
 
     def update(self, saemubox_id: int, event: CloudEvent = None):
-        for observer in self.__observers:
+        for observer in self._observers:
             logger.debug("Sending update event to observer %s" % observer.__class__)
 
             try:

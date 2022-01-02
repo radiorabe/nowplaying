@@ -26,6 +26,7 @@ class NowPlayingDaemon:
     def __init__(self, options):
         self.options = options
 
+        self.event_queue = Queue()
         self.saemubox = SaemuBox()
 
     def main(self):
@@ -39,8 +40,6 @@ class NowPlayingDaemon:
             logger.exception("Error: %s", e)
             sys.exit(-1)
 
-        self.event_queue = Queue()
-
         _thread = Thread(target=self._main_loop, args=(input_handler,))
         _thread.daemon = True
         _thread.start()
@@ -51,7 +50,7 @@ class NowPlayingDaemon:
         """Start the API server."""
         ApiServer.run_server(self.options, self.event_queue)  # blocking
 
-    def _main_loop(self, input_handler: InputHandler):
+    def _main_loop(self, input_handler: InputHandler):  # pragma: no cover
         """
         Run main loop of the daemon.
 

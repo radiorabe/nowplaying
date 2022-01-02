@@ -17,7 +17,7 @@ class AuthenticatedClient(Client):
         self.password = password
 
     def post(self, *args, **kwargs):
-        if "headers" not in kwargs:
+        if "headers" not in kwargs:  # pragma: no cover
             kwargs["headers"] = {}
         if "Authorization" not in kwargs["headers"]:
             kwargs["headers"]["Authorization"] = "Basic {0}".format(
