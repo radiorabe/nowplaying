@@ -79,15 +79,9 @@ class Options(object):
             default=8080,
         )
         self.__args.add_argument(
-            "--digest-auth-key",
-            dest="digestAuthKey",
-            help="Digest Auth Key",
-            default="a565c27146791cfb",
-        )
-        self.__args.add_argument(
-            "--digest-auth-users",
-            dest="digestAuthUsers",
-            help="Digest Auth Users",
+            "--api-auth-users",
+            dest="apiAuthUsers",
+            help="API Auth Users",
             default={"rabe": "rabe"},
         )
         self.__args.add_argument(

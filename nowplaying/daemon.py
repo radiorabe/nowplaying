@@ -6,7 +6,6 @@ import time
 from queue import Queue
 from threading import Thread
 
-import cherrypy
 from api import ApiServer
 from cloudevents.http.event import CloudEvent
 from input import observer as inputObservers
@@ -46,28 +45,15 @@ class NowPlayingDaemon:
         _thread.daemon = True
         _thread.start()
 
-        self._start_apiserver()
+        self._start_apiserver()  # blocking
 
     def _start_apiserver(self):
-        conf = {
-            "/": {
-                "tools.auth_digest.on": True,
-                "tools.auth_digest.realm": "localhost",
-                "tools.auth_digest.get_ha1": cherrypy.lib.auth_digest.get_ha1_dict_plain(
-                    self.options.digestAuthUsers
-                ),
-                "tools.auth_digest.key": self.options.digestAuthKey,
-                "tools.auth_digest.accept_charset": "UTF-8",
-            }
-        }
-        cherrypy.config.update({"server.socket_host": self.options.apiBindAddress})
-        cherrypy.config.update({"server.socket_port": self.options.apiPort})
-        logger.info("Starting web server")
-        cherrypy.quickstart(ApiServer(self.event_queue), "/", conf)
+        """Start the API server."""
+        ApiServer.run_server(self.options, self.event_queue)  # blocking
 
     def _main_loop(self, input_handler: InputHandler):
         """
-        Main loop of the daemon.
+        Run main loop of the daemon.
 
         Should be run in a thread.
         """

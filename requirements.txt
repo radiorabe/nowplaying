@@ -6,3 +6,4 @@ lxml==4.7.1
 requests==2.26.0
 cherrypy==18.6.1
 cloudevents==1.2.0
+Werkzeug==2.0.2

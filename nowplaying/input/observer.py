@@ -110,7 +110,8 @@ class KlangbeckenInputObserver(InputObserver):
             logger.info("Now playing file changed")
 
             self.show = self.showclient.get_show_info()
-            self.last_modify_time = modify_time
+            if not event:
+                self.last_modify_time = modify_time
 
             if event:
                 self.track = self.parse_event(event)
