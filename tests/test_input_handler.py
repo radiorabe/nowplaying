@@ -1,6 +1,5 @@
 from queue import Queue
 
-import mock
 from cloudevents.http.event import CloudEvent
 
 from nowplaying.input.handler import InputHandler
@@ -9,6 +8,7 @@ from nowplaying.input.observer import InputObserver
 
 class ShuntInputObserver(InputObserver):
     def __init__(self):
+        super().__init__(current_show_url="https://example.org")
         self.event_queue = Queue()
         self.update_call = None
 

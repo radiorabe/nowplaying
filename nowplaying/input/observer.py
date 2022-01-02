@@ -39,6 +39,7 @@ class InputObserver(ABC):
         self.track_handler = track_handler
 
     def update(self, saemubox_id: int, event: CloudEvent = None):
+        # TODO refactor to use handles
         if self.handle_id(saemubox_id, event):
             self.handle(event)
 
@@ -220,11 +221,12 @@ class KlangbeckenInputObserver(InputObserver):
         track.set_artist(event.data["item.artist"])
         track.set_title(event.data["item.title"])
 
+        event_time = isodate.parse_datetime(event["time"])
         if event["type"] == "ch.rabe.api.events.track.v1.trackStarted":
-            track.set_starttime(event["time"])
+            track.set_starttime(event_time)
         elif event["type"] == "ch.rabe.api.events.track.v1.trackFinished":
             # TODO consider using now() instead of event['time']
-            track.set_endtime(event["time"])
+            track.set_endtime(event_time)
 
         if "item.length" in event.data:
             track.set_duration(event.data["item.length"])

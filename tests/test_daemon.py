@@ -1,9 +1,6 @@
 import mock
 
-from nowplaying import daemon
-from nowplaying.api import ApiServer
 from nowplaying.daemon import NowPlayingDaemon
-from nowplaying.input.handler import InputHandler
 
 
 @mock.patch("api.ApiServer.run_server")

@@ -111,8 +111,6 @@ class ApiServer:
 
         logger.info("Received event: %s", event)
 
-        if event["time"]:
-            event["time"] = isodate.parse_datetime(event["time"])
         if event["type"] in _RABE_CLOUD_EVENTS_SUBS:
             self.event_queue.put(event)
 
