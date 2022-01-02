@@ -2,7 +2,6 @@ import json
 import logging
 from queue import Queue
 
-import isodate
 from cloudevents.exceptions import GenericException as CloudEventException
 from cloudevents.http import from_http
 from werkzeug.exceptions import BadRequest, HTTPException, UnsupportedMediaType
