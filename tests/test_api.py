@@ -48,7 +48,10 @@ def test_webhook_no_supported_header(client, content_type):
         headers["Content-Type"] = content_type
     resp = client.post(_WEBHOOK_ENDPOINT, headers=headers, data="{}")
     assert resp.status_code == 415
-    assert resp.status == "415 Unsupported Media Type"
+    assert (
+        resp.data.decode("utf-8")
+        == '"The server does not support the media type transmitted in the request."'
+    )
 
 
 @pytest.mark.parametrize(
@@ -61,9 +64,8 @@ def test_webhook_invalid_body(client, content_type):
         _WEBHOOK_ENDPOINT, data=body, headers={"Content-Type": content_type}
     )
     assert resp.status_code == 400
-    assert (
-        resp.status
-        == "400 Failed to read specversion from both headers and data. The following can not be parsed as json: b'invalid-json'"
+    assert resp.data.decode("utf-8") == json.dumps(
+        """Failed to read specversion from both headers and data. The following can not be parsed as json: b'invalid-json'"""
     )
 
 
@@ -93,7 +95,7 @@ def test_webhook_invalid_event(client, content_type, body, expected_status):
         _WEBHOOK_ENDPOINT, data=json.dumps(body), headers={"Content-Type": content_type}
     )
     assert resp.status_code == 400
-    assert f"400 {expected_status}" in resp.status
+    assert expected_status in resp.data.decode("utf-8")
 
 
 @pytest.mark.parametrize(

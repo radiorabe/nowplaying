@@ -1,10 +1,11 @@
+import json
 import logging
 from queue import Queue
 
 import isodate
 from cloudevents.exceptions import GenericException as CloudEventException
 from cloudevents.http import from_http
-from werkzeug.exceptions import HTTPException
+from werkzeug.exceptions import BadRequest, HTTPException, UnsupportedMediaType
 from werkzeug.routing import Map, Rule
 from werkzeug.wrappers import Request, Response
 
@@ -89,7 +90,11 @@ class ApiServer:
             endpoint, values = adapter.match()
             return getattr(self, f"on_{endpoint}")(request, **values)
         except HTTPException as e:
-            return e
+            return Response(
+                json.dumps(e.description),
+                e.code,
+                {"Content-Type": "application/json"},
+            )
 
     def on_webhook(self, request):
         """Receive a CloudEvent and put it into the event queue."""
@@ -98,14 +103,11 @@ class ApiServer:
             request.headers.get("Content-Type")
             not in _RABE_CLOUD_EVENTS_SUPPORTED_MEDIA_TYPES
         ):
-            return Response(status="415 Unsupported Media Type")
+            raise UnsupportedMediaType()
         try:
-            # per the [HTTP](https://tools.ietf.org/html/rfc7230#section-3.2) specification, header names are case-insensitive.
-            # we lowercase the headers since that is what the python sdk expects
-            headers = {k.lower(): v for k, v in request.headers.items()}
-            event = from_http(headers, request.data)
+            event = from_http(request.headers, request.data)
         except CloudEventException as error:
-            return Response(status=f"400 {error}")
+            raise BadRequest(description=f"{error}")
 
         logger.info("Received event: %s", event)
 
