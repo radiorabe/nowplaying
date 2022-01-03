@@ -2,6 +2,7 @@ from base64 import b64encode
 from queue import Queue
 
 import pytest
+from faker import Faker
 from werkzeug.test import Client
 from werkzeug.wrappers import Response
 
@@ -30,12 +31,12 @@ class AuthenticatedClient(Client):
 
 @pytest.fixture(name="user")
 def fixture_user():
-    return "user"
+    return Faker().user_name()
 
 
 @pytest.fixture(name="password")
 def fixture_password():
-    return "password"
+    return Faker().password()
 
 
 @pytest.fixture(name="users")
