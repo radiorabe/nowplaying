@@ -39,19 +39,19 @@ class InputObserver(ABC):
         self.track_handler = track_handler
 
     def update(self, saemubox_id: int, event: CloudEvent = None):
-        # TODO refactor to use handles
+        # TODO v3-prep refactor to use :meth:`handles` instead of :meth:`handle_id`
         if self.handle_id(saemubox_id, event):
             self.handle(event)
 
     @abstractmethod
-    # TODO Deprecate this method
+    # TODO v3 remove this method
     def handle_id(
         self, saemubox_id: int, event: CloudEvent = None
     ):  # pragma: no coverage
         pass
 
     @abstractmethod
-    # TODO Deprecate this method
+    # TODO v3 remove this method
     def handle(self, event: CloudEvent = None):  # pragma: no coverage
         pass
 
@@ -80,6 +80,8 @@ class KlangbeckenInputObserver(InputObserver):
         super().__init__(current_show_url)
 
     def handles(self, event: CloudEvent) -> bool:
+        # TODO v3-prep call :meth:`handle_id` from here (needs saemubox_id compat workaround)
+        # TODO v3 remove call to :meth:`handle_id`
         # TODO make magic string configurable
         # TODO check if source is currently on-air
         return event["source"] == "https://github/radiorabe/klangbecken"
@@ -92,12 +94,18 @@ class KlangbeckenInputObserver(InputObserver):
         if saemubox_id == 1:
             return True
 
+        # TODO v3-prep make this get called from :meth:`handles`
         return self.handles(event)
 
     def handle(self, event: CloudEvent = None):
         self._handle(event)
 
     def _handle(self, event: CloudEvent = None):
+        """Handle actual RaBe CloudEevent.
+
+        TODO v3: move into :meth:`event` once :meth:`handle` and :meth:`handle_id` have been yeeted
+        TODO v3: remove all refs to input_file and it's modify time once we use event handlers
+        """
         if not event:
             # @TODO: replace the stat method with inotify
             modify_time = os.stat(self.input_file).st_mtime
@@ -155,6 +163,7 @@ class KlangbeckenInputObserver(InputObserver):
             self.first_run = False
 
     def get_track_info(self):
+        # TODO v3 remove method once legacy xml is gone
         dom = xml.dom.minidom.parse(self.input_file)
 
         # default track info
@@ -245,6 +254,8 @@ class NonKlangbeckenInputObserver(InputObserver):
         """Do not handle events yet.
 
         TODO implement this method
+        TODO v3-prep call :meth:`handle_id` from here (needs saemubox_id compat workaround)
+        TODO v3 remove call to :meth:`handle_id`:
         """
         return False
 
