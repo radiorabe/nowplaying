@@ -42,7 +42,7 @@ class ShowClient:
 
     def lazy_update(self):
         # only update the info if we expect that a new show has started
-        if datetime.datetime.now(pytz.timezone("UTC")) > self.show.endtime:
+        if self.show.endtime and datetime.datetime.now(pytz.timezone("UTC")) > self.show.endtime:
             logger.info("Show expired, going to update show info")
             self.update()
 
