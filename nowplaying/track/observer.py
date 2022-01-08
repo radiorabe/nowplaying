@@ -261,7 +261,7 @@ class DabAudioCompanionTrackObserver(TrackObserver):
         self._track_started_plain(track)
 
     def _track_started_dls(self, track):
-        # TODO fold into track_started once the dls feature flag is always on
+        # TODO pre-v3 fold into track_started once the dls feature flag is always on
         params = {}
 
         if not track.has_default_title() and not track.has_default_artist():
@@ -283,7 +283,7 @@ class DabAudioCompanionTrackObserver(TrackObserver):
             logger.error(f"DAB+ Audio Companion API call failed: {resp.text}")
 
     def _track_started_plain(self, track):
-        # TODO here for feature flagging remove once we always send DLS
+        # TODO v3 remove once we always send DLS with v3
         title = track.title
 
         if track.has_default_title() and track.has_default_artist():

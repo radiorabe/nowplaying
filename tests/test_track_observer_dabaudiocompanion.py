@@ -54,7 +54,7 @@ def test_track_started(mock_requests_get, track_factory, show_factory):
 
 @patch("urllib.request.urlopen")
 def test_track_started_plain(mock_urlopen, track_factory, show_factory):
-    # TODO remove once dlsplus is active by default
+    # TODO v3 remove when we drop plain support
     cm = MagicMock()
     cm.getcode.return_value = 200
     # TODO: mock and test real return value

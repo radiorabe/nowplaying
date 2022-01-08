@@ -47,7 +47,8 @@ class Options(object):
             help="DAB audio companion base URL, allowed multiple times (ie. http://dab.example.org:8080)",
             default=[],
         )
-        # TODO set to true when tested and remove when stable
+        # TODO pre-v3 set to true when tested
+        # TODO v3 remove when stable
         self.__args.add_argument(
             "--dab-send-dls",
             type=bool,
