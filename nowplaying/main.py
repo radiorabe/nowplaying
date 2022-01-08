@@ -18,7 +18,10 @@ class NowPlaying:
         self.setup_logging()
         self.setup_urllib()
         socket.setdefaulttimeout(self.options.socketDefaultTimeout)
+        self._run_daemon()
 
+    def _run_daemon(self):
+        """Start nowplaying daemon."""
         NowPlayingDaemon(self.options).main()
 
     def setup_logging(self):
@@ -54,5 +57,5 @@ class NowPlaying:
         )
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     NowPlaying().run()
