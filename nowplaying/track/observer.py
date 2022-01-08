@@ -14,6 +14,7 @@ import lxml.builder
 import lxml.etree
 import pylast
 import pytz
+import requests
 
 logger = logging.getLogger(__name__)
 
@@ -151,7 +152,7 @@ class IcecastTrackObserver(TrackObserver):
 
         update_url = self.baseUrl + song_string
 
-        logger.info("Icecast Update URL: " + update_url)
+        logger.info(f"Icecast Update URL: {update_url}")
 
         urllib.request.urlopen(update_url)
 
@@ -240,14 +241,49 @@ class DabAudioCompanionTrackObserver(TrackObserver):
 
     name = "DAB+ Audio Companion"
 
-    def __init__(self, baseUrl):
-        self.baseUrl = baseUrl + "/api/setDLS?dls="
+    def __init__(self, baseUrl, dls_enabled: bool = False):
+        self.baseUrl = baseUrl + "/api/setDLS"
+        self.dls_enabled = dls_enabled
+        logger.info(
+            "DAB+ Audio Companion initialised with URL: %s, DLS+ enabled: %r"
+            % (
+                self.baseUrl,
+                self.dls_enabled,
+            )
+        )
 
     def track_started(self, track):
         logger.info(
             "Updating DAB+ DLS for track: %s - %s" % (track.artist, track.title)
         )
+        if self.dls_enabled:
+            return self._track_started_dls(track)
+        self._track_started_plain(track)
 
+    def _track_started_dls(self, track):
+        # TODO pre-v3 fold into track_started once the dls feature flag is always on
+        params = {}
+
+        if not track.has_default_title() and not track.has_default_artist():
+            params["artist"] = track.artist
+            params["title"] = track.title
+        else:
+            logger.info(
+                "%s: Track has default info, using show instead" % self.__class__
+            )
+
+            title = track.show.name
+
+            params["dls"] = "%s - %s" % (track.artist, title)
+
+        logger.info(f"DAB+ Audio Companion URL: {self.baseUrl}")
+
+        resp = requests.get(self.baseUrl, params)
+        if resp.status_code != 200:
+            logger.error(f"DAB+ Audio Companion API call failed: {resp.text}")
+
+    def _track_started_plain(self, track):
+        # TODO v3 remove once we always send DLS with v3
         title = track.title
 
         if track.has_default_title() and track.has_default_artist():
@@ -263,7 +299,7 @@ class DabAudioCompanionTrackObserver(TrackObserver):
             "%s - %s" % (track.artist.encode("utf8"), title.encode("utf8"))
         )
 
-        update_url = self.baseUrl + song_string
+        update_url = f"{self.baseUrl}?dls={song_string}"
 
         logger.info("DAB+ Audio Companion URL: " + update_url)
 

@@ -65,7 +65,9 @@ class NowPlayingDaemon:
         ]
         [
             handler.register_observer(
-                trackObservers.DabAudioCompanionTrackObserver(url)
+                trackObservers.DabAudioCompanionTrackObserver(
+                    url, self.options.dab_send_dls
+                )
             )
             for url in self.options.dab
         ]
