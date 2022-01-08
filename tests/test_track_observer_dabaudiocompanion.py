@@ -3,6 +3,7 @@
 from unittest.mock import Mock
 
 import mock
+from mock.mock import MagicMock, patch
 
 from nowplaying.track.observer import DabAudioCompanionTrackObserver
 from nowplaying.track.track import Track
@@ -31,7 +32,8 @@ def test_track_started(mock_requests_get, track_factory, show_factory):
     track.show = show_factory()
 
     dab_audio_companion_track_observer = DabAudioCompanionTrackObserver(
-        baseUrl=_BASE_URL
+        baseUrl=_BASE_URL,
+        dls_enabled=True,
     )
     dab_audio_companion_track_observer.track_started(track)
 
@@ -47,6 +49,35 @@ def test_track_started(mock_requests_get, track_factory, show_factory):
     mock_requests_get.assert_called_with(
         f"{_BASE_URL}/api/setDLS",
         {"dls": "Radio Bern - Hairmare Traveling Medicine Show"},
+    )
+
+
+@patch("urllib.request.urlopen")
+def test_track_started_plain(mock_urlopen, track_factory, show_factory):
+    # TODO remove once dlsplus is active by default
+    cm = MagicMock()
+    cm.getcode.return_value = 200
+    # TODO: mock and test real return value
+    cm.read.return_value = "contents"
+    cm.__enter__.return_value = cm
+    mock_urlopen.return_value = cm
+
+    track = track_factory()
+    track.show = show_factory()
+
+    o = DabAudioCompanionTrackObserver(baseUrl="http://localhost:80")
+    o.track_started(track)
+
+    mock_urlopen.assert_called_with(
+        "http://localhost:80/api/setDLS?dls=b%27Hairmare+and+the+Band%27+-+b%27An+Ode+to+legacy+Python+Code%27"
+    )
+
+    track = track_factory(artist="Radio Bern", title="Livestream")
+    track.show = show_factory()
+
+    o.track_started(track)
+    mock_urlopen.assert_called_with(
+        "http://localhost:80/api/setDLS?dls=b%27Radio+Bern%27+-+b%27Hairmare+Traveling+Medicine+Show%27"
     )
 
 
