@@ -3,4 +3,4 @@ isodate==0.6.1
 lxml==4.7.1
 pylast==4.4.0
 pytz==2021.3
-requests==2.26.0
+requests==2.27.1
