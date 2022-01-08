@@ -58,7 +58,7 @@ class SaemuBox:
         except socket.error as e:
             self.sock = None
             logger.error("SaemuBox: cannot bind to %s:%i." % (self.bind_ip, self.port))
-            raise SaemuBoxError(e.message)
+            raise SaemuBoxError() from e
 
     def __update(self):
         if self.sock is None or (hasattr(self.sock, "_closed") and self.sock._closed):
