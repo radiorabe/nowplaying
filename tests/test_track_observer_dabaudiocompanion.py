@@ -32,8 +32,7 @@ def test_track_started(mock_requests_post, track_factory, show_factory):
     track.show = show_factory()
 
     dab_audio_companion_track_observer = DabAudioCompanionTrackObserver(
-        baseUrl=_BASE_URL,
-        dls_enabled=True,
+        baseUrl=_BASE_URL, dls_enabled=True
     )
     dab_audio_companion_track_observer.track_started(track)
 

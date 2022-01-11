@@ -9,10 +9,7 @@ from nowplaying.options import Options
 @patch("nowplaying.main.NowPlaying._run_daemon")
 @patch("socket.setdefaulttimeout")
 def test_run(
-    mock_setdefaulttimeout,
-    mock_run_daemon,
-    mock_setup_urllib,
-    mock_setup_logging,
+    mock_setdefaulttimeout, mock_run_daemon, mock_setup_urllib, mock_setup_logging
 ):
     now_playing = NowPlaying()
     now_playing.run()

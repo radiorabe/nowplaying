@@ -246,10 +246,7 @@ class DabAudioCompanionTrackObserver(TrackObserver):
         self.dls_enabled = dls_enabled
         logger.info(
             "DAB+ Audio Companion initialised with URL: %s, DLS+ enabled: %r"
-            % (
-                self.baseUrl,
-                self.dls_enabled,
-            )
+            % (self.baseUrl, self.dls_enabled)
         )
 
     def track_started(self, track):
