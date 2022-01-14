@@ -19,11 +19,11 @@ def test_init():
     assert dab_audio_companion_track_observer.baseUrl == f"{_BASE_URL}/api/setDLS"
 
 
-@mock.patch("requests.get")
-def test_track_started(mock_requests_get, track_factory, show_factory):
+@mock.patch("requests.post")
+def test_track_started(mock_requests_post, track_factory, show_factory):
     """Test :class:`DabAudioCompanionTrackObserver`'s :meth:`track_started` method."""
-    mock_requests_get.return_value.getcode = Mock(return_value=200)
-    mock_requests_get.return_value.read = Mock(
+    mock_requests_post.return_value.getcode = Mock(return_value=200)
+    mock_requests_post.return_value.read = Mock(
         # TODO: mock and test real return value
         return_value="contents"
     )
@@ -37,7 +37,7 @@ def test_track_started(mock_requests_get, track_factory, show_factory):
     )
     dab_audio_companion_track_observer.track_started(track)
 
-    mock_requests_get.assert_called_with(
+    mock_requests_post.assert_called_with(
         f"{_BASE_URL}/api/setDLS",
         {"artist": "Hairmare and the Band", "title": "An Ode to legacy Python Code"},
     )
@@ -46,7 +46,7 @@ def test_track_started(mock_requests_get, track_factory, show_factory):
     track.show = show_factory()
 
     dab_audio_companion_track_observer.track_started(track)
-    mock_requests_get.assert_called_with(
+    mock_requests_post.assert_called_with(
         f"{_BASE_URL}/api/setDLS",
         {"dls": "Radio Bern - Hairmare Traveling Medicine Show"},
     )

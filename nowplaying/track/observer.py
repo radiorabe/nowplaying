@@ -278,7 +278,7 @@ class DabAudioCompanionTrackObserver(TrackObserver):
 
         logger.info(f"DAB+ Audio Companion URL: {self.baseUrl}")
 
-        resp = requests.get(self.baseUrl, params)
+        resp = requests.post(self.baseUrl, params)
         if resp.status_code != 200:
             logger.error(f"DAB+ Audio Companion API call failed: {resp.text}")
 
