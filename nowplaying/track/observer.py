@@ -276,7 +276,7 @@ class DabAudioCompanionTrackObserver(TrackObserver):
 
             params["dls"] = "%s - %s" % (track.artist, title)
 
-        logger.info(f"DAB+ Audio Companion URL: {self.baseUrl}")
+        logger.info(f"DAB+ Audio Companion URL: {self.baseUrl} data: {params}")
 
         resp = requests.post(self.baseUrl, params)
         if resp.status_code != 200:
