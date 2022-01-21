@@ -1,6 +1,8 @@
 import datetime
 import logging
 import logging.handlers
+import re
+from html.entities import entitydefs
 
 import pytz
 import requests
@@ -23,6 +25,7 @@ class ShowClient:
     """
 
     __DEFAULT_SHOW_DURATION = 30  # 30 seconds
+    __cleanup_show_name_regexp = re.compile(r"&(\w+?);")
 
     def __init__(self, current_show_url):
 
@@ -86,6 +89,7 @@ class ShowClient:
             logger.error("%s: No show name found" % self.__class__)
             raise ShowClientError("Missing show name")
 
+        real_name = self.__cleanup_show_name(real_name)
         self.show.set_name(real_name)
 
         showtz = pytz.timezone(data["station"]["timezone"])
@@ -148,3 +152,14 @@ class ShowClient:
         )
 
         logger.info(self.show)
+
+    def __cleanup_show_name(self, name) -> str:
+        """Cleanup name by undoing htmlspecialchars from libretime zf1 mvc."""
+
+        def __entityref_decode(m):
+            try:
+                return entitydefs[m.group(1)]
+            except KeyError:
+                return m.group(0)
+
+        return self.__cleanup_show_name_regexp.sub(__entityref_decode, name)

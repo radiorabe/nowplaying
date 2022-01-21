@@ -3,7 +3,7 @@
 import logging
 import logging.handlers
 
-from track.observer import TrackObserver
+from track.observers.base import TrackObserver
 from track.track import Track
 
 logger = logging.getLogger(__name__)
