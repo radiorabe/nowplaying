@@ -5,7 +5,9 @@ from unittest.mock import Mock
 import mock
 from mock.mock import MagicMock, patch
 
-from nowplaying.track.observer import DabAudioCompanionTrackObserver
+from nowplaying.track.observers.dab_audio_companion import (
+    DabAudioCompanionTrackObserver,
+)
 from nowplaying.track.track import Track
 
 _BASE_URL = "http://localhost:80"
