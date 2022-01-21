@@ -7,8 +7,10 @@ import time
 from input import observer as inputObservers
 from input.handler import InputHandler
 from misc.saemubox import SaemuBox
-from track import observer as trackObservers
 from track.handler import TrackEventHandler
+from track.observers.dab_audio_companion import DabAudioCompanionTrackObserver
+from track.observers.icecast import IcecastTrackObserver
+from track.observers.ticker import TickerTrackObserver
 
 logger = logging.getLogger(__name__)
 
@@ -60,20 +62,16 @@ class NowPlayingDaemon:
     def get_track_handler(self):
         handler = TrackEventHandler()
         [
-            handler.register_observer(trackObservers.IcecastTrackObserver(url))
+            handler.register_observer(IcecastTrackObserver(url))
             for url in self.options.icecast
         ]
         [
             handler.register_observer(
-                trackObservers.DabAudioCompanionTrackObserver(
-                    url, self.options.dab_send_dls
-                )
+                DabAudioCompanionTrackObserver(url, self.options.dab_send_dls)
             )
             for url in self.options.dab
         ]
-        handler.register_observer(
-            trackObservers.TickerTrackObserver(self.options.tickerOutputFile)
-        )
+        handler.register_observer(TickerTrackObserver(self.options.tickerOutputFile))
 
         return handler
 

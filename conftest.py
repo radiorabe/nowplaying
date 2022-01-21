@@ -4,7 +4,7 @@ import sys
 import pytest
 
 from nowplaying.show.show import Show
-from nowplaying.track.observer import TrackObserver
+from nowplaying.track.observers.base import TrackObserver
 from nowplaying.track.track import Track
 
 PACKAGE_PARENT = "nowplaying"

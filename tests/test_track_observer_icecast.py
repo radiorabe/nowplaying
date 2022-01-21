@@ -2,13 +2,13 @@
 
 from unittest.mock import MagicMock, patch
 
-from nowplaying.track import observer
+from nowplaying.track.observers.icecast import IcecastTrackObserver
 from nowplaying.track.track import Track
 
 
 def test_init():
-    """Test class:`observer.IcecastTrackObserver`'s :meth:`.__init__` method."""
-    icecast_track_observer = observer.IcecastTrackObserver(
+    """Test class:`IcecastTrackObserver`'s :meth:`.__init__` method."""
+    icecast_track_observer = IcecastTrackObserver(
         baseUrl="http://localhost:80/?stream=foo.mp3"
     )
     assert (
@@ -19,7 +19,7 @@ def test_init():
 
 @patch("urllib.request.urlopen")
 def test_track_started(mock_urlopen, track_factory, show_factory):
-    """Test :class:`observer.IcecastTrackObserver`'s :meth:`track_started` method."""
+    """Test :class:`IcecastTrackObserver`'s :meth:`track_started` method."""
     mock_resp = MagicMock()
     mock_resp.getcode.return_value = 200
     # TODO: mock and test real return value
@@ -30,7 +30,7 @@ def test_track_started(mock_urlopen, track_factory, show_factory):
     track = track_factory()
     track.show = show_factory()
 
-    icecast_track_observer = observer.IcecastTrackObserver(
+    icecast_track_observer = IcecastTrackObserver(
         baseUrl="http://localhost:80/?stream=foo.mp3"
     )
     icecast_track_observer.track_started(track)
@@ -53,8 +53,6 @@ def test_track_started(mock_urlopen, track_factory, show_factory):
 
 
 def test_track_finished():
-    """Test :class:`observer.IcecastTrackObserver`'s :meth:`track_finished` method."""
-    icecast_track_observer = observer.IcecastTrackObserver(
-        baseUrl="http://localhost:80"
-    )
+    """Test :class:`IcecastTrackObserver`'s :meth:`track_finished` method."""
+    icecast_track_observer = IcecastTrackObserver(baseUrl="http://localhost:80")
     assert icecast_track_observer.track_finished(Track())
