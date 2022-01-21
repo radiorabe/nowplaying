@@ -256,12 +256,10 @@ class DabAudioCompanionTrackObserver(TrackObserver):
         logger.info(
             "Updating DAB+ DLS for track: %s - %s" % (track.artist, track.title)
         )
-        if self.dls_enabled:
-            return self._track_started_dls(track)
-        self._track_started_plain(track)
+        # TODO v3 remove _track_started_plain
+        if not self.dls_enabled:
+            return self._track_started_plain(track)
 
-    def _track_started_dls(self, track):
-        # TODO pre-v3 fold into track_started once the dls feature flag is always on
         params = {}
 
         if not track.has_default_title() and not track.has_default_artist():
