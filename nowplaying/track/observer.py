@@ -243,7 +243,7 @@ class DabAudioCompanionTrackObserver(TrackObserver):
 
     def __init__(self, baseUrl, dls_enabled: bool = False):
         self.baseUrl = baseUrl + "/api/setDLS"
-        self.dls_enabled = dls_enabled
+        self.dls_enabled = self.last_frame_was_dl_plus = dls_enabled
         logger.info(
             "DAB+ Audio Companion initialised with URL: %s, DLS+ enabled: %r"
             % (
@@ -265,14 +265,33 @@ class DabAudioCompanionTrackObserver(TrackObserver):
         if not track.has_default_title() and not track.has_default_artist():
             params["artist"] = track.artist
             params["title"] = track.title
+            self.last_frame_was_dl_plus = True
+        elif self.last_frame_was_dl_plus:
+            logger.info(
+                "%s: Track has default info, using show instead. Sending DLS+ delete tags."
+                % self.__class__
+            )
+            # track.artist contains station name if no artist is set
+            message = "%s - %s" % (track.artist, track.show.name)
+            param = "".join(
+                (
+                    "##### parameters { #####\n",
+                    "DL_PLUS=1\n",
+                    # delete messages for artist and title as set by Audio Companion
+                    f'DL_PLUS_TAG=1 {message.find(" ")} 0\n',
+                    f'DL_PLUS_TAG=4 {message.find(" ")} 0\n',
+                    "##### parameters } #####\n",
+                    message,
+                )
+            )
+            params["dls"] = param
+            self.last_frame_was_dl_plus = False
         else:
             logger.info(
                 "%s: Track has default info, using show instead" % self.__class__
             )
-
-            title = track.show.name
-
-            params["dls"] = "%s - %s" % (track.artist, title)
+            # track.artist contains station name if no artist is set
+            params["dls"] = "%s - %s" % (track.artist, track.show.name)
 
         logger.info(f"DAB+ Audio Companion URL: {self.baseUrl} data: {params}")
 
