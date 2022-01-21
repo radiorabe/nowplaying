@@ -173,3 +173,16 @@ def test_update_show_empty(mock_requests_get):
     show_client.update()
     assert show_client.show.name is None
     assert show_client.show.url == "https://www.rabe.ch"
+
+
+@mock.patch("requests.get")
+def test_update_show_encoding_fix_in_name(mock_requests_get):
+    """Test :class:`ShowClient`'s :meth:`update` method when the show name has an encoding fix."""
+    mock_requests_get.return_value.json = Mock(
+        return_value=json.loads(
+            file_get_contents("tests/fixtures/cast_now_show_encoding_fix.json")
+        )
+    )
+    show_client = ShowClient(_BASE_URL)
+    show_client.update()
+    assert show_client.show.name == "Rhythm & Blues Juke Box öç"
