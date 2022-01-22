@@ -7,7 +7,7 @@ from html.entities import entitydefs
 import pytz
 import requests
 
-from . import show
+from .show import Show
 
 logger = logging.getLogger(__name__)
 
@@ -24,14 +24,14 @@ class ShowClient:
     Every show has a name, a start and endtime and an optional URL.
     """
 
-    __DEFAULT_SHOW_DURATION = 30  # 30 seconds
+    __DEFAULT_SHOW_DURATION = 3  # 3 seconds
     __cleanup_show_name_regexp = re.compile(r"&(\w+?);")
 
     def __init__(self, current_show_url):
 
         self.current_show_url = current_show_url
 
-        self.show = show.Show()
+        self.show = Show()
 
     def get_show_info(self, force_update=False):
         """Return a Show object."""
@@ -53,7 +53,7 @@ class ShowClient:
             logger.debug("Show still running, won't update show info")
 
     def update(self):
-        self.show = show.Show()  # Create a new show object
+        self.show = Show()  # Create a new show object
 
         # Set the show's default end time to now + 30 seconds to prevent updates
         # happening every second and hammering the web service if something
@@ -68,10 +68,10 @@ class ShowClient:
             # service
             data = requests.get(self.current_show_url).json()
 
-            logger.info("Got show info: %s" % data)
+            logger.debug("Got show info: %s" % data)
 
         except Exception as e:
-            logger.error("%s: Unable to get current show informations" % self.__class__)
+            logger.error("Unable to get current show informations")
 
             logger.exception(e)
             # LSB 2017: ignoring missing show update
@@ -80,6 +80,7 @@ class ShowClient:
 
         if not data["shows"]["current"]:
             # ignore if no current show is playing
+            logger.warning("No current show is playing")
             return
 
         # get the name of the show, aka real_name
@@ -88,7 +89,7 @@ class ShowClient:
 
         if len(real_name) == 0:
             # keep the default show information
-            logger.error("%s: No show name found" % self.__class__)
+            logger.error("No show name found")
             raise ShowClientError("Missing show name")
 
         real_name = self.__cleanup_show_name(real_name)
@@ -101,7 +102,7 @@ class ShowClient:
         end_time = data["shows"]["current"]["ends"]
 
         if len(end_time) == 0:
-            logger.error("%s: No end found" % self.__class__)
+            logger.error("No end found")
             raise ShowClientError("Missing show end time")
 
         endtime = showtz.localize(
@@ -116,7 +117,7 @@ class ShowClient:
         start_time = data["shows"]["current"]["starts"]
 
         if len(start_time) == 0:
-            logger.error("%s: No start found" % self.__class__)
+            logger.error("No start found")
             raise ShowClientError("Missing show start time")
 
         starttime = showtz.localize(
@@ -130,10 +131,7 @@ class ShowClient:
         # This prevents stale (wrong) show informations from beeing pushed to
         # the live stream and stops hammering the service every second
         if self.show.endtime < datetime.datetime.now(pytz.timezone("UTC")):
-            logger.error(
-                "%s: Show endtime %s is in the past"
-                % (self.__class__, self.show.endtime)
-            )
+            logger.error("Show endtime %s is in the past" % self.show.endtime)
 
             raise ShowClientError(
                 "Show end time (%s) is in the past" % self.show.endtime
@@ -144,7 +142,7 @@ class ShowClient:
         url = data["shows"]["current"]["url"]
 
         if len(url) == 0:
-            logger.error("%s: No url found" % self.__class__)
+            logger.error("No url found")
         else:
             self.show.set_url(url)
 
@@ -152,8 +150,7 @@ class ShowClient:
             'Show "%s" started and runs from %s till %s'
             % (self.show.name, starttime, endtime)
         )
-
-        logger.info(self.show)
+        logger.debug(self.show)
 
     def __cleanup_show_name(self, name) -> str:
         """Cleanup name by undoing htmlspecialchars from libretime zf1 mvc."""

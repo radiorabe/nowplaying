@@ -20,7 +20,7 @@ class Show:
     """Show object which has a start and end time and an optional URL."""
 
     def __init__(self):
-        self.name = None
+        self.name = ""
 
         self.url = DEFAULT_SHOW_URL
 
