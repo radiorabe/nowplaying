@@ -8,7 +8,7 @@ import lxml.builder
 import lxml.etree
 import pytz
 
-from nowplaying.track.observers.base import TrackObserver
+from .base import TrackObserver
 
 logger = logging.getLogger(__name__)
 
