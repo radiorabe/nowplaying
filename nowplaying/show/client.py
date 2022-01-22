@@ -68,6 +68,8 @@ class ShowClient:
             # service
             data = requests.get(self.current_show_url).json()
 
+            logger.info("Got show info: %s" % data)
+
         except Exception as e:
             logger.error("%s: Unable to get current show informations" % self.__class__)
 
