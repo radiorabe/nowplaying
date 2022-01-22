@@ -107,7 +107,7 @@ def test_update_connection_error(mock_requests_get):
     mock_requests_get.side_effect = requests.exceptions.ConnectionError()
     show_client = ShowClient(_BASE_URL)
     show_client.update()
-    assert show_client.show.name is None
+    assert show_client.show.name == ""
     assert show_client.show.url == "https://www.rabe.ch"
 
 
@@ -171,7 +171,7 @@ def test_update_show_empty(mock_requests_get):
     )
     show_client = ShowClient(_BASE_URL)
     show_client.update()
-    assert show_client.show.name is None
+    assert show_client.show.name == ""
     assert show_client.show.url == "https://www.rabe.ch"
 
 
