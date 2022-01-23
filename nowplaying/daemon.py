@@ -79,17 +79,18 @@ class NowPlayingDaemon:
 
     def get_input_handler(self):
         handler = InputHandler()
+        track_handler = self.get_track_handler()
 
         klangbecken = inputObservers.KlangbeckenInputObserver(
             self.options.currentShowUrl, self.options.inputFile
         )
-        klangbecken.add_track_handler(self.get_track_handler())
+        klangbecken.add_track_handler(track_handler)
         handler.register_observer(klangbecken)
 
         nonklangbecken = inputObservers.NonKlangbeckenInputObserver(
             self.options.currentShowUrl
         )
-        nonklangbecken.add_track_handler(self.get_track_handler())
+        nonklangbecken.add_track_handler(track_handler)
         handler.register_observer(nonklangbecken)
 
         return handler
