@@ -9,10 +9,10 @@ from nowplaying.track.track import Track
 def test_init():
     """Test class:`IcecastTrackObserver`'s :meth:`.__init__` method."""
     icecast_track_observer = IcecastTrackObserver(
-        baseUrl="http://localhost:80/?stream=foo.mp3"
+        base_url="http://localhost:80/?stream=foo.mp3"
     )
     assert (
-        icecast_track_observer.baseUrl
+        icecast_track_observer.base_url
         == "http://localhost:80/?stream=foo.mp3&mode=updinfo&charset=utf-8&song="
     )
 
@@ -31,7 +31,7 @@ def test_track_started(mock_urlopen, track_factory, show_factory):
     track.show = show_factory()
 
     icecast_track_observer = IcecastTrackObserver(
-        baseUrl="http://localhost:80/?stream=foo.mp3"
+        base_url="http://localhost:80/?stream=foo.mp3"
     )
     icecast_track_observer.track_started(track)
 
@@ -54,5 +54,5 @@ def test_track_started(mock_urlopen, track_factory, show_factory):
 
 def test_track_finished():
     """Test :class:`IcecastTrackObserver`'s :meth:`track_finished` method."""
-    icecast_track_observer = IcecastTrackObserver(baseUrl="http://localhost:80")
+    icecast_track_observer = IcecastTrackObserver(base_url="http://localhost:80")
     assert icecast_track_observer.track_finished(Track())
