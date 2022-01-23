@@ -13,15 +13,12 @@ class DabAudioCompanionTrackObserver(TrackObserver):
 
     name = "DAB+ Audio Companion"
 
-    def __init__(self, baseUrl, dls_enabled: bool = False):
-        self.baseUrl = baseUrl + "/api/setDLS"
+    def __init__(self, base_url, dls_enabled: bool = False):
+        self.base_url = base_url + "/api/setDLS"
         self.dls_enabled = self.last_frame_was_dl_plus = dls_enabled
         logger.info(
             "DAB+ Audio Companion initialised with URL: %s, DLS+ enabled: %r"
-            % (
-                self.baseUrl,
-                self.dls_enabled,
-            )
+            % (self.base_url, self.dls_enabled)
         )
 
     def track_started(self, track):
@@ -40,11 +37,10 @@ class DabAudioCompanionTrackObserver(TrackObserver):
             self.last_frame_was_dl_plus = True
         elif self.last_frame_was_dl_plus:
             logger.info(
-                "%s: Track has default info, using show instead. Sending DLS+ delete tags."
-                % self.__class__
+                "Track has default info, using show instead. Sending DLS+ delete tags."
             )
             # track.artist contains station name if no artist is set
-            message = "%s - %s" % (track.artist, track.show.name)
+            message = f"{track.artist} - {track.show.name}"
             param = "".join(
                 (
                     "##### parameters { #####\n",
@@ -59,15 +55,15 @@ class DabAudioCompanionTrackObserver(TrackObserver):
             params["dls"] = param
             self.last_frame_was_dl_plus = False
         else:
-            logger.info(
-                "%s: Track has default info, using show instead" % self.__class__
-            )
+            logger.info("Track has default info, using show instead")
             # track.artist contains station name if no artist is set
-            params["dls"] = "%s - %s" % (track.artist, track.show.name)
+            params["dls"] = f"{track.artist} - {track.show.name}"
 
-        logger.info(f"DAB+ Audio Companion URL: {self.baseUrl} data: {params}")
+        logger.info(
+            f"DAB+ Audio Companion URL: {self.base_url} data: {params} is DL+: {self.last_frame_was_dl_plus}"
+        )
 
-        resp = requests.post(self.baseUrl, params)
+        resp = requests.post(self.base_url, params)
         if resp.status_code != 200:
             logger.error(f"DAB+ Audio Companion API call failed: {resp.text}")
 
@@ -88,7 +84,7 @@ class DabAudioCompanionTrackObserver(TrackObserver):
             "%s - %s" % (track.artist.encode("utf8"), title.encode("utf8"))
         )
 
-        update_url = f"{self.baseUrl}?dls={song_string}"
+        update_url = f"{self.base_url}?dls={song_string}"
 
         logger.info("DAB+ Audio Companion URL: " + update_url)
 
