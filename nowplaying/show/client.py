@@ -26,12 +26,14 @@ class ShowClient:
 
     __DEFAULT_SHOW_DURATION = 3  # 3 seconds
     __cleanup_show_name_regexp = re.compile(r"&(\w+?);")
+    __show_datetime_format = "%Y-%m-%d %H:%M:%S"
 
     def __init__(self, current_show_url):
 
         self.current_show_url = current_show_url
 
         self.show = Show()
+        self.showtz = None
 
     def get_show_info(self, force_update=False):
         """Return a Show object."""
@@ -78,14 +80,18 @@ class ShowClient:
             # raise ShowClientError('Unable to get show informations: %s' % e)
             return
 
-        if not data["shows"]["current"]:
-            # ignore if no current show is playing
-            logger.warning("No current show is playing")
+        self.showtz = pytz.timezone(data["station"]["timezone"])
+
+        # pick the current show
+        show_data = self.__pick_current_show(data)
+
+        if not show_data:
+            logger.warning("Failed to find a current or upcoming show, bailing out.")
             return
 
         # get the name of the show, aka real_name
         # ex.: Stereo Freeze
-        real_name = data["shows"]["current"]["name"]
+        real_name = show_data["name"]
 
         if len(real_name) == 0:
             # keep the default show information
@@ -95,18 +101,16 @@ class ShowClient:
         real_name = self.__cleanup_show_name(real_name)
         self.show.set_name(real_name)
 
-        showtz = pytz.timezone(data["station"]["timezone"])
-
         # get the show's end time in order to time the next lookup.
         # ex.: 2012-04-28 19:00:00 (missing a tzoffset and localized!)
-        end_time = data["shows"]["current"]["ends"]
+        end_time = show_data["ends"]
 
         if len(end_time) == 0:
             logger.error("No end found")
             raise ShowClientError("Missing show end time")
 
-        endtime = showtz.localize(
-            datetime.datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
+        endtime = self.showtz.localize(
+            datetime.datetime.strptime(end_time, self.__show_datetime_format)
         )
 
         # store as UTC datetime object
@@ -114,14 +118,14 @@ class ShowClient:
 
         # get the show's start time
         # ex.: 2012-04-28 18:00:00
-        start_time = data["shows"]["current"]["starts"]
+        start_time = show_data["starts"]
 
         if len(start_time) == 0:
             logger.error("No start found")
             raise ShowClientError("Missing show start time")
 
-        starttime = showtz.localize(
-            datetime.datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+        starttime = self.showtz.localize(
+            datetime.datetime.strptime(start_time, self.__show_datetime_format)
         )
 
         # store as UTC datetime object
@@ -139,7 +143,7 @@ class ShowClient:
 
         # get the show's URL
         # ex.: http://www.rabe.ch/sendungen/entertainment/onda-libera.html
-        url = data["shows"]["current"]["url"]
+        url = show_data["url"]
 
         if len(url) == 0:
             logger.error("No url found")
@@ -162,3 +166,32 @@ class ShowClient:
                 return m.group(0)
 
         return self.__cleanup_show_name_regexp.sub(__entityref_decode, name)
+
+    def __pick_current_show(self, data):
+        """Pick the current show from the data.
+
+        If there is no current show and the next one starts reasonably soon, pick that.
+        """
+        if not data["shows"]["current"]:
+            # ignore if no current show is playing
+            logger.info("No current show is playing, checking next show")
+            if data["shows"]["next"] and data["shows"]["next"][0]:
+                show = data["shows"]["next"][0]
+                logger.info("Next show is %s" % show["name"])
+                next_start = self.showtz.localize(
+                    datetime.datetime.strptime(
+                        show["starts"], self.__show_datetime_format
+                    )
+                )
+                logger.warning(
+                    datetime.datetime.now(pytz.timezone("UTC"))
+                    + datetime.timedelta(minutes=15)
+                )
+                logger.warning(next_start)
+                if next_start < datetime.datetime.now(
+                    pytz.timezone("UTC")
+                ) + datetime.timedelta(minutes=15):
+                    logger.info("Next show starts soon enough, using it")
+                    return show
+            return
+        return data["shows"]["current"]
