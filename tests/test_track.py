@@ -96,7 +96,7 @@ def test_duration():
     track = Track()
     assert track.get_duration() == timedelta(0)
     track.set_duration(60)
-    assert track.get_duration() == timedelta(-1, 86340)
+    assert track.get_duration() == timedelta(seconds=60)
 
 
 def test_prettyprinting():

@@ -77,6 +77,12 @@ def test_track_started(mock_requests_post, track_factory, show_factory):
         {"dls": "Radio Bern - Hairmare Traveling Medicine Show"},
     )
 
+    # check that short tracks dont get sent
+    track = track_factory(artist="Radio Bern", title="Livestream", duration=3)
+    mock_requests_post.reset_mock()
+    dab_audio_companion_track_observer.track_started(track)
+    mock_requests_post.assert_not_called()
+
 
 @patch("urllib.request.urlopen")
 def test_track_started_plain(mock_urlopen, track_factory, show_factory):
