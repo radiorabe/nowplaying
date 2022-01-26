@@ -81,7 +81,7 @@ class Track:
         self.show = show
 
     def get_duration(self):
-        return self.starttime - self.endtime
+        return self.endtime - self.starttime
 
     def has_default_artist(self):
         if self.artist == DEFAULT_ARTIST:

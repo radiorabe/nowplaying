@@ -1,8 +1,10 @@
 import logging
 import urllib
+from datetime import timedelta
 
 import requests
 
+from ..track import Track
 from .base import TrackObserver
 
 logger = logging.getLogger(__name__)
@@ -21,7 +23,7 @@ class DabAudioCompanionTrackObserver(TrackObserver):
             % (self.base_url, self.dls_enabled)
         )
 
-    def track_started(self, track):
+    def track_started(self, track: Track):
         logger.info(
             "Updating DAB+ DLS for track: %s - %s" % (track.artist, track.title)
         )
@@ -30,6 +32,12 @@ class DabAudioCompanionTrackObserver(TrackObserver):
             return self._track_started_plain(track)
 
         params = {}
+
+        if track.get_duration() < timedelta(seconds=5):
+            logger.info(
+                "Track is less than 5 seconds, not sending to DAB+ Audio Companion"
+            )
+            return
 
         if not track.has_default_title() and not track.has_default_artist():
             params["artist"] = track.artist
