@@ -16,6 +16,13 @@ class Options(object):
             default_config_files=["/etc/nowplaying/conf.d/*.conf", "~/.nowplayingrc"]
         )
         self.__args.add_argument(
+            "-b",
+            "--saemubox-ip",
+            dest="saemubox_ip",
+            help="IP address of SAEMUBOX",
+            default="",
+        )
+        self.__args.add_argument(
             "-m",
             "--icecast-base",
             dest="icecastBase",

@@ -1,7 +1,7 @@
 import logging
 import logging.handlers
 
-from input.observer import InputObserver
+from .observer import InputObserver
 
 logger = logging.getLogger(__name__)
 

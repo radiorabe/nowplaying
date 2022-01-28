@@ -4,13 +4,13 @@ import signal
 import sys
 import time
 
-from input import observer as inputObservers
-from input.handler import InputHandler
-from misc.saemubox import SaemuBox
-from track.handler import TrackEventHandler
-from track.observers.dab_audio_companion import DabAudioCompanionTrackObserver
-from track.observers.icecast import IcecastTrackObserver
-from track.observers.ticker import TickerTrackObserver
+from .input import observer as inputObservers
+from .input.handler import InputHandler
+from .misc.saemubox import SaemuBox
+from .track.handler import TrackEventHandler
+from .track.observers.dab_audio_companion import DabAudioCompanionTrackObserver
+from .track.observers.icecast import IcecastTrackObserver
+from .track.observers.ticker import TickerTrackObserver
 
 logger = logging.getLogger(__name__)
 
@@ -24,9 +24,10 @@ class NowPlayingDaemon:
     def __init__(self, options):
         self.options = options
 
-        self.saemubox = SaemuBox()
+        self.saemubox = SaemuBox(self.options.saemubox_ip)
 
-    def main(self):
+    def main(self):  # pragma: no cover
+        # TODO test once there is not saemubox in the loop
         logger.info("Starting up now-playing daemon")
 
         try:
@@ -59,7 +60,8 @@ class NowPlayingDaemon:
             logger.info("Signal %i caught, terminating." % signum)
             sys.exit(os.EX_OK)
 
-    def get_track_handler(self):
+    def get_track_handler(self):  # pragma: no cover
+        # TODO test once options have been refactored with v3
         handler = TrackEventHandler()
         [
             handler.register_observer(IcecastTrackObserver(url))
@@ -77,7 +79,8 @@ class NowPlayingDaemon:
 
         return handler
 
-    def get_input_handler(self):
+    def get_input_handler(self):  # pragma: no cover
+        # TODO test once options have been refactored with v3
         handler = InputHandler()
         track_handler = self.get_track_handler()
 
@@ -95,11 +98,13 @@ class NowPlayingDaemon:
 
         return handler
 
-    def poll_saemubox(self):
+    def poll_saemubox(self):  # pragma: no cover
         """
         Poll Saemubox for new data.
 
         Should be run once per main loop.
+
+        TODO v3 remove once replaced with pathfinder
         """
 
         saemubox_id = self.saemubox.get_active_output_id()

@@ -5,8 +5,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-from daemon import NowPlayingDaemon
-from options import Options
+from .daemon import NowPlayingDaemon
+from .options import Options
 
 
 class NowPlaying:
