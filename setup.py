@@ -17,7 +17,7 @@ setup(
     setup_requires=["setuptools-git-versioning"],
     install_requires=requirements,
     packages=find_packages(exclude=("tests",)),
-    entry_points={"console_scripts": ["now-playing=nowplaying.cli:main"]},
+    entry_points={"console_scripts": ["nowplaying=nowplaying.__main__:main"]},
     zip_safe=True,
     classifiers=[
         "Development Status :: 3 - Alpha",

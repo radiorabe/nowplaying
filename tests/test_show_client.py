@@ -107,7 +107,7 @@ def test_update_connection_error(mock_requests_get):
     mock_requests_get.side_effect = requests.exceptions.ConnectionError()
     show_client = ShowClient(_BASE_URL)
     show_client.update()
-    assert show_client.show.name is None
+    assert show_client.show.name == ""
     assert show_client.show.url == "https://www.rabe.ch"
 
 
@@ -171,7 +171,7 @@ def test_update_show_empty(mock_requests_get):
     )
     show_client = ShowClient(_BASE_URL)
     show_client.update()
-    assert show_client.show.name is None
+    assert show_client.show.name == ""
     assert show_client.show.url == "https://www.rabe.ch"
 
 
@@ -185,4 +185,24 @@ def test_update_show_encoding_fix_in_name(mock_requests_get):
     )
     show_client = ShowClient(_BASE_URL)
     show_client.update()
-    assert show_client.show.name == "Rhythm & Blues Juke Box öç"
+    assert show_client.show.name == "Rhythm & Blues Juke Box öç &nope;"
+
+
+@mock.patch("requests.get")
+def test_update_when_show_is_in_next_array(mock_requests_get):
+    """Test :class:`ShowClient`'s :meth:`update` method."""
+    mock_requests_get.return_value.json = Mock(
+        return_value=json.loads(
+            file_get_contents("tests/fixtures/cast_now_show_in_next.json")
+        )
+    )
+    show_client = ShowClient(_BASE_URL)
+    show_client.update()
+    assert show_client.show.name == "Voice of Hindu Kush"
+    assert show_client.show.starttime == datetime(
+        2019, 1, 27, 13, tzinfo=pytz.timezone("UTC")
+    )
+    assert show_client.show.endtime == datetime(
+        2319, 1, 27, 14, tzinfo=pytz.timezone("UTC")
+    )
+    assert show_client.show.url == "https://www.rabe.ch/stimme-der-kutuesch/"

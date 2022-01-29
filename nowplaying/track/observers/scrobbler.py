@@ -1,11 +1,12 @@
-import calendar
-import logging
+# TODO scrobbling is not currently supported remove the no cover pragma from this file if you support it again
+import calendar  # pragma: no cover
+import logging  # pragma: no cover
 
-import pylast
+import pylast  # pragma: no cover
 
-from nowplaying.track.observers.base import TrackObserver
+from .base import TrackObserver  # pragma: no cover
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)  # pragma: no cover
 
 
 class ScrobblerTrackObserver(TrackObserver):  # pragma: no cover

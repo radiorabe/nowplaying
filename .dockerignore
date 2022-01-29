@@ -1,0 +1,5 @@
+.github/
+*.egg-info
+.eggs/
+dist/
+.mypy_cache/

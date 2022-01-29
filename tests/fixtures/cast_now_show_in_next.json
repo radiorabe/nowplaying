@@ -1,0 +1,32 @@
+{
+  "station": {
+    "env": "production",
+    "schedulerTime": "2019-01-27 16:44:44",
+    "source_enabled": "Scheduled",
+    "timezone": "Europe/Zurich",
+    "AIRTIME_API_VERSION": "1.1"
+  },
+  "tracks": {
+    "previous": null,
+    "current": null,
+    "next": null
+  },
+  "shows": {
+    "previous": [],
+    "current": null,
+    "next": [
+      {
+        "name": "Voice of Hindu Kush",
+        "description": "",
+        "genre": "",
+        "id": 85,
+        "instance_id": 11605,
+        "record": 0,
+        "url": "https://www.rabe.ch/stimme-der-kutuesch/",
+        "image_path": "",
+        "starts": "2019-01-27 14:00:00",
+        "ends": "2319-01-27 15:00:00"
+      }
+    ]
+  }
+}

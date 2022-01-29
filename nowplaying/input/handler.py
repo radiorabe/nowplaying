@@ -2,7 +2,8 @@ import logging
 import logging.handlers
 
 from cloudevents.http.event import CloudEvent
-from input.observer import InputObserver
+
+from .observer import InputObserver
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +30,7 @@ class InputHandler:
 
             try:
                 observer.update(saemubox_id, event)
-            except Exception as e:
+            except Exception as e:  # pragma: no cover
+                # TODO test once replaced with non generic exception
                 logger.error("InputObserver (%s): %s" % (observer.__class__, e))
                 logger.exception(e)
