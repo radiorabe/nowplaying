@@ -54,7 +54,8 @@ class InputObserver(ABC):
 class KlangbeckenInputObserver(InputObserver):
     """Observe cases where Sämu Box says Klangbecken is running and we can consume now-playing.xml input."""
 
-    def __init__(self, current_show_url, input_file):
+    def __init__(self, current_show_url, input_file):  # pragma: no coverage
+        # TODO test once input file is replaced with api
         warnings.warn(
             "The now-playing.xml format from Loopy/Klangbecken will be replaced in the future",
             PendingDeprecationWarning,
@@ -90,7 +91,8 @@ class KlangbeckenInputObserver(InputObserver):
 
             logger.info("First run: %s" % self.first_run)
 
-            if not self.first_run:
+            if not self.first_run:  # pragma: no coverage
+                # TODO test once i don't have to care about mtime/inotify because it's an api
                 logger.info("calling track_finished")
                 self.track_handler.track_finished(self.track)
 
@@ -135,7 +137,8 @@ class KlangbeckenInputObserver(InputObserver):
 
         song = dom.getElementsByTagName("song")
 
-        if len(song) == 0 or song[0].hasChildNodes() is False:
+        if len(song) == 0 or song[0].hasChildNodes() is False:  # pragma: no coverage
+            # TODO replace with non generic exception and test
             raise Exception("No <song> tag found")
 
         song = song[0]
@@ -143,17 +146,19 @@ class KlangbeckenInputObserver(InputObserver):
         for name in list(track_info.keys()):
             elements = song.getElementsByTagName(name)
 
-            if len(elements) == 0:
+            if len(elements) == 0:  # pragma: no coverage
+                # TODO replace with non generic exception and test
                 raise Exception("No <%s> tag found" % name)
             elif elements[0].hasChildNodes():
                 element_data = elements[0].firstChild.data.strip()
 
                 if element_data != "":
                     track_info[name] = element_data
-                else:
+                else:  # pragma: no coverage
                     logger.info("Element %s has empty value, ignoring" % name)
 
-        if not song.hasAttribute("timestamp"):
+        if not song.hasAttribute("timestamp"):  # pragma: no coverage
+            # TODO replace with non generic exception and test
             raise Exception("Song timestamp attribute is missing")
 
         # set the start time and append the missing UTC offset
