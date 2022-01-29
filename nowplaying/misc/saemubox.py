@@ -1,3 +1,11 @@
+"""Implemets the legacy serial over ip interface for the saemubox.
+
+The other part of the implementation is the virtual-saemubox. Both parts are
+scheduled to be removed in the future using the built in api client in modern
+pathfinder versions.
+
+This file has a bunch of untested ignored branches.
+"""
 import logging
 import logging.handlers
 import select
@@ -26,7 +34,7 @@ class SaemuBox:
         6: "Studio Live",
     }
 
-    def __init__(self):
+    def __init__(self, saemubox_ip):
         warnings.warn(
             "Saemubox will be replaced with Pathfinder", PendingDeprecationWarning
         )
@@ -39,7 +47,7 @@ class SaemuBox:
         self.port = 4001
 
         # allowed sender ip addresses
-        self.senders = set(["10.130.225.6", "10.130.225.7"])
+        self.senders = set([saemubox_ip])
 
         # valid saemubox ids
         self.valid_ids = [str(i) for i in self.output_mapping]
@@ -55,12 +63,12 @@ class SaemuBox:
             self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.sock.bind((self.bind_ip, self.port))
             logger.info("SaemuBox: listening on %s:%i." % (self.bind_ip, self.port))
-        except socket.error as e:
+        except socket.error as e:  # pragma: no cover
             self.sock = None
             logger.error("SaemuBox: cannot bind to %s:%i." % (self.bind_ip, self.port))
             raise SaemuBoxError() from e
 
-    def __update(self):
+    def __update(self):  # pragma: no cover
         if self.sock is None or (hasattr(self.sock, "_closed") and self.sock._closed):
             logger.warn("SaemuBox: socket closed unexpectedly, retrying...")
             self._setup_socket()
@@ -94,19 +102,19 @@ class SaemuBox:
 
         self.output = int(output)
 
-    def get_active_output_id(self):
+    def get_active_output_id(self):  # pragma: no cover
         self.__update()
         return self.output
 
-    def get_active_output_name(self):
+    def get_active_output_name(self):  # pragma: no cover
         self.__update()
         return self.output_mapping[self.output]
 
-    def get_id_as_name(self, number):
+    def get_id_as_name(self, number):  # pragma: no cover
         return self.output_mapping[number]
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     # Test code
     import sys
     from random import randint

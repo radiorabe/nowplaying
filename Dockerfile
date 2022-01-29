@@ -1,24 +1,18 @@
-# Dockerfile from s2i --as-dockerfile output, checked in for convenience until we have
-# a proper docker registry that can securely be configured.
-# Currently hub.docker.io builds are based on this file so it should be updated if the
-# s2i base image is updated. In the long run this should get replaced with a toolchain
-# that runs docker builds on travis and then pushes them to a registry that allows for
-# pushing with an API key or token (like I'm assuming the github registry will allow).
-FROM centos/python-36-centos7
-LABEL "io.k8s.display-name"="now-playing" \
-      "io.openshift.s2i.build.image"="registry.centos.org/centos/python-36-centos7" \
-      "io.openshift.s2i.build.source-location"="."
+FROM ghcr.io/radiorabe/python-minimal:0.1.0
 
-USER root
-# Copying in source code
-COPY . /tmp/src
-# Change file ownership to the assemble user. Builder image must support chown command.
-RUN chown -R 1001:0 /tmp/src
-USER 1001
-# Assemble script sourced from builder image based on user input or image metadata.
-# If this file does not exist in the image, the build will fail.
-RUN pip install setuptools-git-versioning \
- && /usr/libexec/s2i/assemble
-# Run script sourced from builder image based on user input or image metadata.
-# If this file does not exist in the image, the build will fail.
-CMD /usr/libexec/s2i/run
+COPY ./ /app/
+
+RUN    cd /app \
+    && microdnf install git-core | tee > /tmp/install.log \
+    && python3 -mpip install setuptools-git-versioning \
+    && python3 -mpip install . \
+    && microdnf remove `awk '/^Installing: [a-zA-Z]+/ {print $2}' /tmp/install.log | awk -F ';' '{printf $1 " "}'` \
+    && microdnf clean all \
+    && rm -rf /app/ /tmp/install.log
+
+# make requests use os ca certs that contain the RaBe root CA
+ENV REQUESTS_CA_BUNDLE=/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
+
+USER nobody
+
+CMD ["nowplaying"]

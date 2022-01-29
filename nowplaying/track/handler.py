@@ -3,8 +3,8 @@
 import logging
 import logging.handlers
 
-from track.observers.base import TrackObserver
-from track.track import Track
+from .observers.base import TrackObserver
+from .track import Track
 
 logger = logging.getLogger(__name__)
 
