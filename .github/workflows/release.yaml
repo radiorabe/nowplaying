@@ -31,6 +31,11 @@ jobs:
             type=semver,pattern={{major}}
             type=sha
 
+      - name: Prepare additional Metadata
+        id: addtional_meta
+        run: |
+          echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
@@ -55,12 +60,17 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: |
-            name="nowplaying"
-            summary="RaBe nowplaying Songticker daemon"
-            description="The RaBe nowplaying daemon is used to ticker information for several croadcast vectors."
+            name=${{ github.event.repository.name }}
+            summary=${{ github.event.repository.description }}
+            description="The RaBe nowplaying daemon is used to send ticker information for several broadcast vectors."
             version=${{ steps.meta.outputs.version }}
-            com.redhat.component="rabe-nowplaying"
-            io.k8s.display-name="RaBe Songticker"
+            url=${{ github.event.repository.html_url }}
+            vcs-ref=${{ github.sha }}
+            revision=${{ github.sha }}
+            release=${{ github.sha }}
+            build-date=${{ steps.addtional_meta.outputs.created }}
+            io.k8s.display-name=${{ github.event.repository.name }}
+            io.k8s.description=${{ github.event.repository.description }}
             io.openshift.expose-services=""
             io.openshift.tags="minimal rhel8 rabe python nowplaying"
             org.opencontainers.image.title=${{ github.event.repository.name }}
@@ -68,6 +78,6 @@ jobs:
             org.opencontainers.image.url=${{ github.event.repository.html_url }}
             org.opencontainers.image.source=${{ github.event.repository.html_url }}
             org.opencontainers.image.version=${{ steps.meta.outputs.version }}
-            org.opencontainers.image.created=${{ steps.meta.outputs.created }}
+            org.opencontainers.image.created=${{ steps.addtional_meta.outputs.created }}
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.licenses=${{ github.event.repository.license.spdx_id }}
