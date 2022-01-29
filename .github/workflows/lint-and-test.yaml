@@ -33,4 +33,4 @@ jobs:
 
       - run: pip install -r requirements-dev.txt
 
-      - run: pytest --cov=nowplaying
+      - run: pytest --cov=nowplaying --cov-fail-under=100

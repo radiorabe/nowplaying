@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<now_playing playing="1" timestamp="2022-01-29T07:45:31">
+  <song timestamp="2022-01-29T07:45:31">
+    <title><![CDATA[Fuck the Pain Away]]></title>
+    <artist><![CDATA[Peaches]]></artist>
+    <album/>
+    <genre>Other</genre>
+    <kind>MPEG-Audiodatei</kind>
+    <track>1</track>
+    <numTracks/>
+    <year></year>
+    <comments/>
+    <time>100</time>
+    <bitrate>320</bitrate>
+    <rating/>
+    <disc/>
+    <numDiscs/>
+    <playCount>17</playCount>
+    <compilation/>
+    <composer/>
+    <grouping/>
+    <urlSource/>
+    <file/>
+    <artworkID/>
+  </song>
+</now_playing>
