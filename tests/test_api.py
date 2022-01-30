@@ -111,11 +111,17 @@ def test_webhook_valid_event(client, content_type):
             "id": "12345",
         }
     )
+    assert client.application.event_queue.qsize() == 0
     resp = client.post(
         _WEBHOOK_ENDPOINT, data=body, headers={"Content-Type": content_type}
     )
     assert resp.status_code == 200
     assert resp.status == "200 Event Received"
+    assert client.application.event_queue.qsize() == 1
+    event = client.application.event_queue.get()
+    assert event["source"] == "https://rabe.ch"
+    assert event["id"] == "12345"
+    assert event["type"] == "ch.rabe.api.events.track.v1.trackStarted"
 
 
 def test_webhook_auth_fail(unauthenticated_client):
