@@ -52,12 +52,12 @@ class SaemuBox:
         # valid saemubox ids
         self.valid_ids = [str(i) for i in self.output_mapping]
 
+    def run(self):  # pragma: no cover
         self._setup_socket()
-
         # wait for some data to arrive
         time.sleep(0.2)
 
-    def _setup_socket(self):
+    def _setup_socket(self):  # pragma: no cover
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
