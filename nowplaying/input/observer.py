@@ -68,7 +68,9 @@ class InputObserver(ABC):
 class KlangbeckenInputObserver(InputObserver):
     """Observe cases where Sämu Box says Klangbecken is running and we can consume now-playing.xml input."""
 
-    def __init__(self, current_show_url: str, input_file: str = None):  # pragma: no coverage
+    def __init__(
+        self, current_show_url: str, input_file: str = None
+    ):  # pragma: no coverage
         # TODO test once input file is replaced with api
         if input_file:
             warnings.warn(
@@ -256,7 +258,7 @@ class NonKlangbeckenInputObserver(InputObserver):
     Uses the show's name instead of the actual track infos
     """
 
-    def handles(self, event: CloudEvent) -> bool:
+    def handles(self, event: CloudEvent) -> bool:  # pragma: no coverage
         """Do not handle events yet.
 
         TODO implement this method
@@ -265,7 +267,7 @@ class NonKlangbeckenInputObserver(InputObserver):
         """
         return False
 
-    def event(self, event: CloudEvent):
+    def event(self, event: CloudEvent):  # pragma: no coverage
         """Do not handle events yet.
 
         TODO implement this method

@@ -4,9 +4,8 @@ from os import EX_OK
 from signal import SIGINT
 
 import pytest
-from mock import Mock, patch
+from mock import patch
 
-from nowplaying.api import ApiServer
 from nowplaying.daemon import NowPlayingDaemon
 from nowplaying.misc.saemubox import SaemuBox
 
