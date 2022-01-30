@@ -78,6 +78,16 @@ class Options(object):
             default="/var/www/localhost/htdocs/songticker/0.9.3/current.xml",
         )
         self.__args.add_argument(
+            "--instrumentation-otlp-enable",
+            type=bool,
+            nargs="?",
+            const=True,
+            dest="otlp_enable",
+            help="Enable OpenTelemetry Protocol (OTLP) exporter (default: False)",
+            default=False,
+            env_var="NOWPLAYING_INSTRUMENTATION_OTLP_ENABLE",
+        )
+        self.__args.add_argument(
             "--debug",
             type=bool,
             nargs="?",
