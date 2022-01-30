@@ -1,12 +1,21 @@
+from cloudevents.http.event import CloudEvent
+
 from nowplaying.input.observer import InputObserver
 
 
 class ShuntObserver(InputObserver):
-    def handle_id(self, saemubox_id):
+    def handles(self, event: CloudEvent):
         return True
 
-    def handle(self):
+    def event(self, event: CloudEvent):
+        return super().event(event)
+
+    def handle_id(self, saemubox_id: int, event: CloudEvent):
+        return True
+
+    def handle(self, event: CloudEvent):
         self.handle_called = True
+        return super().event(event)
 
 
 def test_init():

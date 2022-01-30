@@ -4,8 +4,9 @@ from os import EX_OK
 from signal import SIGINT
 
 import pytest
-from mock import MagicMock, patch
+from mock import Mock, patch
 
+from nowplaying.api import ApiServer
 from nowplaying.daemon import NowPlayingDaemon
 from nowplaying.misc.saemubox import SaemuBox
 
@@ -39,12 +40,13 @@ def test_signal_handler(mock_sys_exit, options):
         mock_sys_exit.assert_called_with(EX_OK)
 
 
-@patch("api.ApiServer.run_server")
-def test__start_apiserver(mock_run_server):
+@patch("nowplaying.api.ApiServer.run_server")
+def test__start_apiserver(mock_run_server, options):
     """Test the start_apiserver function."""
 
-    options = MagicMock()
-    daemon = NowPlayingDaemon(options)
-    daemon._start_apiserver()
+    with patch.object(SaemuBox, "__init__", lambda *_: None):
+        daemon = NowPlayingDaemon(options)
 
-    mock_run_server.assert_called_once_with(options, daemon.event_queue)
+        daemon._start_apiserver()
+
+    mock_run_server.assert_called_with(options, daemon.event_queue)
