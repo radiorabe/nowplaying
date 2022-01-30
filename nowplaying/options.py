@@ -10,6 +10,17 @@ class Options(object):
     """Default socket of 2 minutes, to prevent endless hangs on HTTP requests."""
     socketDefaultTimeout = 120
 
+    class DefaultShowURLType(str):
+        """Default show URL, if we have no further info on the current show, we will use this URL.
+
+        Currently this flag is experimental and may be ignored in some cases.
+
+        Default: https://www.rabe.ch/"""
+
+        pass
+
+    default_show_url: DefaultShowURLType = "https://www.rabe.ch/"
+
     def __init__(self):
         """Configure configargparse."""
         self.__args = configargparse.ArgParser(
@@ -67,6 +78,12 @@ class Options(object):
             default="https://airtime.service.int.rabe.ch/api/live-info-v2/format/json",
         )
         self.__args.add_argument(
+            "--default-show-url",
+            dest="default_show_url",
+            help=__class__.DefaultShowURLType.__doc__,
+            default=__class__.default_show_url,
+        )
+        self.__args.add_argument(
             "--input-file",
             dest="inputFile",
             help="XML 'now-playing' input file location",
@@ -91,3 +108,5 @@ class Options(object):
     def parse_known_args(self):
         """Parse known args with configargparse."""
         self.__args.parse_known_args(namespace=self)
+        # TODO v3 remove hack
+        self.current_show_url = self.currentShowUrl

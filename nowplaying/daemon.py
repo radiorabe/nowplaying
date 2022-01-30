@@ -99,9 +99,7 @@ class NowPlayingDaemon:
         klangbecken.add_track_handler(track_handler)
         handler.register_observer(klangbecken)
 
-        nonklangbecken = inputObservers.NonKlangbeckenInputObserver(
-            self.options.currentShowUrl
-        )
+        nonklangbecken = inputObservers.NonKlangbeckenInputObserver(self.options)
         nonklangbecken.add_track_handler(track_handler)
         handler.register_observer(nonklangbecken)
 

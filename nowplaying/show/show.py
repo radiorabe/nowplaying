@@ -7,8 +7,6 @@ from nowplaypadgen.show import Show as PadGenShow, ShowError as PadGenShowError
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_SHOW_URL = "https://www.rabe.ch"
-
 
 class ShowError(PadGenShowError):
     """Show related exception."""
@@ -17,12 +15,26 @@ class ShowError(PadGenShowError):
 class Show(PadGenShow):
     """Show object which has a start and end time and an optional URL."""
 
-    def __init__(self):
+    class Options:
+        def __init__(self, default_show_url: str = None):
+            if not default_show_url:
+                # TODO v3 remove this fallback
+                logger.warning(
+                    "No default show URL specified, using deprecated hardcoded default."
+                )
+                default_show_url = "https://www.rabe.ch/"
+            self.default_show_url = default_show_url
+
+    def __init__(self, options: Options = None):
         """Initialize a new Show object."""
+        if isinstance(options, str) or options is None:
+            # TODO v3 remove this fallback
+            options = Show.Options()
+        self.options = options
         super().__init__()
 
         self.name = ""
-        self.url = DEFAULT_SHOW_URL
+        self.url = self.options.default_show_url
         self.uuid = str(uuid.uuid4())  #: The show's global unique identifier
 
     def set_name(self, name):

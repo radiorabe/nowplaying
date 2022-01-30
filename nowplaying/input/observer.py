@@ -22,13 +22,27 @@ class InputObserver(ABC):
     _SHOW_NAME_KLANGBECKEN = "Klangbecken"
     _SHOW_URL_KLANGBECKEN = "http://www.rabe.ch/sendungen/musik/klangbecken.html"
 
-    def __init__(self, current_show_url):
-        self.current_show_url = current_show_url
+    class Options:
+        def __init__(self, current_show_url, default_show_url: str = None):
+            if not default_show_url:
+                # TODO v3 remove this fallback
+                logger.warning(
+                    "No default show URL specified, using deprecated hardcoded default."
+                )
+                default_show_url = "https://www.rabe.ch/"
+            self.current_show_url = current_show_url
+            self.default_show_url = default_show_url
+
+    def __init__(self, options):
+        if isinstance(options, str) or options is None:
+            # TODO v3 remove this fallback
+            options = __class__.Options(options)
+        self.current_show_url = options.current_show_url
 
         self.first_run = True
         self.previous_saemubox_id = None
         self.show = None
-        self.showclient = client.ShowClient(current_show_url)
+        self.showclient = client.ShowClient(options)
         self.show = self.showclient.get_show_info()
 
         self.previous_show_uuid = None

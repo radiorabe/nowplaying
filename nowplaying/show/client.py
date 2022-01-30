@@ -28,11 +28,24 @@ class ShowClient:
     __cleanup_show_name_regexp = re.compile(r"&(\w+?);")
     __show_datetime_format = "%Y-%m-%d %H:%M:%S"
 
-    def __init__(self, current_show_url):
+    class Options:
+        """Options for ShowClient."""
 
-        self.current_show_url = current_show_url
+        def __init__(self, current_show_url, default_show_url="https://www.rabe.ch/"):
+            self.current_show_url = current_show_url
+            self.default_show_url = default_show_url
 
-        self.show = Show()
+    def __init__(self, options):
+        if isinstance(options, str):
+            logger.warning(
+                "legacy string options passed to ShowClient, please use a ShowClient.Options object instead"
+            )
+            options = __class__.Options(current_show_url=options)
+
+        self.options = options
+        self.current_show_url = options.current_show_url
+
+        self.show = Show(self.options)
         self.showtz = None
 
     def get_show_info(self, force_update=False):
@@ -58,7 +71,7 @@ class ShowClient:
             logger.debug("Show still running, won't update show info")
 
     def update(self):
-        self.show = Show()  # Create a new show object
+        self.show = Show(self.options)  # Create a new show object
 
         # Set the show's default end time to now + 30 seconds to prevent updates
         # happening every second and hammering the web service if something
