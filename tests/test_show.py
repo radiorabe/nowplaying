@@ -18,7 +18,7 @@ def test_init():
 def test_name():
     """Test :class:`Show`'s :meth:`name` property."""
     show = Show()
-    assert show.name is None
+    assert show.name == ""
     show.set_name("Test")
     assert show.name == "Test"
 
@@ -58,4 +58,4 @@ def test_endtime():
 def test_prettyprinting():
     """Test :class:`Show`'s :meth:`__str__` method."""
     show = Show()
-    assert "Show 'None'" in str(show)
+    assert "Show ''" in str(show)

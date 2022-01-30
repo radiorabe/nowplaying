@@ -21,6 +21,7 @@ class Show(PadGenShow):
         """Initialize a new Show object."""
         super().__init__()
 
+        self.name = ""
         self.url = DEFAULT_SHOW_URL
         self.uuid = str(uuid.uuid4())  #: The show's global unique identifier
 

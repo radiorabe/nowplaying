@@ -16,12 +16,21 @@ class Options(object):
             default_config_files=["/etc/nowplaying/conf.d/*.conf", "~/.nowplayingrc"]
         )
         self.__args.add_argument(
+            "-b",
+            "--saemubox-ip",
+            dest="saemubox_ip",
+            help="IP address of SAEMUBOX",
+            default="",
+        )
+        # TODO v3 remove this option
+        self.__args.add_argument(
             "-m",
             "--icecast-base",
             dest="icecastBase",
             help="Icecast base URL",
             default="http://stream-master.audio.int.rabe.ch:8000/admin/",
         )
+        # TODO v3 remove this option
         self.__args.add_argument(
             "--icecast-password", dest="icecastPassword", help="Icecast Password"
         )
@@ -29,16 +38,10 @@ class Options(object):
             "-i",
             "--icecast",
             action="append",
-            help="Icecast base URL, allowed multiple times",
-            default=[
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-hd.mp3",
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-high.mp3",
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-mid.mp3",
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-low.mp3",
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-ultra-low.mp3",
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-high.opus",
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-low.opus",
-            ],
+            help="""Icecast endpoints, allowed multiple times. nowplaying will send metadata updates to each
+            of the configured endpoints. Specify complete connection data like username and password in the
+            URLs e.g. 'http://source:changeme@icecast.example.org:8000/admin/metadata.xsl?mount=/radio'.""",
+            default=[],
         )
         self.__args.add_argument(
             "-d",
@@ -47,15 +50,14 @@ class Options(object):
             help="DAB audio companion base URL, allowed multiple times (ie. http://dab.example.org:8080)",
             default=[],
         )
-        # TODO pre-v3 set to true when tested
         # TODO v3 remove when stable
         self.__args.add_argument(
             "--dab-send-dls",
             type=bool,
             nargs="?",
             dest="dab_send_dls",
-            help="Send artist/title to DAB companions dls endpoint (default: False)",
-            default=False,
+            help="Send artist/title to DAB companions dls endpoint (default: True)",
+            default=True,
         )
         self.__args.add_argument(
             "-s",

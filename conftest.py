@@ -4,7 +4,7 @@ import sys
 import pytest
 
 from nowplaying.show.show import Show
-from nowplaying.track.observer import TrackObserver
+from nowplaying.track.observers.base import TrackObserver
 from nowplaying.track.track import Track
 
 PACKAGE_PARENT = "nowplaying"
@@ -30,11 +30,13 @@ def new_track(
     artist="Hairmare and the Band",
     title="An Ode to legacy Python Code",
     album="Live at the Refactoring Club",
+    duration=128,
 ):
     t = Track()
     t.set_artist(artist)
     t.set_title(title)
     t.set_album(album)
+    t.set_duration(duration)
     return t
 
 
