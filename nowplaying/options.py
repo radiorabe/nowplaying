@@ -22,6 +22,7 @@ class Options(object):
             help="IP address of SAEMUBOX",
             default="",
         )
+        # TODO v3 remove this option
         self.__args.add_argument(
             "-m",
             "--icecast-base",
@@ -29,6 +30,7 @@ class Options(object):
             help="Icecast base URL",
             default="http://stream-master.audio.int.rabe.ch:8000/admin/",
         )
+        # TODO v3 remove this option
         self.__args.add_argument(
             "--icecast-password", dest="icecastPassword", help="Icecast Password"
         )
@@ -36,16 +38,10 @@ class Options(object):
             "-i",
             "--icecast",
             action="append",
-            help="Icecast base URL, allowed multiple times",
-            default=[
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-hd.mp3",
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-high.mp3",
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-mid.mp3",
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-low.mp3",
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-ultra-low.mp3",
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-high.opus",
-                "http://stream-master.audio.int.rabe.ch:8000/admin/metadata.xsl?mount=/livestream/rabe-low.opus",
-            ],
+            help="""Icecast endpoints, allowed multiple times. nowplaying will send metadata updates to each
+            of the configured endpoints. Specify complete connection data like username and password in the
+            URLs e.g. 'http://source:changeme@icecast.example.org:8000/admin/metadata.xsl?mount=/radio'.""",
+            default=[],
         )
         self.__args.add_argument(
             "-d",
