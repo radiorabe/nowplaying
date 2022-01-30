@@ -16,7 +16,8 @@ The nowplaying daemon takes various sources into account:
 It then make an informed decision as to what should be our leading PAD data and pushes this to it's track handlers for the following sinks:
 
 - DAB+ (via the [ODR-EncoderManager](https://github.com/Opendigitalradio/ODR-EncoderManager) API)
-- Webstream by pushing to out [Icecast](https://icecast.org/) instances
+- Webstream by pushing to our [Icecast](https://icecast.org/) instances
+- Statically hosted XML output for browsers on songticker.rabe.ch
 
 The sources are currently individually implemented and are being replaced with generic [RaBe CloudEvents](https://github.com/radiorabe/event-spec) based sources. In many places the legacy system is underdocumented and this documentation documents the new system.
 
