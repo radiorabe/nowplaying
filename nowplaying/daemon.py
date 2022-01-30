@@ -96,7 +96,16 @@ class NowPlayingDaemon:
         # TODO test once options have been refactored with v3
         handler = TrackEventHandler()
         [
-            handler.register_observer(IcecastTrackObserver(url))
+            handler.register_observer(
+                IcecastTrackObserver(
+                    # TODO v3 remove uername and password because we mandate specifying via url
+                    options=IcecastTrackObserver.Options(
+                        url=url,
+                        username="source",
+                        password=self.options.icecastPassword,
+                    )
+                )
+            )
             for url in self.options.icecast
         ]
         [
