@@ -66,10 +66,10 @@ class ApiServer:
     def wsgi_app(self, environ, start_response):
         request = Request(environ)
         auth = request.authorization
-        if not auth or not self.check_auth(auth.username, auth.password):
-            response = self.auth_required(request)
-        else:
+        if auth and self.check_auth(auth.username, auth.password):
             response = self.dispatch_request(request)
+        else:
+            response = self.auth_required(request)
         return response(environ, start_response)
 
     def check_auth(self, username, password):
