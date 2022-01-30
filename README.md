@@ -4,7 +4,7 @@ This repo contains the tool we use to grab, aggregate and publish show, artist a
 
 The nowplaying project grabs info from RaBes playout solution and publishes them to broadcast vectors like DAB+ and Webstreams.
 
-It also takes care of generating our live ticker at songitcker.rabe.ch.
+It also takes care of generating our live ticker at songticker.rabe.ch.
 
 ## Overview
 
