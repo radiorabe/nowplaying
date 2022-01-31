@@ -39,7 +39,7 @@ class Options(object):
             "--icecast-base",
             dest="icecastBase",
             help="Icecast base URL",
-            default="http://stream-master.audio.int.rabe.ch:8000/admin/",
+            default="http://icecast.example.org:8000/admin/",
         )
         # TODO v3 remove this option
         self.__args.add_argument(
@@ -74,8 +74,7 @@ class Options(object):
             "-s",
             "--show",
             dest="currentShowUrl",
-            help="Current Show URL",
-            default="https://airtime.service.int.rabe.ch/api/live-info-v2/format/json",
+            help="Current Show URL e.g. 'https://libretime.int.example.org/api/live-info-v2/format/json'",
         )
         self.__args.add_argument(
             "--default-show-url",
@@ -94,6 +93,16 @@ class Options(object):
             dest="tickerOutputFile",
             help="ticker XML output format",
             default="/var/www/localhost/htdocs/songticker/0.9.3/current.xml",
+        )
+        self.__args.add_argument(
+            "--instrumentation-otlp-enable",
+            type=bool,
+            nargs="?",
+            const=True,
+            dest="otlp_enable",
+            help="Enable OpenTelemetry Protocol (OTLP) exporter (default: False)",
+            default=False,
+            env_var="NOWPLAYING_INSTRUMENTATION_OTLP_ENABLE",
         )
         self.__args.add_argument(
             "--debug",

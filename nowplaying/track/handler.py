@@ -34,7 +34,11 @@ class TrackEventHandler:
 
     def track_started(self, track: Track):
         """Inform all registered track-event observers about a track started event."""
-        logger.info("Track started: %s", track)
+        logger.info(
+            "Sending track-started event to %s observers: %s",
+            len(self.__observers),
+            track,
+        )
 
         for observer in self.__observers:
             logger.debug(
@@ -48,10 +52,14 @@ class TrackEventHandler:
 
     def track_finished(self, track: Track):
         """Inform all registered track-event observers about a track finished event."""
-        logger.info("Track finished: %s", track)
+        logger.info(
+            "Sending track-finished event to %s observers: %s",
+            len(self.__observers),
+            track,
+        )
 
         for observer in self.__observers:
-            logger.info(
+            logger.debug(
                 "Sending track-finished event to observer %s", observer.__class__
             )
 
