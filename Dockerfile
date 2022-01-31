@@ -4,8 +4,8 @@ COPY ./ /app/
 
 RUN    cd /app \
     && microdnf install git-core | tee > /tmp/install.log \
-    && python3 -mpip install setuptools-git-versioning \
-    && python3 -mpip install . \
+    && python3 -mpip --no-cache-dir install setuptools-git-versioning \
+    && python3 -mpip --no-cache-dir install . \
     && microdnf remove `awk '/^Installing: [a-zA-Z]+/ {print $2}' /tmp/install.log | awk -F ';' '{printf $1 " "}'` \
     && microdnf clean all \
     && rm -rf /app/ /tmp/install.log
