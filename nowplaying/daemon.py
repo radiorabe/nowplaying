@@ -35,6 +35,7 @@ class NowPlayingDaemon:
     def main(self):  # pragma: no cover
         # TODO test once there is not saemubox in the loop
         logger.info("Starting up now-playing daemon")
+        self.saemubox.run()
 
         try:
             self.register_signal_handlers()
