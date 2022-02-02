@@ -1,4 +1,4 @@
-FROM ghcr.io/radiorabe/python-minimal:0.1.2
+FROM ghcr.io/radiorabe/python-minimal:0.2.0
 
 COPY ./ /app/
 
