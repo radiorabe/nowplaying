@@ -9,9 +9,9 @@ flake8-tuple==0.4.1
 faker==11.1.0
 isort==5.10.1
 mock==4.0.3
-pytest==6.2.5
+pytest==7.0.0
 pytest-cov==3.0.0
 pytest-env==0.6.2
-twine==3.7.1
+twine==3.8.0
 types-requests==2.27.8
 wheel==0.37.1
