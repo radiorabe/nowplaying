@@ -2,6 +2,7 @@ import json
 import logging
 from queue import Queue
 
+import cherrypy
 from cloudevents.exceptions import GenericException as CloudEventException
 from cloudevents.http import from_http
 from werkzeug.exceptions import BadRequest, HTTPException, UnsupportedMediaType
@@ -23,42 +24,43 @@ _RABE_CLOUD_EVENTS_SUPPORTED_MEDIA_TYPES = (
 class ApiServer:
     """The API server."""
 
-    @classmethod
-    def run_server(cls, options, event_queue: Queue):
+    def __init__(self, options, event_queue: Queue, realm: str = "nowplaying"):
+        self.options = options
+        self.event_queue = event_queue
+        self.realm = realm
+
+        self.url_map = Map([Rule("/webhook", endpoint="webhook")])
+
+    def run_server(self):
         """Run the API server."""
-        app = cls(event_queue, options.apiAuthUsers)
-        if options.debug:
+        if self.options.debug:
             from werkzeug.serving import run_simple
 
-            run_simple(
-                options.apiBindAddress,
-                options.apiPort,
-                app,
+            self._server = run_simple(
+                self.options.apiBindAddress,
+                self.options.apiPort,
+                self,
                 use_debugger=True,
                 use_reloader=True,
             )
         else:  # pragma: no cover
-            import cherrypy
-
-            cherrypy.tree.graft(app, "/")
+            cherrypy.tree.graft(self, "/")
             cherrypy.server.unsubscribe()
 
-            server = cherrypy._cpserver.Server()
+            self._server = cherrypy._cpserver.Server()
 
-            server.socket_host = options.apiBindAddress
-            server.socket_port = options.apiPort
+            self._server.socket_host = self.options.apiBindAddress
+            self._server.socket_port = self.options.apiPort
 
-            server.subscribe()
+            self._server.subscribe()
 
             cherrypy.engine.start()
             cherrypy.engine.block()
 
-    def __init__(self, event_queue: Queue, users: dict, realm: str = "nowplaying"):
-        self.event_queue = event_queue
-        self.users = users
-        self.realm = realm
-
-        self.url_map = Map([Rule("/webhook", endpoint="webhook")])
+    def stop_server(self):
+        """Stop the server."""
+        self._server.stop()
+        cherrypy.engine.exit()
 
     def __call__(self, environ, start_response):
         return self.wsgi_app(environ, start_response)
@@ -73,7 +75,10 @@ class ApiServer:
         return response(environ, start_response)
 
     def check_auth(self, username, password):
-        return username in self.users and self.users[username] == password
+        return (
+            username in self.options.apiAuthUsers
+            and self.options.apiAuthUsers[username] == password
+        )
 
     def auth_required(self, request):
         return Response(

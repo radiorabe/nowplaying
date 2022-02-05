@@ -1,5 +1,6 @@
 from base64 import b64encode
 from queue import Queue
+from types import SimpleNamespace
 
 import pytest
 from faker import Faker
@@ -44,15 +45,24 @@ def fixture_users(user, password):
     return {user: password}
 
 
+@pytest.fixture(name="options")
+def fixture_options(users):
+    return SimpleNamespace(
+        **{
+            "apiAuthUsers": users,
+        }
+    )
+
+
 @pytest.fixture(name="unauthenticated_client")
-def fixture_unauthenticated_client(users):
+def fixture_unauthenticated_client(options):
     """Create a test client."""
     event_queue = Queue()
-    yield Client(ApiServer(event_queue, users), Response)
+    yield Client(ApiServer(options, event_queue=event_queue), Response)
 
 
 @pytest.fixture(name="client")
-def fixture_client(users, user, password):
+def fixture_client(options, user, password):
     """Create a test client."""
     event_queue = Queue()
-    yield AuthenticatedClient(ApiServer(event_queue, users), user, password)
+    yield AuthenticatedClient(ApiServer(options, event_queue), user, password)

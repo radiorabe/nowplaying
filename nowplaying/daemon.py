@@ -53,7 +53,13 @@ class NowPlayingDaemon:
 
     def _start_apiserver(self):
         """Start the API server."""
-        ApiServer.run_server(self.options, self.event_queue)  # blocking
+        self._api = ApiServer(self.options, self.event_queue)
+        self._api.run_server()  # blocking
+
+    def _stop_apiserver(self):
+        """Stop the API server."""
+        logger.info("Stopping API server")
+        self._api.stop_server()
 
     def _main_loop(self, input_handler: InputHandler):  # pragma: no cover
         """
@@ -91,6 +97,7 @@ class NowPlayingDaemon:
 
         if signum == signal.SIGINT or signum == signal.SIGKILL:
             logger.info("Signal %i caught, terminating." % signum)
+            self._stop_apiserver()
             sys.exit(os.EX_OK)
 
     def get_track_handler(self):  # pragma: no cover
