@@ -41,6 +41,19 @@ def test_run_server_with_debug(mock_run_simple, users):
     )
 
 
+@mock.patch("cherrypy.engine.stop")
+@mock.patch("cherrypy._cpserver.Server")
+def test_stop_server(mock_server, mock_stop, options):
+    """Test the stop_server function."""
+
+    api = ApiServer(options, event_queue=Queue())
+    api._server = mock_server
+    api.stop_server()
+
+    mock_server.stop.assert_called_once_with()
+    mock_stop.assert_called_once_with()
+
+
 @pytest.mark.parametrize("content_type", [None, "text/plain", "application/xml"])
 def test_webhook_no_supported_header(client, content_type):
     """Test the webhook function with invalid headers."""
