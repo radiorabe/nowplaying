@@ -10,7 +10,7 @@ RUN    cd /app \
 
 FROM ghcr.io/radiorabe/python-minimal:0.2.1 AS app
 
-COPY /app/dist/*.whl /tmp/dist/
+COPY --from=build /app/dist/*.whl /tmp/dist/
 
 RUN    python3 -mpip --no-cache-dir install /tmp/dist/*.whl \
     && rm -rf /tmp/dist/
