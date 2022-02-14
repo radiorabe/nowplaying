@@ -28,9 +28,7 @@ def test_run_server_with_debug(mock_run_simple, users):
             "debug": True,
         }
     )
-    event_queue = Queue()
-
-    server = ApiServer(options, event_queue=event_queue)
+    server = ApiServer(options, event_queue=Queue())
     server.run_server()
     mock_run_simple.assert_called_once_with(
         options.apiBindAddress,

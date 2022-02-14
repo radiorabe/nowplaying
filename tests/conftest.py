@@ -57,12 +57,10 @@ def fixture_options(users):
 @pytest.fixture(name="unauthenticated_client")
 def fixture_unauthenticated_client(options):
     """Create a test client."""
-    event_queue = Queue()
-    yield Client(ApiServer(options, event_queue=event_queue), Response)
+    yield Client(ApiServer(options, event_queue=Queue()), Response)
 
 
 @pytest.fixture(name="client")
 def fixture_client(options, user, password):
     """Create a test client."""
-    event_queue = Queue()
-    yield AuthenticatedClient(ApiServer(options, event_queue), user, password)
+    yield AuthenticatedClient(ApiServer(options, event_queue=Queue()), user, password)
