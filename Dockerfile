@@ -3,6 +3,8 @@ FROM ghcr.io/radiorabe/python-minimal:0.2.1 AS build
 COPY ./ /app/
 
 RUN    cd /app \
+    && echo -n "Python Version: " \
+    && python -V \
     && microdnf install git-core | tee > /tmp/install.log \
     && python3 -mpip --no-cache-dir install setuptools-git-versioning wheel \
     && python3 setup.py bdist_wheel
