@@ -1,9 +1,6 @@
 """Tests for :class:`DabAudioCompanionTrackObserver`."""
 
-from unittest.mock import Mock
-
-import mock
-from mock.mock import MagicMock, patch
+from unittest.mock import MagicMock, Mock, patch
 
 from nowplaying.track.observers.dab_audio_companion import (
     DabAudioCompanionTrackObserver,
@@ -21,7 +18,7 @@ def test_init():
     assert dab_audio_companion_track_observer.base_url == f"{_BASE_URL}/api/setDLS"
 
 
-@mock.patch("requests.post")
+@patch("requests.post")
 def test_track_started(mock_requests_post, track_factory, show_factory):
     """Test :class:`DabAudioCompanionTrackObserver`'s :meth:`track_started` method."""
     mock_requests_post.return_value.getcode = Mock(return_value=200)

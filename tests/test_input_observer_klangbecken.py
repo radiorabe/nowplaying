@@ -1,6 +1,7 @@
+from unittest.mock import Mock, patch
+
 import pytest
 from cloudevents.http.event import CloudEvent
-from mock import Mock, patch
 
 from nowplaying.input.observer import KlangbeckenInputObserver
 from nowplaying.track.track import Track
