@@ -2,9 +2,8 @@
 
 import json
 from datetime import datetime, timedelta
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
-import mock
 import pytest
 import pytz
 import requests
@@ -60,7 +59,7 @@ def test_lazy_update():
     show_client.update.assert_called_once()
 
 
-@mock.patch("logging.Logger.debug")
+@patch("logging.Logger.debug")
 def test_lazy_update_with_show_set(mock_logger_debug):
     """Test :class:`ShowClient`'s :meth:`lazy_update` method with a show set."""
     show_client = ShowClient(_BASE_URL)
@@ -78,7 +77,7 @@ def test_lazy_update_with_show_set(mock_logger_debug):
     )
 
 
-@mock.patch("requests.get")
+@patch("requests.get")
 def test_update(mock_requests_get):
     """Test :class:`ShowClient`'s :meth:`update` method."""
     mock_requests_get.return_value.json = Mock(
@@ -98,7 +97,7 @@ def test_update(mock_requests_get):
     assert show_client.show.url == "https://www.rabe.ch/stimme-der-kutuesch/"
 
 
-@mock.patch("requests.get")
+@patch("requests.get")
 def test_update_connection_error(mock_requests_get):
     """Test :class:`ShowClient`'s :meth:`update` method when a connection error occurs.
 
@@ -111,7 +110,7 @@ def test_update_connection_error(mock_requests_get):
     assert show_client.show.url == "https://www.rabe.ch"
 
 
-@mock.patch("requests.get")
+@patch("requests.get")
 def test_update_no_url(mock_requests_get):
     """Test :class:`ShowClient`'s :meth:`update` method when no url is returned."""
     mock_requests_get.return_value.json = Mock(
@@ -124,7 +123,7 @@ def test_update_no_url(mock_requests_get):
     assert show_client.show.url == "https://www.rabe.ch"
 
 
-@mock.patch("requests.get")
+@patch("requests.get")
 @pytest.mark.parametrize(
     "fixture,field",
     [
@@ -144,7 +143,7 @@ def test_update_empty_field(mock_requests_get, fixture, field):
     assert str(info.value) == f"Missing show {field}"
 
 
-@mock.patch("requests.get")
+@patch("requests.get")
 def test_update_past_show(mock_requests_get):
     """Test :class:`ShowClient`'s :meth:`update` method when the show is in the past."""
     mock_requests_get.return_value.json = Mock(
@@ -158,7 +157,7 @@ def test_update_past_show(mock_requests_get):
     assert str(info.value) == "Show end time (2019-01-27 14:00:00+00:00) is in the past"
 
 
-@mock.patch("requests.get")
+@patch("requests.get")
 def test_update_show_empty(mock_requests_get):
     """Test :class:`ShowClient`'s :meth:`update` method when the show is empty.
 
@@ -175,7 +174,7 @@ def test_update_show_empty(mock_requests_get):
     assert show_client.show.url == "https://www.rabe.ch"
 
 
-@mock.patch("requests.get")
+@patch("requests.get")
 def test_update_show_encoding_fix_in_name(mock_requests_get):
     """Test :class:`ShowClient`'s :meth:`update` method when the show name has an encoding fix."""
     mock_requests_get.return_value.json = Mock(
@@ -188,7 +187,7 @@ def test_update_show_encoding_fix_in_name(mock_requests_get):
     assert show_client.show.name == "Rhythm & Blues Juke Box öç &nope;"
 
 
-@mock.patch("requests.get")
+@patch("requests.get")
 def test_update_when_show_is_in_next_array(mock_requests_get):
     """Test :class:`ShowClient`'s :meth:`update` method."""
     mock_requests_get.return_value.json = Mock(

@@ -1,4 +1,4 @@
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 
 from nowplaying.__main__ import main
 from nowplaying.main import NowPlaying

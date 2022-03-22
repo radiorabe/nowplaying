@@ -30,5 +30,5 @@ class InputHandler:
                 observer.update(saemubox_id)
             except Exception as e:  # pragma: no cover
                 # TODO test once replaced with non generic exception
-                logger.error("InputObserver (%s): %s" % (observer.__class__, e))
+                logger.error(f"InputObserver ({observer.__class__}): {e}")
                 logger.exception(e)

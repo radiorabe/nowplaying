@@ -32,7 +32,7 @@ class TickerTrackObserver(TrackObserver):
 
     def track_started(self, track):
         logger.info(
-            "Updating Ticker XML file for track: %s - %s" % (track.artist, track.title)
+            f"Updating Ticker XML file for track: {track.artist} - {track.title}"
         )
         try:
             tz = pytz.timezone("Europe/Zurich")

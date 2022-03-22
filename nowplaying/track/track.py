@@ -96,10 +96,4 @@ class Track:
         return False
 
     def __str__(self):
-        return "Track '%s' - '%s', start: '%s', end: '%s', uid: %s" % (
-            self.artist,
-            self.title,
-            self.starttime,
-            self.endtime,
-            self.uuid,
-        )
+        return f"Track '{self.artist}' - '{self.title}', start: '{self.starttime}', end: '{self.endtime}', uid: {self.uuid}"

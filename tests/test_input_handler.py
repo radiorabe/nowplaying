@@ -1,4 +1,4 @@
-from mock import Mock
+from unittest.mock import Mock
 
 from nowplaying.input.handler import InputHandler
 
