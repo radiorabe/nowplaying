@@ -1,5 +1,5 @@
 import logging
-from typing import Optional, Tuple
+from typing import Optional
 from urllib.parse import parse_qs, urlparse
 
 logger = logging.getLogger(__name__)
@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 def parse_icecast_url(
     url: str,
-) -> Tuple[str, Optional[str], Optional[str], Optional[str]]:
+) -> tuple[str, Optional[str], Optional[str], Optional[str]]:
     """Parse an Icecast URL into the componets relevant to the :class:`IcecastTrackObserver`.
 
     Use it to grab the username, password, and mountpoint from the URL.
