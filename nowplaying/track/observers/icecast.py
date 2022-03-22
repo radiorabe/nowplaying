@@ -57,7 +57,7 @@ class IcecastTrackObserver(TrackObserver):
 
     def track_started(self, track: Track):
         logger.info(
-            "Updating Icecast Metadata for track: %s - %s" % (track.artist, track.title)
+            f"Updating Icecast Metadata for track: {track.artist} - {track.title}"
         )
 
         title = track.title

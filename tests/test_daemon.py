@@ -2,9 +2,9 @@
 
 from os import EX_OK
 from signal import SIGINT
+from unittest.mock import patch
 
 import pytest
-from mock import patch
 
 from nowplaying.daemon import NowPlayingDaemon
 from nowplaying.misc.saemubox import SaemuBox

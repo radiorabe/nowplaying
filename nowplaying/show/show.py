@@ -59,10 +59,4 @@ class Show:
         self.endtime = endtime
 
     def __str__(self):
-        return "Show '%s' (%s), start: '%s', end: '%s', url: %s" % (
-            self.name,
-            self.uuid,
-            self.starttime,
-            self.endtime,
-            self.url,
-        )
+        return f"Show '{self.name}' ({self.uuid}), start: '{self.starttime}', end: '{self.endtime}', url: {self.url}"

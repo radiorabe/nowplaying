@@ -73,7 +73,7 @@ class ScrobblerTrackObserver(TrackObserver):  # pragma: no cover
             logger.error("Default artist or title, skip scrobble submit")
             return False
 
-        logger.info("AS submit for track: %s - %s" % (track.artist, track.title))
+        logger.info(f"AS submit for track: {track.artist} - {track.title}")
 
         # Get UTC unix timestamp without daylight saving informations
         # http://stackoverflow.com/questions/1077285/how-to-specify-time-zone-utc-when-converting-to-unix-time-python
