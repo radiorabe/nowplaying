@@ -22,11 +22,8 @@ class AuthenticatedClient(Client):
         if "headers" not in kwargs:  # pragma: no cover
             kwargs["headers"] = {}
         if "Authorization" not in kwargs["headers"]:
-            kwargs["headers"]["Authorization"] = "Basic {0}".format(
-                b64encode(f"{self.user}:{self.password}".encode("utf-8")).decode(
-                    "utf-8"
-                )
-            )
+            pwd = b64encode(f"{self.user}:{self.password}".encode()).decode("utf-8")
+            kwargs["headers"]["Authorization"] = f"Basic {pwd}"
         return super().post(*args, **kwargs)
 
 

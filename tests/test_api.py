@@ -3,8 +3,8 @@
 import json
 from queue import Queue
 from types import SimpleNamespace
+from unittest import mock
 
-import mock
 import pytest
 
 from nowplaying.api import ApiServer
