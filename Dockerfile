@@ -1,4 +1,4 @@
-FROM ghcr.io/radiorabe/python-minimal:0.2.1 AS build
+FROM ghcr.io/radiorabe/python-minimal:0.2.2 AS build
 
 COPY ./ /app/
 
@@ -10,7 +10,7 @@ RUN    cd /app \
     && python3 setup.py bdist_wheel
 
 
-FROM ghcr.io/radiorabe/python-minimal:0.2.1 AS app
+FROM ghcr.io/radiorabe/python-minimal:0.2.2 AS app
 
 COPY --from=build /app/dist/*.whl /tmp/dist/
 
