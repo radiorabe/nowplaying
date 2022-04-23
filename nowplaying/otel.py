@@ -10,7 +10,7 @@ from datetime import datetime
 from opentelemetry.exporter.otlp.proto.grpc._log_exporter import OTLPLogExporter
 from opentelemetry.sdk._logs import (
     LogEmitterProvider,
-    OTLPHandler,
+    LoggingHandler,
     set_log_emitter_provider,
 )
 from opentelemetry.sdk._logs.export import (
@@ -64,7 +64,7 @@ def setup_otel(otlp_enable=False):  # pragma: no cover
 
     log_emitter = log_emitter_provider.get_log_emitter(__name__, "0.1")
 
-    handler = OTLPHandler(level=logging.NOTSET, log_emitter=log_emitter)
+    handler = LoggingHandler(level=logging.NOTSET, log_emitter=log_emitter)
     handler.addFilter(SourceAttributeFilter())
 
     root.addHandler(handler)
