@@ -15,7 +15,8 @@ class Options:
 
         Currently this flag is experimental and may be ignored in some cases.
 
-        Default: https://www.rabe.ch/"""
+        Default: https://www.rabe.ch/
+        """
 
         pass
 
