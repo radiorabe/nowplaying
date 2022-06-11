@@ -107,7 +107,7 @@ def test_update_connection_error(mock_requests_get):
     show_client = ShowClient(_BASE_URL)
     show_client.update()
     assert show_client.show.name == ""
-    assert show_client.show.url == "https://www.rabe.ch"
+    assert show_client.show.url == "https://www.rabe.ch/"
 
 
 @patch("requests.get")
@@ -120,7 +120,7 @@ def test_update_no_url(mock_requests_get):
     )
     show_client = ShowClient(_BASE_URL)
     show_client.update()
-    assert show_client.show.url == "https://www.rabe.ch"
+    assert show_client.show.url == "https://www.rabe.ch/"
 
 
 @patch("requests.get")
@@ -171,7 +171,7 @@ def test_update_show_empty(mock_requests_get):
     show_client = ShowClient(_BASE_URL)
     show_client.update()
     assert show_client.show.name == ""
-    assert show_client.show.url == "https://www.rabe.ch"
+    assert show_client.show.url == "https://www.rabe.ch/"
 
 
 @patch("requests.get")

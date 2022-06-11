@@ -4,14 +4,17 @@ from datetime import datetime
 
 import pytest
 import pytz
+from nowplaypadgen.show import Show as PadGenShow
 
-from nowplaying.show.show import DEFAULT_SHOW_URL, Show, ShowError
+from nowplaying.show.show import Show, ShowError
+
+DEFAULT_SHOW_URL = "https://www.rabe.ch/"
 
 
 def test_init():
     """Test :class:`Show`'s :meth:`.__init__` method."""
     show = Show()
-    assert show.starttime == show.endtime
+    assert isinstance(show, PadGenShow)
 
 
 def test_name():

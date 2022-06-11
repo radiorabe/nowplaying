@@ -1,8 +1,10 @@
 """Tests for :class:`observer.TickerTrackObserver`."""
 
 import os
+from datetime import datetime, timedelta
 
 import pytest
+import pytz
 
 from nowplaying.track.observers.ticker import TickerTrackObserver
 
@@ -26,6 +28,10 @@ def test_track_started(track_factory, show_factory):
 
     track = track_factory()
     track.show = show_factory()
+
+    now = datetime.now(pytz.timezone("UTC"))
+    track.show.starttime = now
+    track.show.endtime = now + timedelta(hours=1)
 
     ticker_track_observer = TickerTrackObserver(
         ticker_file_path="/tmp/track_started.xml"
