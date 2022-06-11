@@ -1,7 +1,7 @@
 import configargparse
 
 
-class Options(object):
+class Options:
     """Contain all hardcoded and loaded from configargparse options."""
 
     """How many seconds the main daemon loop sleeps."""

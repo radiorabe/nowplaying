@@ -1,14 +1,16 @@
-FROM ghcr.io/radiorabe/python-minimal:0.1.2
+FROM ghcr.io/radiorabe/s2i-python:0.3.0 AS build
 
-COPY ./ /app/
+COPY ./ /opt/app-root/src
 
-RUN    cd /app \
-    && microdnf install git-core | tee > /tmp/install.log \
-    && python3 -mpip install setuptools-git-versioning \
-    && python3 -mpip install . \
-    && microdnf remove `awk '/^Installing: [a-zA-Z]+/ {print $2}' /tmp/install.log | awk -F ';' '{printf $1 " "}'` \
-    && microdnf clean all \
-    && rm -rf /app/ /tmp/install.log
+RUN python3 setup.py bdist_wheel
+
+
+FROM ghcr.io/radiorabe/python-minimal:0.4.0 AS app
+
+COPY --from=build /opt/app-root/src/dist/*.whl /tmp/dist/
+
+RUN    python3 -mpip --no-cache-dir install /tmp/dist/*.whl \
+    && rm -rf /tmp/dist/
 
 # make requests use os ca certs that contain the RaBe root CA
 ENV REQUESTS_CA_BUNDLE=/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem

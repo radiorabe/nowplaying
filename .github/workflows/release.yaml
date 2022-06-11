@@ -12,11 +12,16 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v2.4.0
+        uses: actions/checkout@v3
+
+      - name: Prepare additional Metadata
+        id: addtional_meta
+        run: |
+          echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
 
       - name: Prepare Image Metadata
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: |
             ghcr.io/radiorabe/nowplaying
@@ -28,20 +33,27 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
             type=sha
-
-      - name: Prepare additional Metadata
-        id: addtional_meta
-        run: |
-          echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+          labels: |
+            name=${{ github.event.repository.name }}
+            summary=${{ github.event.repository.description }}
+            description=The RaBe nowplaying daemon is used to send ticker information for several broadcast vectors.
+            url=${{ github.event.repository.html_url }}
+            vcs-ref=${{ github.sha }}
+            revision=${{ github.sha }}
+            release=${{ github.sha }}
+            build-date=${{ steps.addtional_meta.outputs.created }}
+            io.k8s.display-name=${{ github.event.repository.name }}
+            io.k8s.description=${{ github.event.repository.description }}
+            io.openshift.tags=minimal rhel8 rabe python nowplaying
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v2
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         if: github.event_name != 'pull_request'
         with:
           registry: ghcr.io
@@ -50,7 +62,7 @@ jobs:
 
       - name: Build and push
         id: docker_build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: ./Dockerfile
@@ -58,24 +70,5 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: |
-            name=${{ github.event.repository.name }}
-            summary=${{ github.event.repository.description }}
-            description="The RaBe nowplaying daemon is used to send ticker information for several broadcast vectors."
+            ${{ steps.meta.outputs.labels }}
             version=${{ steps.meta.outputs.version }}
-            url=${{ github.event.repository.html_url }}
-            vcs-ref=${{ github.sha }}
-            revision=${{ github.sha }}
-            release=${{ github.sha }}
-            build-date=${{ steps.addtional_meta.outputs.created }}
-            io.k8s.display-name=${{ github.event.repository.name }}
-            io.k8s.description=${{ github.event.repository.description }}
-            io.openshift.expose-services=""
-            io.openshift.tags="minimal rhel8 rabe python nowplaying"
-            org.opencontainers.image.title=${{ github.event.repository.name }}
-            org.opencontainers.image.description=${{ github.event.repository.description }}
-            org.opencontainers.image.url=${{ github.event.repository.html_url }}
-            org.opencontainers.image.source=${{ github.event.repository.html_url }}
-            org.opencontainers.image.version=${{ steps.meta.outputs.version }}
-            org.opencontainers.image.created=${{ steps.addtional_meta.outputs.created }}
-            org.opencontainers.image.revision=${{ github.sha }}
-            org.opencontainers.image.licenses=${{ github.event.repository.license.spdx_id }}

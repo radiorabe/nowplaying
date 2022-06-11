@@ -24,9 +24,7 @@ class DabAudioCompanionTrackObserver(TrackObserver):
         )
 
     def track_started(self, track: Track):
-        logger.info(
-            "Updating DAB+ DLS for track: %s - %s" % (track.artist, track.title)
-        )
+        logger.info(f"Updating DAB+ DLS for track: {track.artist} - {track.title}")
         # TODO v3 remove _track_started_plain
         if not self.dls_enabled:
             return self._track_started_plain(track)
@@ -89,7 +87,7 @@ class DabAudioCompanionTrackObserver(TrackObserver):
         # artist is an unicode string which we have to encode into UTF-8
         # http://bugs.python.org/issue216716
         song_string = urllib.parse.quote_plus(
-            "%s - %s" % (track.artist.encode("utf8"), title.encode("utf8"))
+            f"{track.artist.encode('utf8')} - {title.encode('utf8')}"
         )
 
         update_url = f"{self.base_url}?dls={song_string}"

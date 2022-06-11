@@ -47,7 +47,7 @@ class SaemuBox:
         self.port = 4001
 
         # allowed sender ip addresses
-        self.senders = set([saemubox_ip])
+        self.senders = {saemubox_ip}
 
         # valid saemubox ids
         self.valid_ids = [str(i) for i in self.output_mapping]
@@ -63,7 +63,7 @@ class SaemuBox:
             self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.sock.bind((self.bind_ip, self.port))
             logger.info("SaemuBox: listening on %s:%i." % (self.bind_ip, self.port))
-        except socket.error as e:  # pragma: no cover
+        except OSError as e:  # pragma: no cover
             self.sock = None
             logger.error("SaemuBox: cannot bind to %s:%i." % (self.bind_ip, self.port))
             raise SaemuBoxError() from e
@@ -74,7 +74,7 @@ class SaemuBox:
             self._setup_socket()
 
         output = None
-        seen_senders = set([])
+        seen_senders = set()
 
         # read from socket while there is something to read (non-blocking)
         while select.select([self.sock], [], [], 0)[0]:
