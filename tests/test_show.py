@@ -4,8 +4,8 @@ from datetime import datetime
 
 import pytest
 import pytz
-
 from nowplaypadgen.show import Show as PadGenShow
+
 from nowplaying.show.show import Show, ShowError
 
 DEFAULT_SHOW_URL = "https://www.rabe.ch/"
