@@ -5,7 +5,7 @@ COPY ./ /opt/app-root/src
 RUN python3 setup.py bdist_wheel
 
 
-FROM ghcr.io/radiorabe/python-minimal:0.4.0 AS app
+FROM ghcr.io/radiorabe/python-minimal:0.4.1 AS app
 
 COPY --from=build /opt/app-root/src/dist/*.whl /tmp/dist/
 
