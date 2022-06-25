@@ -4,6 +4,9 @@ lxml==4.9.0
 opentelemetry-api==1.11.1
 opentelemetry-exporter-otlp==1.11.1
 opentelemetry-sdk==1.11.1
+# narrow protobuf selector to ensure protobuf <4 is used
+# TODO: get rid of this once there is a release with https://github.com/open-telemetry/opentelemetry-python/pull/2720
+protobuf~=3.13
 pylast==5.0.0
 pytz==2022.1
 requests==2.28.0
