@@ -9,4 +9,4 @@ opentelemetry-sdk==1.11.1
 protobuf~=3.13
 pylast==5.0.0
 pytz==2022.1
-requests==2.28.0
+requests==2.28.1
