@@ -69,7 +69,7 @@ class Options:
         self.__args.add_argument(
             "--input-file",
             dest="inputFile",
-            help="XML 'now-playing' input file location",
+            help="XML 'now-playing' input file location, may be disabled by passing an empty string, ie. --input-file=''",
             default="/home/endlosplayer/Eingang/now-playing.xml",
         )
         self.__args.add_argument(
