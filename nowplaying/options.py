@@ -65,6 +65,7 @@ class Options:
             dest="currentShowUrl",
             help="Current Show URL e.g. 'https://libretime.int.example.org/api/live-info-v2/format/json'",
         )
+        # TODO v3 remove this option
         self.__args.add_argument(
             "--input-file",
             dest="inputFile",
