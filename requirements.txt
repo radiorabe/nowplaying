@@ -1,7 +1,7 @@
 ConfigArgParse==1.5.3
 isodate==0.6.1
 lxml==4.9.1
-opentelemetry-api==1.11.1
+opentelemetry-api==1.12.0
 opentelemetry-exporter-otlp==1.11.1
 opentelemetry-sdk==1.11.1
 # narrow protobuf selector to ensure protobuf <4 is used
