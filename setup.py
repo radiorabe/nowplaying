@@ -13,7 +13,7 @@ setup(
     author="RaBe IT-Reaktion",
     author_email="it@rabe.ch",
     license="AGPL-3",
-    version_config=True,
+    setuptools_git_versioning={"enabled": True},
     setup_requires=["setuptools-git-versioning"],
     install_requires=requirements,
     packages=find_packages(exclude=("tests",)),
