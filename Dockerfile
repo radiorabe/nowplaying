@@ -1,15 +1,18 @@
-FROM ghcr.io/radiorabe/s2i-python:0.3.0 AS build
+FROM ghcr.io/radiorabe/s2i-python:0.4.2 AS build
 
 COPY ./ /opt/app-root/src
 
 RUN python3 setup.py bdist_wheel
 
 
-FROM ghcr.io/radiorabe/python-minimal:0.4.0 AS app
+FROM ghcr.io/radiorabe/python-minimal:0.4.3 AS app
 
 COPY --from=build /opt/app-root/src/dist/*.whl /tmp/dist/
 
-RUN    python3 -mpip --no-cache-dir install /tmp/dist/*.whl \
+# update pip first because --use-feature=2020-resolver is now default (and needed so otel doesn't pull protobuf>3)
+RUN    python3 -mpip --no-cache-dir install --upgrade pip \
+    && python3 -mpip --no-cache-dir install /tmp/dist/*.whl \
+    && python3 -mpip --no-cache-dir uninstall --yes pip \
     && rm -rf /tmp/dist/
 
 # make requests use os ca certs that contain the RaBe root CA
