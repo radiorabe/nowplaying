@@ -9,7 +9,10 @@ FROM ghcr.io/radiorabe/python-minimal:0.4.3 AS app
 
 COPY --from=build /opt/app-root/src/dist/*.whl /tmp/dist/
 
-RUN    python3 -mpip --no-cache-dir install /tmp/dist/*.whl \
+# update pip first because --use-feature=2020-resolver is now default (and needed so otel doesn't pull protobuf>3)
+RUN    python3 -mpip --no-cache-dir install --upgrade pip \
+    && python3 -mpip --no-cache-dir install /tmp/dist/*.whl \
+    && python3 -mpip --no-cache-dir uninstall --yes pip \
     && rm -rf /tmp/dist/
 
 # make requests use os ca certs that contain the RaBe root CA
