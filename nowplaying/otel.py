@@ -62,9 +62,9 @@ def setup_otel(otlp_enable=False):  # pragma: no cover
         oltp_exporter = OTLPLogExporter(insecure=True)
         log_emitter_provider.add_log_processor(BatchLogProcessor(oltp_exporter))
 
-    log_emitter = log_emitter_provider.get_log_emitter(__name__, "0.1")
-
-    handler = LoggingHandler(level=logging.NOTSET, log_emitter=log_emitter)
+    handler = LoggingHandler(
+        level=logging.NOTSET, log_emitter_provider=log_emitter_provider
+    )
     handler.addFilter(SourceAttributeFilter())
 
     root.addHandler(handler)
