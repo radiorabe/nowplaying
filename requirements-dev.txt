@@ -11,5 +11,5 @@ pytest==7.2.0
 pytest-cov==4.0.0
 pytest-env==0.8.1
 twine==4.0.1
-types-requests==2.28.11.2
+types-requests==2.28.11.4
 wheel==0.37.1
