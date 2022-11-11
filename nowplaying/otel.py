@@ -8,15 +8,11 @@ import os
 from datetime import datetime
 
 from opentelemetry.exporter.otlp.proto.grpc._log_exporter import OTLPLogExporter
-from opentelemetry.sdk._logs import (
-    LogEmitterProvider,
-    LoggingHandler,
-    set_log_emitter_provider,
-)
+from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler, set_logger_provider
 from opentelemetry.sdk._logs.export import (
-    BatchLogProcessor,
+    BatchLogRecordProcessor,
     ConsoleLogExporter,
-    SimpleLogProcessor,
+    SimpleLogRecordProcessor,
 )
 from opentelemetry.sdk.resources import Resource
 
@@ -44,27 +40,25 @@ def setup_otel(otlp_enable=False):  # pragma: no cover
     root = logging.getLogger()
     root.setLevel(logging.INFO)
 
-    log_emitter_provider = LogEmitterProvider(
+    logger_provider = LoggerProvider(
         resource=Resource.create(
             {
                 "service.name": "nowplaying",
             },
         )
     )
-    set_log_emitter_provider(log_emitter_provider)
+    set_logger_provider(logger_provider)
 
     console_exporter = ConsoleLogExporter(
         formatter=lambda record: _log_formatter(record)
     )
-    log_emitter_provider.add_log_processor(SimpleLogProcessor(console_exporter))
+    logger_provider.add_log_record_processor(SimpleLogRecordProcessor(console_exporter))
 
     if otlp_enable:
         oltp_exporter = OTLPLogExporter(insecure=True)
-        log_emitter_provider.add_log_processor(BatchLogProcessor(oltp_exporter))
+        logger_provider.add_log_record_processor(BatchLogRecordProcessor(oltp_exporter))
 
-    handler = LoggingHandler(
-        level=logging.NOTSET, log_emitter_provider=log_emitter_provider
-    )
+    handler = LoggingHandler(level=logging.NOTSET, logger_provider=logger_provider)
     handler.addFilter(SourceAttributeFilter())
 
     root.addHandler(handler)
