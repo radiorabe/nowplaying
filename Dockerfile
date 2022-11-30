@@ -1,4 +1,4 @@
-FROM ghcr.io/radiorabe/s2i-python:0.5.0 AS build
+FROM ghcr.io/radiorabe/s2i-python:0.5.1 AS build
 
 COPY ./ /opt/app-root/src
 
