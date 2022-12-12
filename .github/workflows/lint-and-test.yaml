@@ -8,22 +8,10 @@ on:
   pull_request:
 
 jobs:
-  pre-commit:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
-      - run: pip install -r requirements-dev.txt
-
-      - name: Run pre-commit
-        uses: pre-commit/action@v3.0.0
-
+  call-workflow:
+    uses: radiorabe/actions/.github/workflows/test-pre-commit.yaml@main
+    with:
+      requirements: black isort flake8
   pytest:
     runs-on: ubuntu-latest
     strategy:
