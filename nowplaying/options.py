@@ -86,6 +86,7 @@ class Options:
         )
         self.__args.add_argument(
             "--api-port",
+            type=int,
             dest="apiPort",
             help="Bind port for the API server",
             default=8080,
