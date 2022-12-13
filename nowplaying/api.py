@@ -3,6 +3,7 @@ import logging
 from queue import Queue
 
 import cherrypy
+import cridlib
 from cloudevents.exceptions import GenericException as CloudEventException
 from cloudevents.http import from_http
 from werkzeug.exceptions import BadRequest, HTTPException, UnsupportedMediaType
@@ -112,6 +113,14 @@ class ApiServer:
             event = from_http(request.headers, request.data)
         except CloudEventException as error:
             raise BadRequest(description=f"{error}")
+
+        try:
+            crid = cridlib.parse(event["id"])
+            logger.debug("Detected CRID: %s", crid)
+        except cridlib.CRIDError as error:
+            raise BadRequest(
+                description=f"CRID '{event['id']}' is not a RaBe CRID"
+            ) from error
 
         logger.info("Received event: %s", event)
 

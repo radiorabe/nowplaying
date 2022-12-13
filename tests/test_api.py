@@ -81,6 +81,26 @@ def test_webhook_invalid_body(client, content_type):
     )
 
 
+def test_webhook_invalid_id_in_payload(client):
+    """Test if it fails when id isn't a rabe-crid."""
+    body = json.dumps(
+        {
+            "specversion": "1.0",
+            "type": "ch.rabe.api.events.track.v1.trackStarted",
+            "source": "https://rabe.ch",
+            # a RaBe CRID must use "rabe.ch" so this is invalid
+            "id": "crid://example.com/v1#t=code=19930301T131200.00Z",
+        }
+    )
+    resp = client.post(
+        _WEBHOOK_ENDPOINT, data=body, headers={"Content-Type": _CONTENT_TYPE_JSON}
+    )
+    assert resp.status_code == 400
+    assert resp.data.decode("utf-8") == json.dumps(
+        "CRID 'crid://example.com/v1#t=code=19930301T131200.00Z' is not a RaBe CRID"
+    )
+
+
 @pytest.mark.parametrize(
     "content_type,body,expected_status",
     [
@@ -120,7 +140,7 @@ def test_webhook_valid_event(client, content_type):
             "specversion": "1.0",
             "type": "ch.rabe.api.events.track.v1.trackStarted",
             "source": "https://rabe.ch",
-            "id": "12345",
+            "id": "crid://rabe.ch/v1#t=clock=19930301T131200.00Z",
         }
     )
     assert client.application.event_queue.qsize() == 0
@@ -132,7 +152,7 @@ def test_webhook_valid_event(client, content_type):
     assert client.application.event_queue.qsize() == 1
     event = client.application.event_queue.get()
     assert event["source"] == "https://rabe.ch"
-    assert event["id"] == "12345"
+    assert event["id"] == "crid://rabe.ch/v1#t=clock=19930301T131200.00Z"
     assert event["type"] == "ch.rabe.api.events.track.v1.trackStarted"
 
 
