@@ -2,7 +2,7 @@
 
 from os import EX_OK
 from signal import SIGINT
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import pytest
 
@@ -34,6 +34,20 @@ def test_signal_handler(mock_sys_exit, options):
 
     with patch.object(SaemuBox, "__init__", lambda *_: None):
         nowplaying_daemon = NowPlayingDaemon(options)
+        nowplaying_daemon._api = Mock()
         nowplaying_daemon.signal_handler(SIGINT, None)
 
+        nowplaying_daemon._api.stop_server.assert_called_once()
         mock_sys_exit.assert_called_with(EX_OK)
+
+
+@patch("nowplaying.api.ApiServer.run_server")
+def test__start_apiserver(mock_run_server, options):
+    """Test the start_apiserver function."""
+
+    with patch.object(SaemuBox, "__init__", lambda *_: None):
+        daemon = NowPlayingDaemon(options)
+
+        daemon._start_apiserver()
+
+    mock_run_server.assert_called_with()

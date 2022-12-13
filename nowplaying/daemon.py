@@ -3,7 +3,12 @@ import os
 import signal
 import sys
 import time
+from queue import Queue
+from threading import Thread
 
+from cloudevents.http.event import CloudEvent
+
+from .api import ApiServer
 from .input import observer as inputObservers
 from .input.handler import InputHandler
 from .misc.saemubox import SaemuBox
@@ -24,6 +29,7 @@ class NowPlayingDaemon:
     def __init__(self, options):
         self.options = options
 
+        self.event_queue = Queue()
         self.saemubox = SaemuBox(self.options.saemubox_ip)
 
     def main(self):  # pragma: no cover
@@ -39,9 +45,41 @@ class NowPlayingDaemon:
             logger.exception("Error: %s", e)
             sys.exit(-1)
 
+        _thread = Thread(target=self._main_loop, args=(input_handler,))
+        _thread.daemon = True
+        _thread.start()
+
+        self._start_apiserver()  # blocking
+
+    def _start_apiserver(self):
+        """Start the API server."""
+        self._api = ApiServer(self.options, self.event_queue)
+        self._api.run_server()  # blocking
+
+    def _stop_apiserver(self):
+        """Stop the API server."""
+        logger.info("Stopping API server")
+        self._api.stop_server()
+
+    def _main_loop(self, input_handler: InputHandler):  # pragma: no cover
+        """
+        Run main loop of the daemon.
+
+        Should be run in a thread.
+        """
+        logger.info("Starting main loop")
         while True:
             try:
                 saemubox_id = self.poll_saemubox()
+
+                while not self.event_queue.empty():
+                    logger.debug("Queue size: %i" % self.event_queue.qsize())
+                    event: CloudEvent = self.event_queue.get()
+                    logger.info(
+                        "Handling update from event: %s, source: %s"
+                        % (event["type"], event["source"])
+                    )
+                    input_handler.update(saemubox_id, event)
 
                 input_handler.update(saemubox_id)
             except Exception as e:
@@ -59,6 +97,7 @@ class NowPlayingDaemon:
 
         if signum == signal.SIGINT or signum == signal.SIGKILL:
             logger.info("Signal %i caught, terminating." % signum)
+            self._stop_apiserver()
             sys.exit(os.EX_OK)
 
     def get_track_handler(self):  # pragma: no cover
@@ -108,7 +147,7 @@ class NowPlayingDaemon:
 
         return handler
 
-    def poll_saemubox(self):  # pragma: no cover
+    def poll_saemubox(self) -> int:  # pragma: no cover
         """
         Poll Saemubox for new data.
 

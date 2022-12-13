@@ -65,10 +65,11 @@ class Options:
             dest="currentShowUrl",
             help="Current Show URL e.g. 'https://libretime.int.example.org/api/live-info-v2/format/json'",
         )
+        # TODO v3 remove this option
         self.__args.add_argument(
             "--input-file",
             dest="inputFile",
-            help="XML 'now-playing' input file location",
+            help="XML 'now-playing' input file location, may be disabled by passing an empty string, ie. --input-file=''",
             default="/home/endlosplayer/Eingang/now-playing.xml",
         )
         self.__args.add_argument(
@@ -76,6 +77,25 @@ class Options:
             dest="tickerOutputFile",
             help="ticker XML output format",
             default="/var/www/localhost/htdocs/songticker/0.9.3/current.xml",
+        )
+        self.__args.add_argument(
+            "--api-bind-address",
+            dest="apiBindAddress",
+            help="Bind address for the API server",
+            default="0.0.0.0",
+        )
+        self.__args.add_argument(
+            "--api-port",
+            type=int,
+            dest="apiPort",
+            help="Bind port for the API server",
+            default=8080,
+        )
+        self.__args.add_argument(
+            "--api-auth-users",
+            dest="apiAuthUsers",
+            help="API Auth Users",
+            default={"rabe": "rabe"},
         )
         self.__args.add_argument(
             "--instrumentation-otlp-enable",
