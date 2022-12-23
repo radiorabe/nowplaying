@@ -14,7 +14,9 @@ _FORMAT_WARNING = "The XML ticker format will be replaced"
 )
 def test_init():
     """Test class:`TickerTrackObserver`'s :meth:`.__init__` method."""
-    ticker_track_observer = TickerTrackObserver(ticker_file_path="")
+    ticker_track_observer = TickerTrackObserver(
+        options=TickerTrackObserver.Options(file_path="")
+    )
     assert ticker_track_observer.ticker_file_path == ""
 
 
@@ -28,7 +30,7 @@ def test_track_started(track_factory, show_factory):
     track.show = show_factory()
 
     ticker_track_observer = TickerTrackObserver(
-        ticker_file_path="/tmp/track_started.xml"
+        options=TickerTrackObserver.Options(file_path="/tmp/track_started.xml")
     )
     ticker_track_observer.track_started(track)
 
@@ -42,5 +44,7 @@ def test_track_finished(track_factory):
     """Test :class:`TickerTrackObserver`'s :meth:`track_finished` method."""
     track = track_factory()
 
-    ticker_track_observer = TickerTrackObserver(ticker_file_path="/tmp/dummy.xml")
+    ticker_track_observer = TickerTrackObserver(
+        options=TickerTrackObserver.Options(file_path="/tmp/dummy.xml")
+    )
     assert ticker_track_observer.track_finished(track)

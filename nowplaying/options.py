@@ -1,5 +1,11 @@
 import configargparse
 
+from nowplaying.track.observers.dab_audio_companion import (
+    DabAudioCompanionTrackObserver,
+)
+from nowplaying.track.observers.icecast import IcecastTrackObserver
+from nowplaying.track.observers.ticker import TickerTrackObserver
+
 
 class Options:
     """Contain all hardcoded and loaded from configargparse options."""
@@ -22,43 +28,9 @@ class Options:
             help="IP address of SAEMUBOX",
             default="",
         )
-        # TODO v3 remove this option
-        self.__args.add_argument(
-            "-m",
-            "--icecast-base",
-            dest="icecastBase",
-            help="Icecast base URL",
-            default="http://icecast.example.org:8000/admin/",
-        )
-        # TODO v3 remove this option
-        self.__args.add_argument(
-            "--icecast-password", dest="icecastPassword", help="Icecast Password"
-        )
-        self.__args.add_argument(
-            "-i",
-            "--icecast",
-            action="append",
-            help="""Icecast endpoints, allowed multiple times. nowplaying will send metadata updates to each
-            of the configured endpoints. Specify complete connection data like username and password in the
-            URLs e.g. 'http://source:changeme@icecast.example.org:8000/admin/metadata.xsl?mount=/radio'.""",
-            default=[],
-        )
-        self.__args.add_argument(
-            "-d",
-            "--dab",
-            action="append",
-            help="DAB audio companion base URL, allowed multiple times (ie. http://dab.example.org:8080)",
-            default=[],
-        )
-        # TODO v3 remove when stable
-        self.__args.add_argument(
-            "--dab-send-dls",
-            type=bool,
-            nargs="?",
-            dest="dab_send_dls",
-            help="Send artist/title to DAB companions dls endpoint (default: True)",
-            default=True,
-        )
+        IcecastTrackObserver.Options.args(self.__args)
+        DabAudioCompanionTrackObserver.Options.args(self.__args)
+        TickerTrackObserver.Options.args(self.__args)
         self.__args.add_argument(
             "-s",
             "--show",
@@ -71,12 +43,6 @@ class Options:
             dest="inputFile",
             help="XML 'now-playing' input file location, may be disabled by passing an empty string, ie. --input-file=''",
             default="/home/endlosplayer/Eingang/now-playing.xml",
-        )
-        self.__args.add_argument(
-            "--xml-output",
-            dest="tickerOutputFile",
-            help="ticker XML output format",
-            default="/var/www/localhost/htdocs/songticker/0.9.3/current.xml",
         )
         self.__args.add_argument(
             "--api-bind-address",
