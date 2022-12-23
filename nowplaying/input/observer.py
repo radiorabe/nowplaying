@@ -88,6 +88,9 @@ class KlangbeckenInputObserver(InputObserver):
         # TODO v3 remove call to :meth:`handle_id`
         # TODO make magic string configurable
         # TODO check if source is currently on-air
+        if not event:  # pragma: no coverage
+            # TODO remove checking for None once only events exist
+            return False
         return event["source"] == "https://github/radiorabe/klangbecken"
 
     def event(self, event: CloudEvent):
@@ -290,7 +293,7 @@ class NonKlangbeckenInputObserver(InputObserver):
 
         return False
 
-    def handle(self):
+    def handle(self, event: CloudEvent = None):
         self.show = self.showclient.get_show_info()
 
         # only handle if a new show has started
