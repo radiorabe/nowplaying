@@ -1,6 +1,7 @@
 import logging
 from typing import Optional
 
+import configargparse
 import requests
 
 from ...util import parse_icecast_url
@@ -15,8 +16,32 @@ class IcecastTrackObserver(TrackObserver):
 
     name = "Icecast"
 
-    class Options:
+    class Options(TrackObserver.Options):
         """IcecastTrackObserver options."""
+
+        @classmethod
+        def args(cls, args: configargparse.ArgParser) -> None:
+            # TODO v3 remove this option
+            args.add_argument(
+                "-m",
+                "--icecast-base",
+                dest="icecastBase",
+                help="Icecast base URL",
+                default="http://icecast.example.org:8000/admin/",
+            )
+            # TODO v3 remove this option
+            args.add_argument(
+                "--icecast-password", dest="icecastPassword", help="Icecast Password"
+            )
+            args.add_argument(
+                "-i",
+                "--icecast",
+                action="append",
+                help="""Icecast endpoints, allowed multiple times. nowplaying will send metadata updates to each
+                of the configured endpoints. Specify complete connection data like username and password in the
+                URLs e.g. 'http://source:changeme@icecast.example.org:8000/admin/metadata.xsl?mount=/radio'.""",
+                default=[],
+            )
 
         def __init__(
             self,

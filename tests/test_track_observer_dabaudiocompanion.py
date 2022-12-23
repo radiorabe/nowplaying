@@ -13,7 +13,9 @@ _BASE_URL = "http://localhost:80"
 def test_init():
     """Test class:`DabAudioCompanionTrackObserver`'s :meth:`.__init__` method."""
     dab_audio_companion_track_observer = DabAudioCompanionTrackObserver(
-        base_url=_BASE_URL
+        options=DabAudioCompanionTrackObserver.Options(
+            url=_BASE_URL,
+        )
     )
     assert dab_audio_companion_track_observer.base_url == f"{_BASE_URL}/api/setDLS"
 
@@ -31,7 +33,9 @@ def test_track_started(mock_requests_post, track_factory, show_factory):
     track.show = show_factory()
 
     dab_audio_companion_track_observer = DabAudioCompanionTrackObserver(
-        base_url=_BASE_URL, dls_enabled=True
+        options=DabAudioCompanionTrackObserver.Options(
+            url=_BASE_URL,
+        )
     )
     # assume that last frame was DL+ on startup so we always send delete tags when a show w/o dl+ starts
     assert dab_audio_companion_track_observer.last_frame_was_dl_plus
@@ -94,7 +98,12 @@ def test_track_started_plain(mock_urlopen, track_factory, show_factory):
     track = track_factory()
     track.show = show_factory()
 
-    o = DabAudioCompanionTrackObserver(base_url="http://localhost:80")
+    o = DabAudioCompanionTrackObserver(
+        options=DabAudioCompanionTrackObserver.Options(
+            url=_BASE_URL,
+            dl_plus=False,
+        )
+    )
     # last frame cannot be dl+ since the feature is inactive
     assert not o.last_frame_was_dl_plus
 
@@ -116,6 +125,8 @@ def test_track_started_plain(mock_urlopen, track_factory, show_factory):
 def test_track_finished():
     """Test :class:`DabAudioCompanionTrackObserver`'s :meth:`track_finished` method."""
     dab_audio_companion_track_observer = DabAudioCompanionTrackObserver(
-        base_url=_BASE_URL
+        options=DabAudioCompanionTrackObserver.Options(
+            url=_BASE_URL,
+        )
     )
     assert dab_audio_companion_track_observer.track_finished(Track())

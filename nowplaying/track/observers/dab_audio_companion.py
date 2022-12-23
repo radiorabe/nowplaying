@@ -2,6 +2,7 @@ import logging
 import urllib
 from datetime import timedelta
 
+import configargparse
 import requests
 
 from ..track import Track
@@ -15,9 +16,34 @@ class DabAudioCompanionTrackObserver(TrackObserver):
 
     name = "DAB+ Audio Companion"
 
-    def __init__(self, base_url, dls_enabled: bool = False):
-        self.base_url = base_url + "/api/setDLS"
-        self.dls_enabled = self.last_frame_was_dl_plus = dls_enabled
+    class Options(TrackObserver.Options):  # pragma: no coverage
+        @classmethod
+        def args(cls, args: configargparse.ArgParser):
+            args.add_argument(
+                "-d",
+                "--dab",
+                action="append",
+                help="DAB audio companion base URL, allowed multiple times (ie. http://dab.example.org:8080)",
+                default=[],
+            )
+            # TODO v3 remove when stable
+            args.add_argument(
+                "--dab-send-dls",
+                type=bool,
+                nargs="?",
+                dest="dab_send_dls",
+                help="Send artist/title to DAB companions dls endpoint (default: True)",
+                default=True,
+            )
+
+        def __init__(self, url: str, dl_plus: bool = True) -> None:
+            self.url: str = url
+            self.dl_plus: bool = dl_plus
+
+    def __init__(self, options: Options):
+        self._options = options
+        self.base_url = options.url + "/api/setDLS"
+        self.dls_enabled = self.last_frame_was_dl_plus = self._options.dl_plus
         logger.info(
             "DAB+ Audio Companion initialised with URL: %s, DLS+ enabled: %r"
             % (self.base_url, self.dls_enabled)

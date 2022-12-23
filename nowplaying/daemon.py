@@ -119,12 +119,20 @@ class NowPlayingDaemon:
         [
             handler.register_observer(
                 DabAudioCompanionTrackObserver(
-                    base_url=url, dls_enabled=self.options.dab_send_dls
+                    options=DabAudioCompanionTrackObserver.Options(
+                        url=url, dl_plus=self.options.dab_send_dls
+                    )
                 )
             )
             for url in self.options.dab
         ]
-        handler.register_observer(TickerTrackObserver(self.options.tickerOutputFile))
+        handler.register_observer(
+            TickerTrackObserver(
+                options=TickerTrackObserver.Options(
+                    file_path=self.options.tickerOutputFile
+                )
+            )
+        )
 
         return handler
 

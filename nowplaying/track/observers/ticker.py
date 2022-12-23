@@ -3,6 +3,7 @@ import logging
 import uuid
 import warnings
 
+import configargparse
 import isodate
 import lxml.builder
 import lxml.etree
@@ -23,12 +24,27 @@ class TickerTrackObserver(TrackObserver):
 
     name = "Ticker"
 
-    def __init__(self, ticker_file_path):
+    class Options(TrackObserver.Options):
+        """TickerTrackObserver options."""
+
+        @classmethod
+        def args(cls, args: configargparse.ArgParser) -> None:
+            args.add_argument(
+                "--xml-output",
+                dest="tickerOutputFile",
+                help="ticker XML output format",
+                default="/var/www/localhost/htdocs/songticker/0.9.3/current.xml",
+            )
+
+        def __init__(self, file_path: str):
+            self.file_path = file_path
+
+    def __init__(self, options: Options):
         warnings.warn(
             "The XML ticker format will be replaced with a JSON variant in the future",
             PendingDeprecationWarning,
         )
-        self.ticker_file_path = ticker_file_path
+        self.ticker_file_path = options.file_path
 
     def track_started(self, track):
         logger.info(
