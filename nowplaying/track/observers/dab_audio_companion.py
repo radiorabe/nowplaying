@@ -4,6 +4,8 @@ from datetime import timedelta
 
 import configargparse
 import requests
+from nowplaypadgen.dlplus import DLPlusMessage, DLPlusObject
+from nowplaypadgen.renderer.odr import ODRPadEncRenderer
 
 from ..track import Track
 from .base import TrackObserver
@@ -71,20 +73,15 @@ class DabAudioCompanionTrackObserver(TrackObserver):
             logger.info(
                 "Track has default info, using show instead. Sending DLS+ delete tags."
             )
+            message = DLPlusMessage()
             # track.artist contains station name if no artist is set
-            message = f"{track.artist} - {track.show.name}"
-            param = "".join(
-                (
-                    "##### parameters { #####\n",
-                    "DL_PLUS=1\n",
-                    # delete messages for artist and title as set by Audio Companion
-                    f'DL_PLUS_TAG=1 {message.find(" ")} 0\n',
-                    f'DL_PLUS_TAG=4 {message.find(" ")} 0\n',
-                    "##### parameters } #####\n",
-                    message,
-                )
-            )
-            params["dls"] = param
+            message.add_dlp_object(DLPlusObject("STATIONNAME.LONG", track.artist))
+            # TODO complete integration w/o f-string (PROGAMME.NOW for show name needs a carousel + deleting)
+            # message.add_dlp_object(DLPlusObject("PROGRAMME.NOW", track.show.name))
+            message.add_dlp_object(DLPlusObject("ITEM.TITLE", delete=True))
+            message.add_dlp_object(DLPlusObject("ITEM.ARTIST", delete=True))
+            message.build(f"$STATIONNAME.LONG - {track.show.name}")
+            params["dls"] = str(ODRPadEncRenderer(message))
             self.last_frame_was_dl_plus = False
         else:
             logger.info("Track has default info, using show instead")

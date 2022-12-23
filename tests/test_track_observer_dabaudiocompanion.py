@@ -52,23 +52,27 @@ def test_track_started(mock_requests_post, track_factory, show_factory):
     track.show = show_factory()
 
     # when we first send DLS after having sent DLS+ we expect some delete tags
+    mock_requests_post.reset_mock()
     dab_audio_companion_track_observer.track_started(track)
     assert not dab_audio_companion_track_observer.last_frame_was_dl_plus
-    mock_requests_post.assert_called_with(
-        f"{_BASE_URL}/api/setDLS",
-        {
-            "dls": "".join(
-                (
-                    "##### parameters { #####\n",
-                    "DL_PLUS=1\n",
-                    "DL_PLUS_TAG=1 5 0\n",
-                    "DL_PLUS_TAG=4 5 0\n",
-                    "##### parameters } #####\n",
-                    "Radio Bern - Hairmare Traveling Medicine Show",
-                )
-            )
-        },
-    )
+    mock_requests_post.assert_called_once()
+    args, _ = mock_requests_post.call_args
+    assert args[0] == f"{_BASE_URL}/api/setDLS"
+    results = args[1]["dls"].split("\n")
+    assert results[0] == "##### parameters { #####"
+    assert results[len(results) - 2] == "##### parameters } #####"
+    expected = [
+        "##### parameters { #####",
+        "DL_PLUS=1",
+        "DL_PLUS_TAG=1 5 0",  # delete ITEM.TITLE
+        "DL_PLUS_TAG=32 0 10",  # add STATIONNAME.LONG
+        "DL_PLUS_TAG=4 5 0",  # delete ITEM.ARTIST
+        "##### parameters } #####",
+        "Radio Bern - Hairmare Traveling Medicine Show",
+    ]
+    expected.sort()
+    results.sort()
+    assert all([a == b for a, b in zip(results, expected)])
 
     # once ITEM delete have been sent we send regular DLS again
     dab_audio_companion_track_observer.track_started(track)
