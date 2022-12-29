@@ -15,6 +15,7 @@ from .misc.saemubox import SaemuBox
 from .track.handler import TrackEventHandler
 from .track.observers.dab_audio_companion import DabAudioCompanionTrackObserver
 from .track.observers.icecast import IcecastTrackObserver
+from .track.observers.radioplayer import RadioplayerTrackObserver
 from .track.observers.ticker import TickerTrackObserver
 
 logger = logging.getLogger(__name__)
@@ -130,6 +131,14 @@ class NowPlayingDaemon:
             TickerTrackObserver(
                 options=TickerTrackObserver.Options(
                     file_path=self.options.tickerOutputFile
+                )
+            )
+        )
+        handler.register_observer(
+            RadioplayerTrackObserver(
+                RadioplayerTrackObserver.Options(
+                    enabled=self.options.radioplayer_enabled,
+                    url=self.options.radioplayer_ingestor_url,
                 )
             )
         )
