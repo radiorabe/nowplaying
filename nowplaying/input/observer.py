@@ -278,7 +278,6 @@ class NonKlangbeckenInputObserver(InputObserver):
         super().event(event)
 
     def handle_id(self, saemubox_id: int, event: CloudEvent = None):
-
         if saemubox_id != self.previous_saemubox_id:
             # If sämubox changes, force a show update, this acts as
             # a self-healing measurement in case the show web service provides

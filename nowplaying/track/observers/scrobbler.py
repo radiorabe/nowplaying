@@ -34,7 +34,6 @@ class ScrobblerTrackObserver(TrackObserver):  # pragma: no cover
         }
 
     def track_started(self, track):
-
         if track.has_default_artist() or track.has_default_title():
             logger.error("Default artist or title, skip now-playing scrobble")
             return False
