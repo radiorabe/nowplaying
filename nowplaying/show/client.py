@@ -29,7 +29,6 @@ class ShowClient:
     __show_datetime_format = "%Y-%m-%d %H:%M:%S"
 
     def __init__(self, current_show_url):
-
         self.current_show_url = current_show_url
 
         self.show = Show()
