@@ -9,6 +9,6 @@ opentelemetry-exporter-otlp==1.15.0
 opentelemetry-sdk==1.15.0
 pylast==5.2.0
 pytz==2023.3
-rabe-cridlib==0.8.0
+rabe-cridlib==0.10.0
 requests==2.31.0
 Werkzeug==2.2.3
