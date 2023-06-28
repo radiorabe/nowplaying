@@ -1,6 +1,6 @@
 cherrypy==18.8.0
 cloudevents==1.9.0
-ConfigArgParse==1.5.3
+ConfigArgParse==1.5.5
 isodate==0.6.1
 lxml==4.9.2
 nowplaypadgen==0.4.9
