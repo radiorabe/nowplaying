@@ -76,7 +76,8 @@ class DabAudioCompanionTrackObserver(TrackObserver):
             message = DLPlusMessage()
             # track.artist contains station name if no artist is set
             message.add_dlp_object(DLPlusObject("STATIONNAME.LONG", track.artist))
-            # TODO complete integration w/o f-string (PROGAMME.NOW for show name needs a carousel + deleting)
+            # TODO complete integration w/o f-string
+            #      PROGAMME.NOW for show name needs a carousel + deleting
             # message.add_dlp_object(DLPlusObject("PROGRAMME.NOW", track.show.name))
             message.add_dlp_object(DLPlusObject("ITEM.TITLE", delete=True))
             message.add_dlp_object(DLPlusObject("ITEM.ARTIST", delete=True))
@@ -89,7 +90,8 @@ class DabAudioCompanionTrackObserver(TrackObserver):
             params["dls"] = f"{track.artist} - {track.show.name}"
 
         logger.info(
-            f"DAB+ Audio Companion URL: {self.base_url} data: {params} is DL+: {self.last_frame_was_dl_plus}"
+            f"DAB+ Audio Companion URL: {self.base_url} "
+            f"data: {params} is DL+: {self.last_frame_was_dl_plus}"
         )
 
         resp = requests.post(self.base_url, params)

@@ -19,20 +19,25 @@ from opentelemetry.sdk.resources import Resource
 
 
 def _log_formatter(record):  # pragma: no cover
-    return f"{datetime.fromtimestamp(record.timestamp/1000000000)} - {record.severity_text[:4]:4} - {record.attributes['source']['name'][11:]:14} - {record.body} - {record.attributes['source']['pathname']}:{record.attributes['source']['lineno']}\n"
+    return (
+        f"{datetime.fromtimestamp(record.timestamp/1000000000)} "
+        f"- {record.severity_text[:4]:4} "
+        f"- {record.attributes['source_name'][11:]:14} "
+        f"- {record.body} "
+        f"- {record.attributes['source_pathname']}:"
+        f"{record.attributes['source_lineno']}\n"
+    )
 
 
 class SourceAttributeFilter(logging.Filter):  # pragma: no cover
     """Used on the handler to ensure that some attributes are carried over to otel."""
 
     def filter(self, record) -> bool:
-        record.source = {
-            "name": record.name,
-            "pathname": os.path.relpath(
-                record.pathname, os.path.dirname(os.path.dirname(__file__))
-            ),
-            "lineno": record.lineno,
-        }
+        record.source_name = record.name
+        record.source_pathname = os.path.relpath(
+            record.pathname, os.path.dirname(os.path.dirname(__file__))
+        )
+        record.source_lineno = record.lineno
         return True
 
 

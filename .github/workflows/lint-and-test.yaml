@@ -1,32 +1,12 @@
 name: Lint and Test
 
 on:
-  push:
-    branches-ignore:
-      - main
-      - gh-pages
   pull_request:
+    branches:
+      - main
 
 jobs:
-  call-workflow:
-    uses: radiorabe/actions/.github/workflows/test-pre-commit.yaml@main
-    with:
-      requirements: black isort flake8
-  pytest:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [ '3.x', '3.9' ]
-    name: Test python ${{ matrix.python-version }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - run: pip install -r requirements-dev.txt
-
-      - run: pytest --cov-fail-under=100
+  pre-commit:
+    uses: radiorabe/actions/.github/workflows/test-pre-commit.yaml@v0.14.0
+  test-python-poetry:
+    uses: radiorabe/actions/.github/workflows/test-python-poetry.yaml@v0.14.0
