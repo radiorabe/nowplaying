@@ -11,6 +11,9 @@ updates:
       prefix: "feat(deps): "
       prefix-development: "chore(deps): "
     open-pull-requests-limit: 20
+    groups:
+      opentelemetry:
+        - "opentelemetry-*"
 
   # Update Dockerfile
   - package-ecosystem: "docker"
