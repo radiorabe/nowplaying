@@ -13,7 +13,8 @@ updates:
     open-pull-requests-limit: 20
     groups:
       opentelemetry:
-        - "opentelemetry-*"
+        patterns:
+          - "opentelemetry-*"
 
   # Update Dockerfile
   - package-ecosystem: "docker"
@@ -22,6 +23,10 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "fix(deps): "
+    groups:
+      images:
+        patterns:
+          - "*"
 
   # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
