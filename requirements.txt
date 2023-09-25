@@ -1,5 +1,5 @@
 cherrypy==18.8.0
-cloudevents==1.9.0
+cloudevents==1.10.0
 ConfigArgParse==1.5.3
 isodate==0.6.1
 lxml==4.9.2
