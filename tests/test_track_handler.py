@@ -46,7 +46,7 @@ def test_track_started(track_factory):
 
 
 def test_track_started_isolates_exception(track_factory):
-    """Test that :class:`TrackEventHandler`'s :meth:`track_started` method isolates exceptions."""
+    """Test :class:`TrackEventHandler`'s :meth:`track_started` exception isolation."""
     track = track_factory()
     mock_observer = Mock()
     mock_observer.track_started.side_effect = Exception
@@ -71,7 +71,7 @@ def test_track_finished(track_factory):
 
 
 def test_track_finished_isolates_exception(track_factory):
-    """Test that :class:`TrackEventHandler`'s :meth:`track_finished` method isolates exceptions."""
+    """Test :class:`TrackEventHandler`'s :meth:`track_finished` exception isolation."""
     track = track_factory()
     mock_observer = Mock()
     mock_observer.track_finished.side_effect = Exception

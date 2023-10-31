@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 class NowPlayingDaemon:
-    """The daemon part of the nowplaying app runs at all time and coordinates the input and output."""
+    """The daemon of nowplaying runs at all time and coordinates the i/o."""
 
     """initialize last_input to a know value."""
     last_input = 1
@@ -106,7 +106,8 @@ class NowPlayingDaemon:
         [
             handler.register_observer(
                 IcecastTrackObserver(
-                    # TODO v3 remove uername and password because we mandate specifying via url
+                    # TODO v3 remove uername and password
+                    #          because we mandate specifying via url
                     options=IcecastTrackObserver.Options(
                         url=url,
                         username="source",

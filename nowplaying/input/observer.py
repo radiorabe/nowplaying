@@ -66,7 +66,7 @@ class InputObserver(ABC):
 
 
 class KlangbeckenInputObserver(InputObserver):
-    """Observe cases where Sämu Box says Klangbecken is running and we can consume now-playing.xml input."""
+    """Observe when Sämu Box says Klangbecken we have now-playing.xml input."""
 
     def __init__(
         self, current_show_url: str, input_file: str = None
@@ -74,7 +74,8 @@ class KlangbeckenInputObserver(InputObserver):
         # TODO test once input file is replaced with api
         if input_file:
             warnings.warn(
-                "The now-playing.xml format from Loopy/Klangbecken will be replaced in the future",
+                "The now-playing.xml format from Loopy/Klangbecken "
+                "will be replaced in the future",
                 PendingDeprecationWarning,
             )
             self.input_file = input_file
@@ -84,7 +85,8 @@ class KlangbeckenInputObserver(InputObserver):
         super().__init__(current_show_url)
 
     def handles(self, event: CloudEvent) -> bool:
-        # TODO v3-prep call :meth:`handle_id` from here (needs saemubox_id compat workaround)
+        # TODO v3-prep call :meth:`handle_id` from here
+        #      needs saemubox_id compat workaround
         # TODO v3 remove call to :meth:`handle_id`
         # TODO make magic string configurable
         # TODO check if source is currently on-air
@@ -110,8 +112,10 @@ class KlangbeckenInputObserver(InputObserver):
     def _handle(self, event: CloudEvent = None):
         """Handle actual RaBe CloudEevent.
 
-        TODO v3: move into :meth:`event` once :meth:`handle` and :meth:`handle_id` have been yeeted
-        TODO v3: remove all refs to input_file and it's modify time once we use event handlers
+        TODO v3: move into :meth:`event`
+                 once :meth:`handle` and :meth:`handle_id` have been yeeted
+        TODO v3: remove all refs to input_file and it's modify time
+                 once we use event handlers
         """
         if not event:
             # @TODO: replace the stat method with inotify
@@ -136,7 +140,8 @@ class KlangbeckenInputObserver(InputObserver):
             logger.info("First run: %s" % self.first_run)
 
             if not self.first_run:  # pragma: no coverage
-                # TODO test once i don't have to care about mtime/inotify because it's an api
+                # TODO test once we don't have to care about
+                #      mtime/inotify because it's an api
                 logger.info("calling track_finished")
                 self.track_handler.track_finished(self.track)
 
@@ -256,7 +261,7 @@ class KlangbeckenInputObserver(InputObserver):
 
 
 class NonKlangbeckenInputObserver(InputObserver):
-    """Observer for input that doesn't originate from klangbecken and therefore misses the track information.
+    """Observer for input not from klangbecken ie. w/o track information.
 
     Uses the show's name instead of the actual track infos
     """
@@ -265,7 +270,8 @@ class NonKlangbeckenInputObserver(InputObserver):
         """Do not handle events yet.
 
         TODO implement this method
-        TODO v3-prep call :meth:`handle_id` from here (needs saemubox_id compat workaround)
+        TODO v3-prep call :meth:`handle_id` from here
+             (needs saemubox_id compat workaround)
         TODO v3 remove call to :meth:`handle_id`:
         """
         return False

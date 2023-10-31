@@ -1,4 +1,5 @@
-# TODO scrobbling is not currently supported remove the no cover pragma from this file if you support it again
+# TODO scrobbling is not currently supported
+# remove the no cover pragma from this file if you support it again
 import calendar  # pragma: no cover
 import logging  # pragma: no cover
 

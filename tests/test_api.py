@@ -77,7 +77,8 @@ def test_webhook_invalid_body(client, content_type):
     )
     assert resp.status_code == 400
     assert resp.data.decode("utf-8") == json.dumps(
-        """Failed to read specversion from both headers and data. The following can not be parsed as json: b'invalid-json'"""
+        "Failed to read specversion from both headers and data. "
+        "The following can not be parsed as json: b'invalid-json'"
     )
 
 

@@ -1,0 +1,67 @@
+[tool.poetry]
+name = "rabe-nowplaying"
+version = "0.0.0" # 0.0.0 placeholder is replaced on release
+description = "Now Playing RaBe Songticker"
+repository = "https://github.com/radiorabe/nowplaying"
+authors = ["RaBe IT-Reaktion <it@rabe.ch>"]
+license = "AGPL-3"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: GNU Affero General Public License v3",
+]
+readme = "README.md"
+packages = [
+    { include = "nowplaying"},
+]
+
+[tool.poetry.scripts]
+nowplaying = 'nowplaying.__main__:main'
+
+[tool.poetry.dependencies]
+python = "^3.11"
+Werkzeug = "^2.3.6"
+configargparse = "^1.5.5"
+CherryPy = "^18.8.0"
+cachelib = "^0.10.1"
+cachecontrol = "^0.13.1"
+requests = "^2.31.0"
+rabe-cridlib = "^0.10.1"
+pytz = ">=2023.3"
+pylast = "^5.2.0"
+cloudevents = "^1.9.0"
+isodate = "^0.6.1"
+lxml = "^4.9.2"
+nowplaypadgen = "^0.4.9"
+opentelemetry-api = "^1.18.0"
+opentelemetry-exporter-otlp = "^1.18.0"
+opentelemetry-sdk = "^1.18.0"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.1.0"
+isort = "^5.12.0"
+pydocstyle = "^6.1.1"
+pytest = "^7.2.3"
+pytest-cov = "^4.0.0"
+pytest-random-order = "^1.1.0"
+pytest-ruff = "^0.1"
+ruff = "^0.0.275"
+faker = "^18.11.2"
+
+[tool.isort]
+line_length = 120
+profile = "black"
+
+[tool.pytest.ini_options]
+minversion = "7.2"
+addopts = "-ra -q --random-order --doctest-glob='*.md' --doctest-modules --cov=nowplaying --cov-fail-under=100 --ruff --ignore docs/"
+filterwarnings = [
+    "ignore::DeprecationWarning:cairosvg",
+    "ignore::DeprecationWarning:cherrypy",
+    "ignore::DeprecationWarning:google",
+    "ignore::DeprecationWarning:importlib",
+    "ignore::DeprecationWarning:pkg_resources",
+]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

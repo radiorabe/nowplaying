@@ -4,23 +4,24 @@ repos:
     hooks:
       - id: pyupgrade
         args:
-          - --py39-plus
+          - --py311-plus
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    # Ruff version.
+    rev: "v0.0.275"
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
   - repo: local
     hooks:
-      - id: black
-        name: black
-        language: system
-        entry: black
-        types: [python]
       - id: isort
         name: isort
         language: system
         entry: isort
         types: [python]
-      - id: flake8
-        name: flake8
+      - id: black
+        name: black
         language: system
-        entry: flake8
+        entry: black
         types: [python]
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.4.0

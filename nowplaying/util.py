@@ -1,5 +1,4 @@
 import logging
-from typing import Optional
 from urllib.parse import parse_qs, urlparse
 
 logger = logging.getLogger(__name__)
@@ -7,8 +6,8 @@ logger = logging.getLogger(__name__)
 
 def parse_icecast_url(
     url: str,
-) -> tuple[str, Optional[str], Optional[str], Optional[str]]:
-    """Parse an Icecast URL into the componets relevant to the :class:`IcecastTrackObserver`.
+) -> tuple[str, str | None, str | None, str | None]:
+    """Parse an Icecast URL into parts relevant to :class:`IcecastTrackObserver`.
 
     Use it to grab the username, password, and mountpoint from the URL.
 
@@ -28,7 +27,8 @@ def parse_icecast_url(
     Args:
         url (str): The Icecast URL to parse.
     Returns:
-        Tuple[str, Optional[str], Optional[str], Optional[str]]: The URL, username, password, and mountpoint.
+        Tuple[str, Optional[str], Optional[str], Optional[str]]:
+            The URL, username, password, and mountpoint.
     """
     parsed = urlparse(url)
     port = parsed.port or parsed.scheme == "https" and 443 or 80

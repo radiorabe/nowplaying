@@ -1,5 +1,4 @@
 import logging
-from typing import Optional
 
 import configargparse
 import requests
@@ -37,18 +36,19 @@ class IcecastTrackObserver(TrackObserver):
                 "-i",
                 "--icecast",
                 action="append",
-                help="""Icecast endpoints, allowed multiple times. nowplaying will send metadata updates to each
-                of the configured endpoints. Specify complete connection data like username and password in the
-                URLs e.g. 'http://source:changeme@icecast.example.org:8000/admin/metadata.xsl?mount=/radio'.""",
+                help="""Icecast endpoints, allowed multiple times. nowplaying
+                will send metadata updates to each of the configured endpoints.
+                Specify complete connection data like username and password in
+                the URLs e.g. 'http://source:changeme@icecast.example.org:8000/admin/metadata.xsl?mount=/radio'.""",
                 default=[],
             )
 
         def __init__(
             self,
             url: str,
-            username: Optional[str] = None,
-            password: Optional[str] = None,
-            mount: Optional[str] = None,
+            username: str | None = None,
+            password: str | None = None,
+            mount: str | None = None,
         ):
             # TODO v3 remove optional args and only support parsed URLs
             (self.url, self.username, self.password, self.mount) = parse_icecast_url(

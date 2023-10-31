@@ -19,7 +19,7 @@ class ShowClientError(Exception):
 
 
 class ShowClient:
-    """Client which fetches the show informations from the LibreTime now-playing v2 endpoint.
+    """Fetches the show info from LibreTime now-playing v2 endpoint.
 
     Every show has a name, a start and endtime and an optional URL.
     """

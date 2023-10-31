@@ -37,7 +37,8 @@ def test_track_started(mock_requests_post, track_factory, show_factory):
             url=_BASE_URL,
         )
     )
-    # assume that last frame was DL+ on startup so we always send delete tags when a show w/o dl+ starts
+    # assume that last frame was DL+ on startup so we always send
+    # delete tags when a show w/o dl+ starts
     assert dab_audio_companion_track_observer.last_frame_was_dl_plus
 
     # We send DLS+ if is is available and enabled

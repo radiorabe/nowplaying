@@ -38,7 +38,7 @@ def test_get_show_info():
 
 
 def test_get_show_info_with_force_update_true():
-    """Test :class:`ShowClient`'s :meth:`get_show_info` method with force_update=True."""
+    """Test :class:`ShowClient`'s :meth:`get_show_info` with force_update=True."""
     show_client = ShowClient(_BASE_URL)
     show_client.lazy_update = Mock()
     show_client.update = Mock()
@@ -176,7 +176,7 @@ def test_update_show_empty(mock_requests_get):
 
 @patch("requests.get")
 def test_update_show_encoding_fix_in_name(mock_requests_get):
-    """Test :class:`ShowClient`'s :meth:`update` method when the show name has an encoding fix."""
+    """Test :class:`ShowClient`'s :meth:`update` for show name with encoding fix."""
     mock_requests_get.return_value.json = Mock(
         return_value=json.loads(
             file_get_contents("tests/fixtures/cast_now_show_encoding_fix.json")
