@@ -976,13 +976,13 @@ files = [
 
 [[package]]
 name = "mutagen"
-version = "1.46.0"
+version = "1.47.0"
 description = "read and write audio tags for many formats"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "mutagen-1.46.0-py3-none-any.whl", hash = "sha256:8af0728aa2d5c3ee5a727e28d0627966641fddfe804c23eabb5926a4d770aed5"},
-    {file = "mutagen-1.46.0.tar.gz", hash = "sha256:6e5f8ba84836b99fe60be5fb27f84be4ad919bbb6b49caa6ae81e70584b55e58"},
+    {file = "mutagen-1.47.0-py3-none-any.whl", hash = "sha256:edd96f50c5907a9539d8e5bba7245f62c9f520aef333d13392a79a4f70aca719"},
+    {file = "mutagen-1.47.0.tar.gz", hash = "sha256:719fadef0a978c31b4cf3c956261b3c58b6948b32023078a2117b1de09f0fc99"},
 ]
 
 [[package]]
@@ -998,17 +998,17 @@ files = [
 
 [[package]]
 name = "nowplaypadgen"
-version = "0.4.9"
+version = "0.4.11"
 description = "DAB+ now playing PAD (DLS+ and MOT SLS generator)"
 optional = false
 python-versions = "*"
 files = [
-    {file = "nowplaypadgen-0.4.9-py3-none-any.whl", hash = "sha256:c8aa0e73d997ade01c34a14311405b5dc7b44b92672cc9fbf367af61e290669a"},
-    {file = "nowplaypadgen-0.4.9.tar.gz", hash = "sha256:1bcc7eb08a458aa617b54d4ed376aa848df667b67ef1bf0df9d8e1d712cf5bc8"},
+    {file = "nowplaypadgen-0.4.11-py3-none-any.whl", hash = "sha256:aaba8463ffd53b1c639b2f67eb517cae362226feecd6812cc5611a80435af183"},
+    {file = "nowplaypadgen-0.4.11.tar.gz", hash = "sha256:a0ebf05e571791f9bf4dd6b91b55923a8dd4489c01df995bd68c1fef76950b0b"},
 ]
 
 [package.dependencies]
-mutagen = "1.46.0"
+mutagen = "1.47.0"
 pytz = ">=2022.7.1"
 
 [[package]]
