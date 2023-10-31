@@ -19,7 +19,7 @@ nowplaying = 'nowplaying.__main__:main'
 
 [tool.poetry.dependencies]
 python = "^3.11"
-Werkzeug = "^2.3.6"
+Werkzeug = ">=2.3.6,<4.0.0"
 configargparse = "^1.5.5"
 CherryPy = "^18.8.0"
 cachelib = "^0.10.1"
