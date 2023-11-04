@@ -46,6 +46,7 @@ pytest-random-order = "^1.1.0"
 pytest-ruff = ">=0.1,<0.3"
 ruff = ">=0.0.275,<0.1.5"
 faker = ">=18.11.2,<20.0.0"
+mkdocs = "^1.5.3"
 
 [tool.isort]
 line_length = 120
