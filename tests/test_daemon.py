@@ -15,6 +15,7 @@ def fixture_options():
     class _Options:
         def __init__(self):
             self.saemubox_ip = ""
+            self.check_saemubox_sender = True
 
     return _Options()
 

@@ -21,12 +21,20 @@ class Options:
         self.__args = configargparse.ArgParser(
             default_config_files=["/etc/nowplaying/conf.d/*.conf", "~/.nowplayingrc"]
         )
+        # TODO v3 remove this option
         self.__args.add_argument(
             "-b",
             "--saemubox-ip",
             dest="saemubox_ip",
             help="IP address of SAEMUBOX",
             default="",
+        )
+        # TODO v3 remove this option
+        self.__args.add_argument(
+            "--check-saemubox-sender",
+            dest="check_saemubox_sender",
+            help="Check SRC SAEMUBOX IP",
+            default=True,
         )
         IcecastTrackObserver.Options.args(self.__args)
         DabAudioCompanionTrackObserver.Options.args(self.__args)
