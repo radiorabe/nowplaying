@@ -34,7 +34,7 @@ class SaemuBox:
         6: "Studio Live",
     }
 
-    def __init__(self, saemubox_ip):
+    def __init__(self, saemubox_ip, check_sender=True):
         warnings.warn(
             "Saemubox will be replaced with Pathfinder", PendingDeprecationWarning
         )
@@ -48,6 +48,9 @@ class SaemuBox:
 
         # allowed sender ip addresses
         self.senders = {saemubox_ip}
+
+        # check self.senders for validity
+        self.check_sender = check_sender
 
         # valid saemubox ids
         self.valid_ids = [str(i) for i in self.output_mapping]
@@ -79,7 +82,7 @@ class SaemuBox:
         # read from socket while there is something to read (non-blocking)
         while select.select([self.sock], [], [], 0)[0]:
             data, addr = self.sock.recvfrom(1024)
-            if addr[0] not in self.senders:
+            if self.check_sender and addr[0] not in self.senders:
                 logger.warn("SaemuBox: receiving data from invalid host: %s " % addr[0])
                 continue
 

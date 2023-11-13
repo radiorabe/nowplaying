@@ -30,7 +30,9 @@ class NowPlayingDaemon:
         self.options = options
 
         self.event_queue = Queue()
-        self.saemubox = SaemuBox(self.options.saemubox_ip)
+        self.saemubox = SaemuBox(
+            self.options.saemubox_ip, self.options.check_saemubox_sender
+        )
 
     def main(self):  # pragma: no cover
         # TODO test once there is not saemubox in the loop
