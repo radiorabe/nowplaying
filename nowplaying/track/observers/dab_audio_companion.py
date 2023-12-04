@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class DabAudioCompanionTrackObserver(TrackObserver):
-    """Update track metadata in a DAB+ tranmission through the 'Audio Companion' API."""
+    """Update track data in a DAB+ transmission through the 'Audio Companion' API."""
 
     name = "DAB+ Audio Companion"
 
