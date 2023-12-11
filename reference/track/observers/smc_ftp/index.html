@@ -1032,7 +1032,8 @@
 <span class="normal"><a href="#__codelineno-0-75">75</a></span>
 <span class="normal"><a href="#__codelineno-0-76">76</a></span>
 <span class="normal"><a href="#__codelineno-0-77">77</a></span>
-<span class="normal"><a href="#__codelineno-0-78">78</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="k">class</span> <span class="nc">SmcFtpTrackObserver</span><span class="p">(</span><span class="n">TrackObserver</span><span class="p">):</span>
+<span class="normal"><a href="#__codelineno-0-78">78</a></span>
+<span class="normal"><a href="#__codelineno-0-79">79</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="k">class</span> <span class="nc">SmcFtpTrackObserver</span><span class="p">(</span><span class="n">TrackObserver</span><span class="p">):</span>
 <a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Update track metadata for DLS and DL+ to the SMC FTP server.&quot;&quot;&quot;</span>
 <a id="__codelineno-0-16" name="__codelineno-0-16"></a>
 <a id="__codelineno-0-17" name="__codelineno-0-17"></a>    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;SMC FTP&quot;</span>
@@ -1089,14 +1090,15 @@
 <a id="__codelineno-0-68" name="__codelineno-0-68"></a>        <span class="n">ftp</span><span class="o">.</span><span class="n">storlines</span><span class="p">(</span><span class="s2">&quot;STOR /dls/nowplaying.dls&quot;</span><span class="p">,</span> <span class="n">dls</span><span class="p">)</span>
 <a id="__codelineno-0-69" name="__codelineno-0-69"></a>        <span class="n">ftp</span><span class="o">.</span><span class="n">storlines</span><span class="p">(</span><span class="s2">&quot;STOR /dlplus/nowplaying.dls&quot;</span><span class="p">,</span> <span class="n">dlplus</span><span class="p">)</span>
 <a id="__codelineno-0-70" name="__codelineno-0-70"></a>
-<a id="__codelineno-0-71" name="__codelineno-0-71"></a>        <span class="n">ftp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<a id="__codelineno-0-72" name="__codelineno-0-72"></a>
-<a id="__codelineno-0-73" name="__codelineno-0-73"></a>        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-<a id="__codelineno-0-74" name="__codelineno-0-74"></a>            <span class="sa">f</span><span class="s2">&quot;SMC FTP Server: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">hostname</span><span class="si">}</span><span class="s2"> DLS: </span><span class="si">{</span><span class="n">dls</span><span class="si">}</span><span class="s2"> DL+: </span><span class="si">{</span><span class="n">dlplus</span><span class="si">}</span><span class="s2">&quot;</span>
-<a id="__codelineno-0-75" name="__codelineno-0-75"></a>        <span class="p">)</span>
-<a id="__codelineno-0-76" name="__codelineno-0-76"></a>
-<a id="__codelineno-0-77" name="__codelineno-0-77"></a>    <span class="k">def</span> <span class="nf">track_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">track</span><span class="p">):</span>
-<a id="__codelineno-0-78" name="__codelineno-0-78"></a>        <span class="k">return</span> <span class="kc">True</span>
+<a id="__codelineno-0-71" name="__codelineno-0-71"></a>        <span class="n">ftp</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+<a id="__codelineno-0-72" name="__codelineno-0-72"></a>        <span class="n">ftp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<a id="__codelineno-0-73" name="__codelineno-0-73"></a>
+<a id="__codelineno-0-74" name="__codelineno-0-74"></a>        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+<a id="__codelineno-0-75" name="__codelineno-0-75"></a>            <span class="sa">f</span><span class="s2">&quot;SMC FTP Server: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_options</span><span class="o">.</span><span class="n">hostname</span><span class="si">}</span><span class="s2"> DLS: </span><span class="si">{</span><span class="n">dls</span><span class="si">}</span><span class="s2"> DL+: </span><span class="si">{</span><span class="n">dlplus</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-0-76" name="__codelineno-0-76"></a>        <span class="p">)</span>
+<a id="__codelineno-0-77" name="__codelineno-0-77"></a>
+<a id="__codelineno-0-78" name="__codelineno-0-78"></a>    <span class="k">def</span> <span class="nf">track_finished</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">track</span><span class="p">):</span>
+<a id="__codelineno-0-79" name="__codelineno-0-79"></a>        <span class="k">return</span> <span class="kc">True</span>
 </code></pre></div></td></tr></table></div>
             </details>
 
