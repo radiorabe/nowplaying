@@ -137,15 +137,16 @@ class NowPlayingDaemon:
                 )
             )
         )
-        handler.register_observer(
-            SmcFtpTrackObserver(
-                options=SmcFtpTrackObserver.Options(
-                    hostname=self.options.dab_smc_ftp_hostname,
-                    username=self.options.dab_smc_ftp_username,
-                    password=self.options.dab_smc_ftp_password,
+        if self.options.dab_smc:
+            handler.register_observer(
+                SmcFtpTrackObserver(
+                    options=SmcFtpTrackObserver.Options(
+                        hostname=self.options.dab_smc_ftp_hostname,
+                        username=self.options.dab_smc_ftp_username,
+                        password=self.options.dab_smc_ftp_password,
+                    )
                 )
             )
-        )
 
         return handler
 
