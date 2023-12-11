@@ -48,6 +48,7 @@ def test_track_started(mock_ftp, track_factory, show_factory):
                 "STOR /dlplus/nowplaying.dls",
                 ANY,
             ),
+            call.quit(),
             call.close(),
         ]
     )
@@ -75,6 +76,7 @@ def test_track_started(mock_ftp, track_factory, show_factory):
                 ANY,
             ),
             call.storlines("STOR /dlplus/nowplaying.dls", ANY),
+            call.quit(),
             call.close(),
         ]
     )
