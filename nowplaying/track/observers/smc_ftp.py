@@ -68,6 +68,7 @@ class SmcFtpTrackObserver(TrackObserver):
         ftp.storlines("STOR /dls/nowplaying.dls", dls)
         ftp.storlines("STOR /dlplus/nowplaying.dls", dlplus)
 
+        ftp.quit()
         ftp.close()
 
         logger.info(
