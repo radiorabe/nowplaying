@@ -4,6 +4,7 @@ from nowplaying.track.observers.dab_audio_companion import (
     DabAudioCompanionTrackObserver,
 )
 from nowplaying.track.observers.icecast import IcecastTrackObserver
+from nowplaying.track.observers.smc_ftp import SmcFtpTrackObserver
 from nowplaying.track.observers.ticker import TickerTrackObserver
 
 
@@ -38,6 +39,7 @@ class Options:
         )
         IcecastTrackObserver.Options.args(self.__args)
         DabAudioCompanionTrackObserver.Options.args(self.__args)
+        SmcFtpTrackObserver.Options.args(self.__args)
         TickerTrackObserver.Options.args(self.__args)
         self.__args.add_argument(
             "-s",
