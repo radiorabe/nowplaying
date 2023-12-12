@@ -47,17 +47,20 @@ class SmcFtpTrackObserver(TrackObserver):
         self._options = options
 
     def track_started(self, track: Track):
-        logger.info(f"Updating DAB+ DLS for track: {track.artist} - {track.title}")
+        logger.info(f"Updating DAB+ DLS for track {track.artist=} {track.title=}")
 
         if track.get_duration() < timedelta(seconds=5):
-            logger.info("Track is less than 5 seconds, not sending to SMC")
+            logger.info(
+                "Track is less than 5 seconds, not sending to SMC"
+                f"{track.artist=} {track.title=}"
+            )
             return
 
         dls, dlplus = _dls_from_track(track)
 
         # check for too long meta and shorten to just artist
         if dls.getbuffer().nbytes > 128:  # pragma: no cover
-            logger.warning(f"SMC DLS to long {dls=}")
+            logger.warning(f"SMC DLS to long {dls.getvalue().decode('latin1')=}")
             dls, dlplus = _dls_from_track(track, title=False)
 
         ftp = FTP_TLS()
@@ -72,7 +75,9 @@ class SmcFtpTrackObserver(TrackObserver):
         ftp.close()
 
         logger.info(
-            f"SMC FTP Server: {self._options.hostname} DLS: {dls} DL+: {dlplus}"
+            f"SMC FTP {self._options.hostname=} "
+            f"{dls.getvalue().decode('latin1')=} "
+            f"{dlplus.getvalue().decode('latin1')=}"
         )
 
     def track_finished(self, track):
