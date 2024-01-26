@@ -1,4 +1,5 @@
 """Tests for :class:`SmcFtpTrackObserver`."""
+
 from unittest.mock import ANY, Mock, call, patch
 
 from nowplaying.track.observers.smc_ftp import SmcFtpTrackObserver
