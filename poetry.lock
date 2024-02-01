@@ -1902,13 +1902,13 @@ pyyaml = "*"
 
 [[package]]
 name = "rabe-cridlib"
-version = "0.11.2"
+version = "0.11.3"
 description = "Generate CRIDs for RaBe"
 optional = false
 python-versions = ">=3.11,<4.0"
 files = [
-    {file = "rabe_cridlib-0.11.2-py3-none-any.whl", hash = "sha256:cbc3bea98a8c347058f93d5051d6f93be2723be0648309565f98d8097800ed1b"},
-    {file = "rabe_cridlib-0.11.2.tar.gz", hash = "sha256:9d18a208a5832f359f8feccdbecc10ac724cc8ab27719e0736277a00fa3bff51"},
+    {file = "rabe_cridlib-0.11.3-py3-none-any.whl", hash = "sha256:35ca1a57cda8dd8ab6f9d9171f1b2b5df130b4f91ef9b7b7932cfaedde981c67"},
+    {file = "rabe_cridlib-0.11.3.tar.gz", hash = "sha256:f3bd47d4314961e06fde7517e7adef913dcf93fa31bcfa36c857ef0b5f1bbedb"},
 ]
 
 [package.dependencies]
