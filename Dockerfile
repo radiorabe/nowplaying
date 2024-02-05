@@ -1,11 +1,11 @@
-FROM ghcr.io/radiorabe/s2i-python:2.1.6 AS build
+FROM ghcr.io/radiorabe/s2i-python:2.1.7 AS build
 
 COPY ./ /opt/app-root/src
 
 RUN python -mbuild
 
 
-FROM ghcr.io/radiorabe/python-minimal:2.1.4 AS app
+FROM ghcr.io/radiorabe/python-minimal:2.1.5 AS app
 
 COPY --from=build /opt/app-root/src/dist/*.whl /tmp/dist/
 
