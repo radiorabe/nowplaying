@@ -1,4 +1,4 @@
-site_name: RaBe nowplaying
+site_name: RaBe nowplaying Service
 repo_url: https://github.com/radiorabe/nowplaying
 repo_name: radiorabe/nowplaying
 
@@ -7,11 +7,13 @@ theme:
   palette:
     # Palette toggle for dark mode
     - scheme: slate
+      primary: '#00c9bf'
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
     # Palette toggle for light mode
     - scheme: default
+      primary: '#00c9bf'
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
