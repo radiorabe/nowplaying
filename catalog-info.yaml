@@ -1,0 +1,16 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: nowplaying
+  title: Nowplaging Service
+  description: |
+    The nowplaying daemon is the python server central to our songticker.
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: radiorabe/nowplaying
+spec:
+  type: service
+  lifecycle: production
+  owner: it-reaktion
+  system: rabe-songticker
