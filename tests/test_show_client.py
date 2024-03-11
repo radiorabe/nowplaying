@@ -2,6 +2,7 @@
 
 import json
 from datetime import datetime, timedelta
+from pathlib import Path
 from unittest.mock import Mock, patch
 
 import pytest
@@ -16,7 +17,7 @@ _BASE_URL = "http://example.com/api/live-info-v2/format/json"
 
 def file_get_contents(filename: str) -> str:
     """Read a file and returns its contents."""
-    with open(filename) as file:
+    with Path(filename).open() as file:
         return file.read()
 
 
@@ -73,7 +74,7 @@ def test_lazy_update_with_show_set(mock_logger_debug):
     show_client.lazy_update()
     show_client.update.assert_not_called()
     mock_logger_debug.assert_called_once_with(
-        "Show still running, won't update show info"
+        "Show still running, won't update show info",
     )
 
 
@@ -82,17 +83,25 @@ def test_update(mock_requests_get):
     """Test :class:`ShowClient`'s :meth:`update` method."""
     mock_requests_get.return_value.json = Mock(
         return_value=json.loads(
-            file_get_contents("tests/fixtures/cast_now_during_show.json")
-        )
+            file_get_contents("tests/fixtures/cast_now_during_show.json"),
+        ),
     )
     show_client = ShowClient(_BASE_URL)
     show_client.update()
     assert show_client.show.name == "Voice of Hindu Kush"
     assert show_client.show.starttime == datetime(
-        2019, 1, 27, 13, tzinfo=pytz.timezone("UTC")
+        2019,
+        1,
+        27,
+        13,
+        tzinfo=pytz.timezone("UTC"),
     )
     assert show_client.show.endtime == datetime(
-        2319, 1, 27, 14, tzinfo=pytz.timezone("UTC")
+        2319,
+        1,
+        27,
+        14,
+        tzinfo=pytz.timezone("UTC"),
     )
     assert show_client.show.url == "https://www.rabe.ch/stimme-der-kutuesch/"
 
@@ -115,8 +124,8 @@ def test_update_no_url(mock_requests_get):
     """Test :class:`ShowClient`'s :meth:`update` method when no url is returned."""
     mock_requests_get.return_value.json = Mock(
         return_value=json.loads(
-            file_get_contents("tests/fixtures/cast_now_no_url.json")
-        )
+            file_get_contents("tests/fixtures/cast_now_no_url.json"),
+        ),
     )
     show_client = ShowClient(_BASE_URL)
     show_client.update()
@@ -125,7 +134,7 @@ def test_update_no_url(mock_requests_get):
 
 @patch("requests.get")
 @pytest.mark.parametrize(
-    "fixture,field",
+    ("fixture", "field"),
     [
         ("cast_now_no_name", "name"),
         ("cast_now_no_end", "end time"),
@@ -135,7 +144,7 @@ def test_update_no_url(mock_requests_get):
 def test_update_empty_field(mock_requests_get, fixture, field):
     """Test :class:`ShowClient`'s :meth:`update` method when a field is empty."""
     mock_requests_get.return_value.json = Mock(
-        return_value=json.loads(file_get_contents(f"tests/fixtures/{fixture}.json"))
+        return_value=json.loads(file_get_contents(f"tests/fixtures/{fixture}.json")),
     )
     show_client = ShowClient(_BASE_URL)
     with pytest.raises(ShowClientError) as info:
@@ -148,8 +157,8 @@ def test_update_past_show(mock_requests_get):
     """Test :class:`ShowClient`'s :meth:`update` method when the show is in the past."""
     mock_requests_get.return_value.json = Mock(
         return_value=json.loads(
-            file_get_contents("tests/fixtures/cast_now_past_show.json")
-        )
+            file_get_contents("tests/fixtures/cast_now_past_show.json"),
+        ),
     )
     show_client = ShowClient(_BASE_URL)
     with pytest.raises(ShowClientError) as info:
@@ -165,8 +174,8 @@ def test_update_show_empty(mock_requests_get):
     """
     mock_requests_get.return_value.json = Mock(
         return_value=json.loads(
-            file_get_contents("tests/fixtures/cast_now_show_empty.json")
-        )
+            file_get_contents("tests/fixtures/cast_now_show_empty.json"),
+        ),
     )
     show_client = ShowClient(_BASE_URL)
     show_client.update()
@@ -179,8 +188,8 @@ def test_update_show_encoding_fix_in_name(mock_requests_get):
     """Test :class:`ShowClient`'s :meth:`update` for show name with encoding fix."""
     mock_requests_get.return_value.json = Mock(
         return_value=json.loads(
-            file_get_contents("tests/fixtures/cast_now_show_encoding_fix.json")
-        )
+            file_get_contents("tests/fixtures/cast_now_show_encoding_fix.json"),
+        ),
     )
     show_client = ShowClient(_BASE_URL)
     show_client.update()
@@ -192,16 +201,24 @@ def test_update_when_show_is_in_next_array(mock_requests_get):
     """Test :class:`ShowClient`'s :meth:`update` method."""
     mock_requests_get.return_value.json = Mock(
         return_value=json.loads(
-            file_get_contents("tests/fixtures/cast_now_show_in_next.json")
-        )
+            file_get_contents("tests/fixtures/cast_now_show_in_next.json"),
+        ),
     )
     show_client = ShowClient(_BASE_URL)
     show_client.update()
     assert show_client.show.name == "Voice of Hindu Kush"
     assert show_client.show.starttime == datetime(
-        2019, 1, 27, 13, tzinfo=pytz.timezone("UTC")
+        2019,
+        1,
+        27,
+        13,
+        tzinfo=pytz.timezone("UTC"),
     )
     assert show_client.show.endtime == datetime(
-        2319, 1, 27, 14, tzinfo=pytz.timezone("UTC")
+        2319,
+        1,
+        27,
+        14,
+        tzinfo=pytz.timezone("UTC"),
     )
     assert show_client.show.url == "https://www.rabe.ch/stimme-der-kutuesch/"
