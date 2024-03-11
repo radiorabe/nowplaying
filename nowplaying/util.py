@@ -1,3 +1,7 @@
+"""Utils for nowplaying."""
+
+from __future__ import annotations
+
 import logging
 from urllib.parse import parse_qs, urlparse
 
@@ -25,10 +29,14 @@ def parse_icecast_url(
     ('https://localhost:443/', None, None, None)
 
     Args:
+    ----
         url (str): The Icecast URL to parse.
+
     Returns:
+    -------
         Tuple[str, Optional[str], Optional[str], Optional[str]]:
             The URL, username, password, and mountpoint.
+
     """
     parsed = urlparse(url)
     port = parsed.port or parsed.scheme == "https" and 443 or 80
@@ -39,5 +47,5 @@ def parse_icecast_url(
     try:
         mount = parse_qs(parsed.query)["mount"][0]
     except KeyError:
-        logger.warning("Missing mount parameter in URL %s" % url)
+        logger.warning("Missing mount parameter in URL %s", url)
     return (url, username, password, mount)
