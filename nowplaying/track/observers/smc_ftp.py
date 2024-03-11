@@ -1,14 +1,25 @@
+"""Upload PAD to SMC."""
+
+from __future__ import annotations
+
 import logging
 from datetime import timedelta
 from ftplib import FTP_TLS
 from io import BytesIO
+from typing import TYPE_CHECKING, Self
 
-import configargparse
+from nowplaying.track.observers.base import TrackObserver
 
-from ..track import Track
-from .base import TrackObserver
+if TYPE_CHECKING:  # pragma: no cover
+    import configargparse  # type: ignore[import-untyped]
+
+    from nowplaying.track.observers.base import TTrackObserverOptions
+    from nowplaying.track.track import Track
+
 
 logger = logging.getLogger(__name__)
+
+_NOWPLAYING_DAB_MAXLEN = 128
 
 
 class SmcFtpTrackObserver(TrackObserver):
@@ -17,8 +28,14 @@ class SmcFtpTrackObserver(TrackObserver):
     name = "SMC FTP"
 
     class Options(TrackObserver.Options):  # pragma: no coverage
+        """Options for SmcFtpTrackObserver."""
+
         @classmethod
-        def args(cls, args: configargparse.ArgParser):
+        def args(
+            cls: type[TTrackObserverOptions],
+            args: configargparse.ArgParser,
+        ) -> None:
+            """Create args."""
             args.add_argument(
                 "--dab-smc",
                 help="Enable SMC FTP delivery",
@@ -35,35 +52,44 @@ class SmcFtpTrackObserver(TrackObserver):
                 help="Username for SMC FTP server",
             )
             args.add_argument(
-                "--dab-smc-ftp-password", help="Password for SMC FTP server"
+                "--dab-smc-ftp-password",
+                help="Password for SMC FTP server",
             )
 
-        def __init__(self, hostname: str, username: str, password: str) -> None:
+        def __init__(self: Self, hostname: str, username: str, password: str) -> None:
+            """Create SmcFtpTrackObserver.Config."""
             self.hostname: str = hostname
             self.username: str = username
             self.password: str = password
 
-    def __init__(self, options: Options):
+    def __init__(self: Self, options: Options) -> None:
+        """Create SmcFtpTrackObserver."""
         self._options = options
 
-    def track_started(self, track: Track):
-        logger.info(f"Updating DAB+ DLS for track {track.artist=} {track.title=}")
+    def track_started(self: Self, track: Track) -> None:
+        """Track started."""
+        logger.info(
+            "Updating DAB+ DLS for track artist=%s title=%s",
+            track.artist,
+            track.title,
+        )
 
         if track.get_duration() < timedelta(seconds=5):
             logger.info(
-                "Track is less than 5 seconds, not sending to SMC"
-                f"{track.artist=} {track.title=}"
+                "Track is less than 5 seconds, not sending to SMC artist=%s title=%s",
+                track.artist,
+                track.title,
             )
             return
 
         dls, dlplus = _dls_from_track(track)
 
         # check for too long meta and shorten to just artist
-        if dls.getbuffer().nbytes > 128:  # pragma: no cover
-            logger.warning(f"SMC DLS to long {dls.getvalue().decode('latin1')=}")
+        if dls.getbuffer().nbytes > _NOWPLAYING_DAB_MAXLEN:  # pragma: no cover
+            logger.warning("SMC DLS to long %s", dls.getvalue().decode("latin1"))
             dls, dlplus = _dls_from_track(track, title=False)
 
-        ftp = FTP_TLS()
+        ftp = FTP_TLS()  # noqa: S321
         ftp.connect(self._options.hostname)
         ftp.sendcmd(f"USER {self._options.username}")
         ftp.sendcmd(f"PASS {self._options.password}")
@@ -75,16 +101,18 @@ class SmcFtpTrackObserver(TrackObserver):
         ftp.close()
 
         logger.info(
-            f"SMC FTP {self._options.hostname=} "
-            f"{dls.getvalue().decode('latin1')=} "
-            f"{dlplus.getvalue().decode('latin1')=}"
+            "SMC FTP hostname=%s dls=%s dlsplus=%",
+            self._options.hostname,
+            dls.getvalue().decode("latin1"),
+            dlplus.getvalue().decode("latin1"),
         )
 
-    def track_finished(self, track):
-        return True
+    def track_finished(self: Self, _: Track) -> None:
+        """Track finished."""
+        return
 
 
-def _dls_from_track(track: Track, title=True) -> (BytesIO, BytesIO):
+def _dls_from_track(track: Track, *, title: bool = True) -> tuple[BytesIO, BytesIO]:
     # track.artist contains station name if no artist is set
     dls = f"{track.artist} - {track.show.name}" if title else track.artist
     dlplus = ""
