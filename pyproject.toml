@@ -11,7 +11,7 @@ classifiers = [
 ]
 readme = "README.md"
 packages = [
-    { include = "nowplaying"},
+    { include = "nowplaying" },
 ]
 
 [tool.poetry.scripts]
@@ -38,11 +38,6 @@ opentelemetry-sdk = "^1.18.0"
 black = ">=23.1,<26.0"
 isort = ">=5.12,<7.0"
 pydocstyle = "^6.1.1"
-pytest = ">=7.2.3,<9.0.0"
-pytest-cov = ">=4,<8"
-pytest-random-order = "^1.1.0"
-pytest-ruff = ">=0.4.0,<0.6"
-ruff = ">=0.8.0,<0.13.3"
 faker = ">=26.0.0,<38.0.0"
 mkdocs = "^1.5.3"
 mkdocs-material = "^9.4.7"
@@ -51,20 +46,33 @@ mkdocs-gen-files = "^0.5.0"
 mkdocs-literate-nav = "^0.6.1"
 mkdocs-section-index = "^0.3.8"
 mkdocstrings-python = "^1.7.3"
-
-[tool.isort]
-line_length = 120
-profile = "black"
+pytest = ">=7.2.3,<9.0.0"
+pytest-cov = ">=4,<7"
+pytest-mypy = "^1.0.1"
+pytest-random-order = "^1.1.0"
+pytest-ruff = ">=0.4.0"
+ruff = ">=0.8.4"
+types-requests = "^2.31.0.20240310"
+types-pytz = "^2024.1.0.20240203"
+types-lxml = "^2024.12.13"
+lxml-stubs = "^0.5.1"
 
 [tool.pytest.ini_options]
 minversion = "7.2"
-addopts = "-ra -q --random-order --doctest-glob='*.md' --doctest-modules --cov=nowplaying --cov-fail-under=100 --ruff --ignore docs/"
+addopts = "-ra -q --random-order --doctest-glob='*.md' --doctest-modules --cov=nowplaying --cov-fail-under=100 --ruff --ruff-format --mypy --ignore docs/"
 filterwarnings = [
     "ignore::DeprecationWarning:cairosvg",
     "ignore::DeprecationWarning:cherrypy",
     "ignore::DeprecationWarning:google",
     "ignore::DeprecationWarning:importlib",
     "ignore::DeprecationWarning:pkg_resources",
+]
+
+[tool.ruff]
+extend-exclude = [
+	"nowplaying/misc/saemubox.py",
+	"nowplaying/track/observers/scrobbler.py",
+	"nowplaying/track/observers/dab_audio_companion.py",
 ]
 
 [build-system]

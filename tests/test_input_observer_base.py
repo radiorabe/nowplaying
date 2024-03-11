@@ -1,21 +1,28 @@
-from cloudevents.http.event import CloudEvent
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from nowplaying.input.observer import InputObserver
 
+if TYPE_CHECKING:
+    from cloudevents.http.event import CloudEvent
+
 
 class ShuntObserver(InputObserver):
-    def handles(self, event: CloudEvent):
+    def handles(self, _: CloudEvent):
         return True
 
-    def event(self, event: CloudEvent):
-        return super().event(event)
+    def event(self, event: CloudEvent): ...
 
-    def handle_id(self, saemubox_id: int, event: CloudEvent):
+    def handle_id(
+        self,
+        saemubox_id: int,  # noqa: ARG002
+        event: CloudEvent | None = None,  # noqa: ARG002
+    ) -> bool:
         return True
 
-    def handle(self, event: CloudEvent):
+    def handle(self, event: CloudEvent | None = None) -> None:  # noqa: ARG002
         self.handle_called = True
-        return super().event(event)
 
 
 def test_init():

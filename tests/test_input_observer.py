@@ -1,13 +1,13 @@
 import pytest
 from cloudevents.http.event import CloudEvent
-from isodate import parse_datetime
+from isodate import parse_datetime  # type: ignore[import-untyped]
 
 from nowplaying.input.observer import KlangbeckenInputObserver
 from nowplaying.track.handler import TrackEventHandler
 
 
 @pytest.mark.parametrize(
-    "source, expected",
+    ("source", "expected"),
     [
         ("https://github/radiorabe/klangbecken", True),
         ("https://github/radiorabe/something-that-is-not-klangbecken", False),
@@ -42,7 +42,6 @@ def test_klangbecken_input_observer_event():
         data={"item.artist": "artist", "item.title": "title"},
     )
     observer.event(event)
-    # TODO assert something
 
 
 def test_klangbecken_input_observer_parse_event():

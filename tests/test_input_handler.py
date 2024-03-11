@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from queue import Queue
 
 from cloudevents.http.event import CloudEvent
@@ -12,20 +14,20 @@ class ShuntInputObserver(InputObserver):
         self.event_queue = Queue()
         self.update_call = None
 
-    def update(self, saemubox_id: int, event: CloudEvent = None):
+    def update(self, saemubox_id: int, event: CloudEvent | None = None):
         self.update_call = (saemubox_id, event)
 
-    def handles(self, event: CloudEvent) -> bool:
-        return super().handles(event)
+    def handles(self, event: CloudEvent) -> bool:  # noqa: ARG002
+        return True
 
     def event(self, event: CloudEvent):
-        return super().event(event)
+        pass
 
-    def handle_id(self, saemubox_id: int, event: CloudEvent = None):
-        return super().handle_id(saemubox_id, event=event)
+    def handle_id(self, saemubox_id: int, event: CloudEvent | None = None):
+        pass
 
-    def handle(self, event: CloudEvent = None):
-        return super().handle(event)
+    def handle(self, event: CloudEvent | None = None):
+        pass
 
 
 def test_register_observer():
@@ -33,7 +35,7 @@ def test_register_observer():
     handler = InputHandler()
     observer = ShuntInputObserver()
     handler.register_observer(observer)
-    assert observer in handler._observers
+    assert observer in handler._observers  # noqa: SLF001
 
 
 def test_remove_observer():
@@ -42,7 +44,7 @@ def test_remove_observer():
     observer = ShuntInputObserver()
     handler.register_observer(observer)
     handler.remove_observer(observer)
-    assert observer not in handler._observers
+    assert observer not in handler._observers  # noqa: SLF001
 
 
 def test_update():

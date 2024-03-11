@@ -35,10 +35,10 @@ def test_signal_handler(mock_sys_exit, options):
 
     with patch.object(SaemuBox, "__init__", lambda *_: None):
         nowplaying_daemon = NowPlayingDaemon(options)
-        nowplaying_daemon._api = Mock()
+        nowplaying_daemon._api = Mock()  # noqa: SLF001
         nowplaying_daemon.signal_handler(SIGINT, None)
 
-        nowplaying_daemon._api.stop_server.assert_called_once()
+        nowplaying_daemon._api.stop_server.assert_called_once()  # noqa: SLF001
         mock_sys_exit.assert_called_with(EX_OK)
 
 
@@ -49,6 +49,6 @@ def test__start_apiserver(mock_run_server, options):
     with patch.object(SaemuBox, "__init__", lambda *_: None):
         daemon = NowPlayingDaemon(options)
 
-        daemon._start_apiserver()
+        daemon._start_apiserver()  # noqa: SLF001
 
     mock_run_server.assert_called_with()

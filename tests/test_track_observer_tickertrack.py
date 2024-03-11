@@ -1,6 +1,6 @@
 """Tests for :class:`observer.TickerTrackObserver`."""
 
-import os
+from pathlib import Path
 
 import pytest
 
@@ -10,18 +10,18 @@ _FORMAT_WARNING = "The XML ticker format will be replaced"
 
 
 @pytest.mark.filterwarnings(
-    f"ignore:{_FORMAT_WARNING}:PendingDeprecationWarning:nowplaying.track.observer"
+    f"ignore:{_FORMAT_WARNING}:PendingDeprecationWarning:nowplaying.track.observer",
 )
 def test_init():
     """Test class:`TickerTrackObserver`'s :meth:`.__init__` method."""
     ticker_track_observer = TickerTrackObserver(
-        options=TickerTrackObserver.Options(file_path="")
+        options=TickerTrackObserver.Options(file_path=""),
     )
     assert ticker_track_observer.ticker_file_path == ""
 
 
 @pytest.mark.filterwarnings(
-    f"ignore:{_FORMAT_WARNING}:PendingDeprecationWarning:nowplaying.track.observer"
+    f"ignore:{_FORMAT_WARNING}:PendingDeprecationWarning:nowplaying.track.observer",
 )
 def test_track_started(track_factory, show_factory):
     """Test :class:`TickerTrackObserver`'s :meth:`track_started` method."""
@@ -30,21 +30,21 @@ def test_track_started(track_factory, show_factory):
     track.show = show_factory()
 
     ticker_track_observer = TickerTrackObserver(
-        options=TickerTrackObserver.Options(file_path="/tmp/track_started.xml")
+        options=TickerTrackObserver.Options(file_path="/tmp/track_started.xml"),
     )
     ticker_track_observer.track_started(track)
 
-    assert os.path.exists("/tmp/track_started.xml")
+    assert Path("/tmp/track_started.xml").exists()
 
 
 @pytest.mark.filterwarnings(
-    f"ignore:{_FORMAT_WARNING}:PendingDeprecationWarning:nowplaying.track.observer"
+    f"ignore:{_FORMAT_WARNING}:PendingDeprecationWarning:nowplaying.track.observer",
 )
 def test_track_finished(track_factory):
     """Test :class:`TickerTrackObserver`'s :meth:`track_finished` method."""
     track = track_factory()
 
     ticker_track_observer = TickerTrackObserver(
-        options=TickerTrackObserver.Options(file_path="/tmp/dummy.xml")
+        options=TickerTrackObserver.Options(file_path="/tmp/dummy.xml"),
     )
-    assert ticker_track_observer.track_finished(track)
+    ticker_track_observer.track_finished(track)

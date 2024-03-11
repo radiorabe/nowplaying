@@ -1,13 +1,24 @@
-import logging
+"""Send PAD to icecast endpoints."""
 
-import configargparse
+from __future__ import annotations
+
+import logging
+from typing import TYPE_CHECKING, Self
+
 import requests
 
-from ...util import parse_icecast_url
-from ..track import Track
-from .base import TrackObserver
+from nowplaying.track.observers.base import TrackObserver
+from nowplaying.util import parse_icecast_url
+
+if TYPE_CHECKING:  # pragma: no cover
+    import configargparse  # type: ignore[import-untyped]
+
+    from nowplaying.track.observers.base import TTrackObserverOptions
+    from nowplaying.track.track import Track
 
 logger = logging.getLogger(__name__)
+
+_NOWPLAYING_TRACK_EXEPTION = "request failed"
 
 
 class IcecastTrackObserver(TrackObserver):
@@ -19,18 +30,26 @@ class IcecastTrackObserver(TrackObserver):
         """IcecastTrackObserver options."""
 
         @classmethod
-        def args(cls, args: configargparse.ArgParser) -> None:
-            # TODO v3 remove this option
+        def args(
+            cls: type[TTrackObserverOptions],
+            args: configargparse.ArgParser,
+        ) -> None:
+            """Args for IcecastTrackObserver."""
+            # TODO(hairmare): v3 remove this option
+            # https://github.com/radiorabe/nowplaying/issues/179
             args.add_argument(
                 "-m",
                 "--icecast-base",
-                dest="icecastBase",
+                dest="icecast_base",
                 help="Icecast base URL",
                 default="http://icecast.example.org:8000/admin/",
             )
-            # TODO v3 remove this option
+            # TODO(hairmare): v3 remove this option
+            # https://github.com/radiorabe/nowplaying/issues/179
             args.add_argument(
-                "--icecast-password", dest="icecastPassword", help="Icecast Password"
+                "--icecast-password",
+                dest="icecast_password",
+                help="Icecast Password",
             )
             args.add_argument(
                 "-i",
@@ -44,17 +63,20 @@ class IcecastTrackObserver(TrackObserver):
             )
 
         def __init__(
-            self,
+            self: Self,
             url: str,
             username: str | None = None,
             password: str | None = None,
             mount: str | None = None,
-        ):
-            # TODO v3 remove optional args and only support parsed URLs
+        ) -> None:
+            """Create IcecastTrackObserver.Config."""
+            # TODO(hairmare): v3 remove optional args and only support parsed URLs
+            # https://github.com/radiorabe/nowplaying/issues/179
             (self.url, self.username, self.password, self.mount) = parse_icecast_url(
-                url
+                url,
             )
-            # TODO v3 remove non URL usage of username, password, ...
+            # TODO(hairmare): v3 remove non URL usage of username, password, ...
+            # https://github.com/radiorabe/nowplaying/issues/179
             if not self.username and username:
                 # grab from args if not in URL
                 logger.warning("deprecated use username from URL")
@@ -72,17 +94,21 @@ class IcecastTrackObserver(TrackObserver):
                 logger.warning("deprecated use mount from URL")
                 self.mount = mount
             if not self.password:
-                raise ValueError("Missing required parameter password for %s" % url)
+                raise ValueError(f"Missing required parameter password for {url}")  # noqa: EM102, TRY003
             if not self.mount:
-                raise ValueError("Missing required parameter mount for %s" % url)
+                raise ValueError(f"Missing required parameter mount for {url}")  # noqa: EM102, TRY003
 
-    def __init__(self, options: Options):
+    def __init__(self: Self, options: Options) -> None:
+        """Create IcecastTrackObserver."""
         self.options = options
-        logger.info(f"Icecast URL: {self.options.url} mount: {self.options.mount}")
+        logger.info("Icecast URL: %s mount: %s", self.options.url, self.options.mount)
 
-    def track_started(self, track: Track):
+    def track_started(self: Self, track: Track) -> None:
+        """Track started."""
         logger.info(
-            f"Updating Icecast Metadata for track: {track.artist} - {track.title}"
+            "Updating Icecast Metadata for track: %s - %s",
+            track.artist,
+            track.title,
         )
 
         title = track.title
@@ -101,15 +127,19 @@ class IcecastTrackObserver(TrackObserver):
         try:
             requests.get(
                 self.options.url,
-                auth=(self.options.username, self.options.password),
+                auth=(self.options.username, self.options.password),  # type: ignore[arg-type]
                 params=params,
+                timeout=60,
             )
-        except requests.exceptions.RequestException as e:
-            logger.exception(e)
+        except requests.exceptions.RequestException:
+            logger.exception(_NOWPLAYING_TRACK_EXEPTION)
 
         logger.info(
-            f"Icecast Metadata updated on {self.options.url} with data: {params}"
+            "Icecast Metadata updated on %s with data: %s",
+            self.options.url,
+            params,
         )
 
-    def track_finished(self, track):
-        return True
+    def track_finished(self: Self, _: Track) -> None:
+        """Track finished."""
+        return

@@ -20,8 +20,6 @@ logger = logging.getLogger(__name__)
 class SaemuBoxError(Exception):
     """SaemuBox related exception."""
 
-    pass
-
 
 class SaemuBox:
     """Receive and validate info from Sämu Box for nowplaying."""
@@ -37,7 +35,8 @@ class SaemuBox:
 
     def __init__(self, saemubox_ip, check_sender=True):
         warnings.warn(
-            "Saemubox will be replaced with Pathfinder", PendingDeprecationWarning
+            "Saemubox will be replaced with Pathfinder",
+            PendingDeprecationWarning,
         )
         self.output = ""
 
@@ -70,11 +69,11 @@ class SaemuBox:
         except OSError as e:  # pragma: no cover
             self.sock = None
             logger.error("SaemuBox: cannot bind to %s:%i." % (self.bind_ip, self.port))
-            raise SaemuBoxError() from e
+            raise SaemuBoxError from e
 
     def __update(self):  # pragma: no cover
         if self.sock is None or (hasattr(self.sock, "_closed") and self.sock._closed):
-            logger.warn("SaemuBox: socket closed unexpectedly, retrying...")
+            logger.warning("SaemuBox: socket closed unexpectedly, retrying...")
             self._setup_socket()
 
         output = None
@@ -84,7 +83,9 @@ class SaemuBox:
         while select.select([self.sock], [], [], 0)[0]:
             data, addr = self.sock.recvfrom(1024)
             if self.check_sender and addr[0] not in self.senders:
-                logger.warn("SaemuBox: receiving data from invalid host: %s " % addr[0])
+                logger.warning(
+                    "SaemuBox: receiving data from invalid host: %s " % addr[0],
+                )
                 continue
 
             ids = data.split()  # several saemubox ids might come in one packet
@@ -94,7 +95,7 @@ class SaemuBox:
                     seen_senders.add(addr[0])
                     output = id
                 else:
-                    logger.warn("SaemuBox: received invalid data: %s" % data)
+                    logger.warning("SaemuBox: received invalid data: %s" % data)
 
         if output is None:
             logger.error("SaemuBox: could not read current status.")
@@ -102,7 +103,7 @@ class SaemuBox:
             raise SaemuBoxError("Cannot read data from SaemuBox")
         elif seen_senders != self.senders:
             for missing_sender in self.senders - seen_senders:
-                logger.warn("SaemuBox: missing sender: %s" % missing_sender)
+                logger.warning("SaemuBox: missing sender: %s" % missing_sender)
 
         self.output = int(output)
 
@@ -126,7 +127,7 @@ if __name__ == "__main__":  # pragma: no cover
     logger.addHandler(logging.StreamHandler(sys.stdout))
     logger.setLevel(logging.INFO)
 
-    sb = SaemuBox()
+    sb = SaemuBox(saemubox_ip="127.0.0.1")
     localhost = socket.gethostbyname(socket.gethostname())
     sb.senders.add(localhost)
 

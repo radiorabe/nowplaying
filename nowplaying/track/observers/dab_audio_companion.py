@@ -1,3 +1,4 @@
+# mypy: ignore-errors
 import logging
 import urllib
 from datetime import timedelta
@@ -48,7 +49,7 @@ class DabAudioCompanionTrackObserver(TrackObserver):
         self.dls_enabled = self.last_frame_was_dl_plus = self._options.dl_plus
         logger.info(
             "DAB+ Audio Companion initialised with URL: %s, DLS+ enabled: %r"
-            % (self.base_url, self.dls_enabled)
+            % (self.base_url, self.dls_enabled),
         )
 
     def track_started(self, track: Track):
@@ -61,9 +62,9 @@ class DabAudioCompanionTrackObserver(TrackObserver):
 
         if track.get_duration() < timedelta(seconds=5):
             logger.info(
-                "Track is less than 5 seconds, not sending to DAB+ Audio Companion"
+                "Track is less than 5 seconds, not sending to DAB+ Audio Companion",
             )
-            return
+            return None
 
         if not track.has_default_title() and not track.has_default_artist():
             params["artist"] = track.artist
@@ -71,7 +72,7 @@ class DabAudioCompanionTrackObserver(TrackObserver):
             self.last_frame_was_dl_plus = True
         elif self.last_frame_was_dl_plus:
             logger.info(
-                "Track has default info, using show instead. Sending DLS+ delete tags."
+                "Track has default info, using show instead. Sending DLS+ delete tags.",
             )
             message = DLPlusMessage()
             # track.artist contains station name if no artist is set
@@ -91,7 +92,7 @@ class DabAudioCompanionTrackObserver(TrackObserver):
 
         logger.info(
             f"DAB+ Audio Companion URL: {self.base_url} "
-            f"data: {params} is DL+: {self.last_frame_was_dl_plus}"
+            f"data: {params} is DL+: {self.last_frame_was_dl_plus}",
         )
 
         resp = requests.post(self.base_url, params)
@@ -104,7 +105,7 @@ class DabAudioCompanionTrackObserver(TrackObserver):
 
         if track.has_default_title() and track.has_default_artist():
             logger.info(
-                "%s: Track has default info, using show instead" % self.__class__
+                "%s: Track has default info, using show instead" % self.__class__,
             )
 
             title = track.show.name
@@ -112,7 +113,7 @@ class DabAudioCompanionTrackObserver(TrackObserver):
         # artist is an unicode string which we have to encode into UTF-8
         # http://bugs.python.org/issue216716
         song_string = urllib.parse.quote_plus(
-            f"{track.artist.encode('utf8')} - {title.encode('utf8')}"
+            f"{track.artist.encode('utf8')} - {title.encode('utf8')}",
         )
 
         update_url = f"{self.base_url}?dls={song_string}"
