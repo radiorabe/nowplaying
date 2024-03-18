@@ -9,7 +9,8 @@ You can run it via `python3 -mnowplaying` or after installation using the
 from .main import NowPlaying
 
 
-def main():
+def main() -> None:
+    """Run nowplaying."""
     NowPlaying().run()
 
 
