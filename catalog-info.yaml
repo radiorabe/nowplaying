@@ -3,7 +3,7 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: nowplaying
-  title: Nowplaging Service
+  title: Nowplaying Service
   description: |
     The nowplaying daemon is the python server central to our songticker.
   annotations:
