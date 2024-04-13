@@ -9,7 +9,7 @@ on:
       - '*'
 jobs:
   release-container:
-    uses: radiorabe/actions/.github/workflows/release-container.yaml@v0.20.8
+    uses: radiorabe/actions/.github/workflows/release-container.yaml@v0.21.0
     with:
       image: 'ghcr.io/radiorabe/nowplaying'
       name: nowplaying
@@ -17,6 +17,6 @@ jobs:
       tags: minimal rhel9 rabe python nowplaying
 
   python-poetry:
-    uses: radiorabe/actions/.github/workflows/release-python-poetry.yaml@v0.20.8
+    uses: radiorabe/actions/.github/workflows/release-python-poetry.yaml@v0.21.0
     secrets:
       RABE_PYPI_TOKEN: ${{ secrets.RABE_PYPI_TOKEN }}
