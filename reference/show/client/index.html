@@ -868,9 +868,9 @@
 
 
 <a id="show.client"></a>
-  <div class="doc doc-contents first">
+    <div class="doc doc-contents first">
 
-  
+
 
   <div class="doc doc-children">
 
@@ -886,21 +886,21 @@
 
 
 <h2 id="show.client.ShowClient" class="doc doc-heading">
-          <code>ShowClient</code>
+            <code>ShowClient</code>
 
 
 </h2>
 
 
-  <div class="doc doc-contents ">
+    <div class="doc doc-contents ">
 
-  
+
       <p>Fetches the show info from LibreTime now-playing v2 endpoint.</p>
 <p>Every show has a name, a start and endtime and an optional URL.</p>
 
-            <details class="quote">
-              <summary>Source code in <code>nowplaying/show/client.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-21"> 21</a></span>
+              <details class="quote">
+                <summary>Source code in <code>nowplaying/show/client.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-21"> 21</a></span>
 <span class="normal"><a href="#__codelineno-0-22"> 22</a></span>
 <span class="normal"><a href="#__codelineno-0-23"> 23</a></span>
 <span class="normal"><a href="#__codelineno-0-24"> 24</a></span>
@@ -1252,12 +1252,11 @@
 <a id="__codelineno-0-195" name="__codelineno-0-195"></a>            <span class="k">return</span>
 <a id="__codelineno-0-196" name="__codelineno-0-196"></a>        <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;shows&quot;</span><span class="p">][</span><span class="s2">&quot;current&quot;</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -1270,20 +1269,19 @@
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="show.client.ShowClient.__cleanup_show_name" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">__cleanup_show_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">__cleanup_show_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Cleanup name by undoing htmlspecialchars from libretime zf1 mvc.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>nowplaying/show/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-158">158</a></span>
+            <details class="quote">
+              <summary>Source code in <code>nowplaying/show/client.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-158">158</a></span>
 <span class="normal"><a href="#__codelineno-0-159">159</a></span>
 <span class="normal"><a href="#__codelineno-0-160">160</a></span>
 <span class="normal"><a href="#__codelineno-0-161">161</a></span>
@@ -1303,30 +1301,28 @@
 <a id="__codelineno-0-166" name="__codelineno-0-166"></a>
 <a id="__codelineno-0-167" name="__codelineno-0-167"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cleanup_show_name_regexp</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">__entityref_decode</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="show.client.ShowClient.__pick_current_show" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">__pick_current_show</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">__pick_current_show</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Pick the current show from the data.</p>
 <p>If there is no current show and the next one starts reasonably soon, pick that.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>nowplaying/show/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-169">169</a></span>
+            <details class="quote">
+              <summary>Source code in <code>nowplaying/show/client.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-169">169</a></span>
 <span class="normal"><a href="#__codelineno-0-170">170</a></span>
 <span class="normal"><a href="#__codelineno-0-171">171</a></span>
 <span class="normal"><a href="#__codelineno-0-172">172</a></span>
@@ -1382,29 +1378,27 @@
 <a id="__codelineno-0-195" name="__codelineno-0-195"></a>        <span class="k">return</span>
 <a id="__codelineno-0-196" name="__codelineno-0-196"></a>    <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;shows&quot;</span><span class="p">][</span><span class="s2">&quot;current&quot;</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="show.client.ShowClient.get_show_info" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_show_info</span><span class="p">(</span><span class="n">force_update</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_show_info</span><span class="p">(</span><span class="n">force_update</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Return a Show object.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>nowplaying/show/client.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-37">37</a></span>
+            <details class="quote">
+              <summary>Source code in <code>nowplaying/show/client.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-37">37</a></span>
 <span class="normal"><a href="#__codelineno-0-38">38</a></span>
 <span class="normal"><a href="#__codelineno-0-39">39</a></span>
 <span class="normal"><a href="#__codelineno-0-40">40</a></span>
@@ -1422,8 +1416,8 @@
 <a id="__codelineno-0-44" name="__codelineno-0-44"></a>
 <a id="__codelineno-0-45" name="__codelineno-0-45"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">show</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -1431,8 +1425,7 @@
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -1441,22 +1434,22 @@
 
 
 <h2 id="show.client.ShowClientError" class="doc doc-heading">
-          <code>ShowClientError</code>
+            <code>ShowClientError</code>
 
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code>Exception</code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code>Exception</code></p>
 
-  
+
       <p>ShowClient related exception.</p>
 
-            <details class="quote">
-              <summary>Source code in <code>nowplaying/show/client.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-15">15</a></span>
+              <details class="quote">
+                <summary>Source code in <code>nowplaying/show/client.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-15">15</a></span>
 <span class="normal"><a href="#__codelineno-0-16">16</a></span>
 <span class="normal"><a href="#__codelineno-0-17">17</a></span>
 <span class="normal"><a href="#__codelineno-0-18">18</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="k">class</span> <span class="nc">ShowClientError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -1464,10 +1457,9 @@
 <a id="__codelineno-0-17" name="__codelineno-0-17"></a>
 <a id="__codelineno-0-18" name="__codelineno-0-18"></a>    <span class="k">pass</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -1476,7 +1468,7 @@
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 

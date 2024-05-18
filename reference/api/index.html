@@ -953,9 +953,9 @@
 
 
 <a id="api"></a>
-  <div class="doc doc-contents first">
+    <div class="doc doc-contents first">
 
-  
+
 
   <div class="doc doc-children">
 
@@ -971,20 +971,20 @@
 
 
 <h2 id="api.ApiServer" class="doc doc-heading">
-          <code>ApiServer</code>
+            <code>ApiServer</code>
 
 
 </h2>
 
 
-  <div class="doc doc-contents ">
+    <div class="doc doc-contents ">
 
-  
+
       <p>The API server.</p>
 
-            <details class="quote">
-              <summary>Source code in <code>nowplaying/api.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-25"> 25</a></span>
+              <details class="quote">
+                <summary>Source code in <code>nowplaying/api.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-25"> 25</a></span>
 <span class="normal"><a href="#__codelineno-0-26"> 26</a></span>
 <span class="normal"><a href="#__codelineno-0-27"> 27</a></span>
 <span class="normal"><a href="#__codelineno-0-28"> 28</a></span>
@@ -1196,12 +1196,11 @@
 <a id="__codelineno-0-129" name="__codelineno-0-129"></a>
 <a id="__codelineno-0-130" name="__codelineno-0-130"></a>        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="s2">&quot;200 Event Received&quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -1214,20 +1213,19 @@
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="api.ApiServer.on_webhook" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">on_webhook</span><span class="p">(</span><span class="n">request</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">on_webhook</span><span class="p">(</span><span class="n">request</span><span class="p">)</span></code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Receive a CloudEvent and put it into the event queue.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>nowplaying/api.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-104">104</a></span>
+            <details class="quote">
+              <summary>Source code in <code>nowplaying/api.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-104">104</a></span>
 <span class="normal"><a href="#__codelineno-0-105">105</a></span>
 <span class="normal"><a href="#__codelineno-0-106">106</a></span>
 <span class="normal"><a href="#__codelineno-0-107">107</a></span>
@@ -1281,29 +1279,27 @@
 <a id="__codelineno-0-129" name="__codelineno-0-129"></a>
 <a id="__codelineno-0-130" name="__codelineno-0-130"></a>    <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="s2">&quot;200 Event Received&quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="api.ApiServer.run_server" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">run_server</span><span class="p">()</span></code>
+            <code class="highlight language-python"><span class="n">run_server</span><span class="p">()</span></code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Run the API server.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>nowplaying/api.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-35">35</a></span>
+            <details class="quote">
+              <summary>Source code in <code>nowplaying/api.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-35">35</a></span>
 <span class="normal"><a href="#__codelineno-0-36">36</a></span>
 <span class="normal"><a href="#__codelineno-0-37">37</a></span>
 <span class="normal"><a href="#__codelineno-0-38">38</a></span>
@@ -1353,29 +1349,27 @@
 <a id="__codelineno-0-58" name="__codelineno-0-58"></a>        <span class="n">cherrypy</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 <a id="__codelineno-0-59" name="__codelineno-0-59"></a>        <span class="n">cherrypy</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">block</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="api.ApiServer.stop_server" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">stop_server</span><span class="p">()</span></code>
+            <code class="highlight language-python"><span class="n">stop_server</span><span class="p">()</span></code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Stop the server.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>nowplaying/api.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-61">61</a></span>
+            <details class="quote">
+              <summary>Source code in <code>nowplaying/api.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-61">61</a></span>
 <span class="normal"><a href="#__codelineno-0-62">62</a></span>
 <span class="normal"><a href="#__codelineno-0-63">63</a></span>
 <span class="normal"><a href="#__codelineno-0-64">64</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-61" name="__codelineno-0-61"></a><span class="k">def</span> <span class="nf">stop_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1383,8 +1377,8 @@
 <a id="__codelineno-0-63" name="__codelineno-0-63"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_server</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 <a id="__codelineno-0-64" name="__codelineno-0-64"></a>    <span class="n">cherrypy</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -1392,8 +1386,7 @@
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -1402,7 +1395,7 @@
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 

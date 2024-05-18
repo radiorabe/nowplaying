@@ -920,12 +920,11 @@
 
 
 <a id="util"></a>
-  <div class="doc doc-contents first">
+    <div class="doc doc-contents first">
 
-  
+
 
   <div class="doc doc-children">
-
 
 
 
@@ -938,15 +937,14 @@
 <div class="doc doc-object doc-function">
 
 
-
 <h2 id="util.parse_icecast_url" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">parse_icecast_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">parse_icecast_url</span><span class="p">(</span><span class="n">url</span><span class="p">)</span></code>
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Parse an Icecast URL into parts relevant to :class:<code>IcecastTrackObserver</code>.</p>
 <p>Use it to grab the username, password, and mountpoint from the URL.</p>
 <blockquote>
@@ -977,41 +975,40 @@
 </blockquote>
 
 
-
-  <p><span class="doc-section-title">Parameters:</span></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr class="doc-section-item">
-          <td><code>url</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td>
-            <div class="doc-md-description">
-              <p>The Icecast URL to parse.</p>
-            </div>
-          </td>
-          <td>
-              <em>required</em>
-          </td>
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
         </tr>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code>url</code></td>
+            <td>
+                  <code>str</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The Icecast URL to parse.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
       <p>Returns:
     Tuple[str, Optional[str], Optional[str], Optional[str]]:
         The URL, username, password, and mountpoint.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>nowplaying/util.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
+            <details class="quote">
+              <summary>Source code in <code>nowplaying/util.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
 <span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
 <span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
 <span class="normal"><a href="#__codelineno-0-10">10</a></span>
@@ -1085,8 +1082,8 @@
 <a id="__codelineno-0-42" name="__codelineno-0-42"></a>        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Missing mount parameter in URL </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">url</span><span class="p">)</span>
 <a id="__codelineno-0-43" name="__codelineno-0-43"></a>    <span class="k">return</span> <span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">mount</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -1094,7 +1091,7 @@
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 

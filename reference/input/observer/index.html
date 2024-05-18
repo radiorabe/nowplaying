@@ -964,9 +964,9 @@
 
 
 <a id="input.observer"></a>
-  <div class="doc doc-contents first">
+    <div class="doc doc-contents first">
 
-  
+
 
   <div class="doc doc-children">
 
@@ -982,22 +982,22 @@
 
 
 <h2 id="input.observer.InputObserver" class="doc doc-heading">
-          <code>InputObserver</code>
+            <code>InputObserver</code>
 
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><span title="abc.ABC">ABC</span></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="abc.ABC">ABC</span></code></p>
 
-  
+
       <p>Abstract base for all InputObservers.</p>
 
-            <details class="quote">
-              <summary>Source code in <code>nowplaying/input/observer.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-21">21</a></span>
+              <details class="quote">
+                <summary>Source code in <code>nowplaying/input/observer.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-21">21</a></span>
 <span class="normal"><a href="#__codelineno-0-22">22</a></span>
 <span class="normal"><a href="#__codelineno-0-23">23</a></span>
 <span class="normal"><a href="#__codelineno-0-24">24</a></span>
@@ -1087,9 +1087,9 @@
 <a id="__codelineno-0-64" name="__codelineno-0-64"></a>    <span class="k">def</span> <span class="nf">event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">:</span> <span class="n">CloudEvent</span><span class="p">):</span>  <span class="c1"># pragma: no coverage</span>
 <a id="__codelineno-0-65" name="__codelineno-0-65"></a>        <span class="k">pass</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -1105,8 +1105,7 @@
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -1115,22 +1114,22 @@
 
 
 <h2 id="input.observer.KlangbeckenInputObserver" class="doc doc-heading">
-          <code>KlangbeckenInputObserver</code>
+            <code>KlangbeckenInputObserver</code>
 
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="input.observer.InputObserver" href="#input.observer.InputObserver">InputObserver</a></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="input.observer.InputObserver" href="#input.observer.InputObserver">InputObserver</a></code></p>
 
-  
+
       <p>Observe when Sämu Box says Klangbecken we have now-playing.xml input.</p>
 
-            <details class="quote">
-              <summary>Source code in <code>nowplaying/input/observer.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-68"> 68</a></span>
+              <details class="quote">
+                <summary>Source code in <code>nowplaying/input/observer.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-68"> 68</a></span>
 <span class="normal"><a href="#__codelineno-0-69"> 69</a></span>
 <span class="normal"><a href="#__codelineno-0-70"> 70</a></span>
 <span class="normal"><a href="#__codelineno-0-71"> 71</a></span>
@@ -1516,9 +1515,9 @@
 <a id="__codelineno-0-259" name="__codelineno-0-259"></a>        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Track: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">track</span><span class="p">)</span>
 <a id="__codelineno-0-260" name="__codelineno-0-260"></a>        <span class="k">return</span> <span class="n">track</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -1534,8 +1533,7 @@
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -1544,23 +1542,23 @@
 
 
 <h2 id="input.observer.NonKlangbeckenInputObserver" class="doc doc-heading">
-          <code>NonKlangbeckenInputObserver</code>
+            <code>NonKlangbeckenInputObserver</code>
 
 
 </h2>
 
 
-  <div class="doc doc-contents ">
-          <p class="doc doc-class-bases">
-            Bases: <code><a class="autorefs autorefs-internal" title="input.observer.InputObserver" href="#input.observer.InputObserver">InputObserver</a></code></p>
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="input.observer.InputObserver" href="#input.observer.InputObserver">InputObserver</a></code></p>
 
-  
+
       <p>Observer for input not from klangbecken ie. w/o track information.</p>
 <p>Uses the show's name instead of the actual track infos</p>
 
-            <details class="quote">
-              <summary>Source code in <code>nowplaying/input/observer.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-263">263</a></span>
+              <details class="quote">
+                <summary>Source code in <code>nowplaying/input/observer.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-263">263</a></span>
 <span class="normal"><a href="#__codelineno-0-264">264</a></span>
 <span class="normal"><a href="#__codelineno-0-265">265</a></span>
 <span class="normal"><a href="#__codelineno-0-266">266</a></span>
@@ -1680,9 +1678,9 @@
 <a id="__codelineno-0-321" name="__codelineno-0-321"></a>
 <a id="__codelineno-0-322" name="__codelineno-0-322"></a>        <span class="k">return</span> <span class="n">current_track</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -1694,25 +1692,23 @@
 
 
 
-
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="input.observer.NonKlangbeckenInputObserver.event" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">event</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">event</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Do not handle events yet.</p>
 <p>TODO implement this method</p>
 
-          <details class="quote">
-            <summary>Source code in <code>nowplaying/input/observer.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-279">279</a></span>
+            <details class="quote">
+              <summary>Source code in <code>nowplaying/input/observer.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-279">279</a></span>
 <span class="normal"><a href="#__codelineno-0-280">280</a></span>
 <span class="normal"><a href="#__codelineno-0-281">281</a></span>
 <span class="normal"><a href="#__codelineno-0-282">282</a></span>
@@ -1724,33 +1720,31 @@
 <a id="__codelineno-0-283" name="__codelineno-0-283"></a><span class="sd">    &quot;&quot;&quot;</span>
 <a id="__codelineno-0-284" name="__codelineno-0-284"></a>    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">event</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="input.observer.NonKlangbeckenInputObserver.handles" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">handles</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">handles</span><span class="p">(</span><span class="n">event</span><span class="p">)</span></code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Do not handle events yet.</p>
 <p>TODO implement this method
 TODO v3-prep call :meth:<code>handle_id</code> from here
      (needs saemubox_id compat workaround)
 TODO v3 remove call to :meth:<code>handle_id</code>:</p>
 
-          <details class="quote">
-            <summary>Source code in <code>nowplaying/input/observer.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-269">269</a></span>
+            <details class="quote">
+              <summary>Source code in <code>nowplaying/input/observer.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-269">269</a></span>
 <span class="normal"><a href="#__codelineno-0-270">270</a></span>
 <span class="normal"><a href="#__codelineno-0-271">271</a></span>
 <span class="normal"><a href="#__codelineno-0-272">272</a></span>
@@ -1768,8 +1762,8 @@ TODO v3 remove call to :meth:<code>handle_id</code>:</p>
 <a id="__codelineno-0-276" name="__codelineno-0-276"></a><span class="sd">    &quot;&quot;&quot;</span>
 <a id="__codelineno-0-277" name="__codelineno-0-277"></a>    <span class="k">return</span> <span class="kc">False</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -1777,8 +1771,7 @@ TODO v3 remove call to :meth:<code>handle_id</code>:</p>
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -1787,7 +1780,7 @@ TODO v3 remove call to :meth:<code>handle_id</code>:</p>
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 

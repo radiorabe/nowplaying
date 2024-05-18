@@ -868,11 +868,11 @@
 
 
 <a id="track.handler"></a>
-  <div class="doc doc-contents first">
-  
+    <div class="doc doc-contents first">
+
       <p>Track event handling subject of the observer.</p>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -888,21 +888,21 @@
 
 
 <h2 id="track.handler.TrackEventHandler" class="doc doc-heading">
-          <code>TrackEventHandler</code>
+            <code>TrackEventHandler</code>
 
 
 </h2>
 
 
-  <div class="doc doc-contents ">
+    <div class="doc doc-contents ">
 
-  
+
       <p>Inform all registered track-event observers about a track change.</p>
 <p>This is the subject of the classical observer pattern</p>
 
-            <details class="quote">
-              <summary>Source code in <code>nowplaying/track/handler.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-12">12</a></span>
+              <details class="quote">
+                <summary>Source code in <code>nowplaying/track/handler.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-12">12</a></span>
 <span class="normal"><a href="#__codelineno-0-13">13</a></span>
 <span class="normal"><a href="#__codelineno-0-14">14</a></span>
 <span class="normal"><a href="#__codelineno-0-15">15</a></span>
@@ -1018,9 +1018,9 @@
 <a id="__codelineno-0-68" name="__codelineno-0-68"></a>            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 <a id="__codelineno-0-69" name="__codelineno-0-69"></a>                <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-            </details>
+              </details>
 
-  
+
 
   <div class="doc doc-children">
 
@@ -1032,80 +1032,74 @@
 
 
 
-
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="track.handler.TrackEventHandler.__init__" class="doc doc-heading">
-          <code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code>
+            <code class="highlight language-python"><span class="fm">__init__</span><span class="p">()</span></code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Initialize the track event handler.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>nowplaying/track/handler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-18">18</a></span>
+            <details class="quote">
+              <summary>Source code in <code>nowplaying/track/handler.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-18">18</a></span>
 <span class="normal"><a href="#__codelineno-0-19">19</a></span>
 <span class="normal"><a href="#__codelineno-0-20">20</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize the track event handler.&quot;&quot;&quot;</span>
 <a id="__codelineno-0-20" name="__codelineno-0-20"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">__observers</span> <span class="o">=</span> <span class="p">[]</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="track.handler.TrackEventHandler.get_observers" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">get_observers</span><span class="p">()</span></code>
+            <code class="highlight language-python"><span class="n">get_observers</span><span class="p">()</span></code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Return register observers to allow inspecting them.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>nowplaying/track/handler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-31">31</a></span>
+            <details class="quote">
+              <summary>Source code in <code>nowplaying/track/handler.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-31">31</a></span>
 <span class="normal"><a href="#__codelineno-0-32">32</a></span>
 <span class="normal"><a href="#__codelineno-0-33">33</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="k">def</span> <span class="nf">get_observers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
 <a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return register observers to allow inspecting them.&quot;&quot;&quot;</span>
 <a id="__codelineno-0-33" name="__codelineno-0-33"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__observers</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="track.handler.TrackEventHandler.register_observer" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">register_observer</span><span class="p">(</span><span class="n">observer</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">register_observer</span><span class="p">(</span><span class="n">observer</span><span class="p">)</span></code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Register an observer to be informed about track changes.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>nowplaying/track/handler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-22">22</a></span>
+            <details class="quote">
+              <summary>Source code in <code>nowplaying/track/handler.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-22">22</a></span>
 <span class="normal"><a href="#__codelineno-0-23">23</a></span>
 <span class="normal"><a href="#__codelineno-0-24">24</a></span>
 <span class="normal"><a href="#__codelineno-0-25">25</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="k">def</span> <span class="nf">register_observer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observer</span><span class="p">:</span> <span class="n">TrackObserver</span><span class="p">):</span>
@@ -1113,57 +1107,53 @@
 <a id="__codelineno-0-24" name="__codelineno-0-24"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Registering TrackObserver &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="p">,</span> <span class="n">observer</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
 <a id="__codelineno-0-25" name="__codelineno-0-25"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">__observers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">observer</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="track.handler.TrackEventHandler.remove_observer" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">remove_observer</span><span class="p">(</span><span class="n">observer</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">remove_observer</span><span class="p">(</span><span class="n">observer</span><span class="p">)</span></code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Remove an observer from the list of observers.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>nowplaying/track/handler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-27">27</a></span>
+            <details class="quote">
+              <summary>Source code in <code>nowplaying/track/handler.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-27">27</a></span>
 <span class="normal"><a href="#__codelineno-0-28">28</a></span>
 <span class="normal"><a href="#__codelineno-0-29">29</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-27" name="__codelineno-0-27"></a><span class="k">def</span> <span class="nf">remove_observer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observer</span><span class="p">:</span> <span class="n">TrackObserver</span><span class="p">):</span>
 <a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove an observer from the list of observers.&quot;&quot;&quot;</span>
 <a id="__codelineno-0-29" name="__codelineno-0-29"></a>    <span class="bp">self</span><span class="o">.</span><span class="n">__observers</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">observer</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="track.handler.TrackEventHandler.track_finished" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">track_finished</span><span class="p">(</span><span class="n">track</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">track_finished</span><span class="p">(</span><span class="n">track</span><span class="p">)</span></code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Inform all registered track-event observers about a track finished event.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>nowplaying/track/handler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-53">53</a></span>
+            <details class="quote">
+              <summary>Source code in <code>nowplaying/track/handler.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-53">53</a></span>
 <span class="normal"><a href="#__codelineno-0-54">54</a></span>
 <span class="normal"><a href="#__codelineno-0-55">55</a></span>
 <span class="normal"><a href="#__codelineno-0-56">56</a></span>
@@ -1197,29 +1187,27 @@
 <a id="__codelineno-0-68" name="__codelineno-0-68"></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 <a id="__codelineno-0-69" name="__codelineno-0-69"></a>            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
-
 
 <div class="doc doc-object doc-function">
 
 
-
 <h3 id="track.handler.TrackEventHandler.track_started" class="doc doc-heading">
-          <code class="highlight language-python"><span class="n">track_started</span><span class="p">(</span><span class="n">track</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">track_started</span><span class="p">(</span><span class="n">track</span><span class="p">)</span></code>
 
 </h3>
 
 
-  <div class="doc doc-contents ">
-  
+    <div class="doc doc-contents ">
+
       <p>Inform all registered track-event observers about a track started event.</p>
 
-          <details class="quote">
-            <summary>Source code in <code>nowplaying/track/handler.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-35">35</a></span>
+            <details class="quote">
+              <summary>Source code in <code>nowplaying/track/handler.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-35">35</a></span>
 <span class="normal"><a href="#__codelineno-0-36">36</a></span>
 <span class="normal"><a href="#__codelineno-0-37">37</a></span>
 <span class="normal"><a href="#__codelineno-0-38">38</a></span>
@@ -1253,8 +1241,8 @@
 <a id="__codelineno-0-50" name="__codelineno-0-50"></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
 <a id="__codelineno-0-51" name="__codelineno-0-51"></a>            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
-          </details>
-  </div>
+            </details>
+    </div>
 
 </div>
 
@@ -1262,8 +1250,7 @@
 
   </div>
 
-  </div>
-
+    </div>
 
 </div>
 
@@ -1272,7 +1259,7 @@
 
   </div>
 
-  </div>
+    </div>
 
 </div>
 
