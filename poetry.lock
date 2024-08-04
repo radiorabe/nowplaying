@@ -1862,13 +1862,13 @@ pyyaml = "*"
 
 [[package]]
 name = "rabe-cridlib"
-version = "0.11.7"
+version = "0.12.0"
 description = "Generate CRIDs for RaBe"
 optional = false
 python-versions = "<4.0,>=3.11"
 files = [
-    {file = "rabe_cridlib-0.11.7-py3-none-any.whl", hash = "sha256:ca5927331a110ff4a1ce6fc07facf46821adbab7d8bef2a6df9639ac123c243d"},
-    {file = "rabe_cridlib-0.11.7.tar.gz", hash = "sha256:6e4adfe6985f064cf85b31cce81a3fda116281bbdf9185dbc813170ac2f25dd8"},
+    {file = "rabe_cridlib-0.12.0-py3-none-any.whl", hash = "sha256:c3de5d32157e007ffd11a66240c40f459484abbf5b68c50051d4bf2229a0bdec"},
+    {file = "rabe_cridlib-0.12.0.tar.gz", hash = "sha256:6686d41d70f6a177d4faaf1043e608dd1258c29abe5656adec07e2aca372cb48"},
 ]
 
 [package.dependencies]
@@ -2317,4 +2317,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "b72e5cb6b21134b32613b9ef97b0df81b302965435108c4d91b15f512b7be765"
+content-hash = "5ae48c689e3201b888913d0a6e50f849859f74f0ddd39e4d7d993f6e8e0e2be2"
