@@ -1250,18 +1250,18 @@ files = [
 
 [[package]]
 name = "nowplaypadgen"
-version = "0.4.11"
-description = "DAB+ now playing PAD (DLS+ and MOT SLS generator)"
+version = "0.5.1"
+description = "DAB+ now playing PAD (DLS+ generator)"
 optional = false
-python-versions = "*"
+python-versions = "<4.0,>=3.12"
 files = [
-    {file = "nowplaypadgen-0.4.11-py3-none-any.whl", hash = "sha256:aaba8463ffd53b1c639b2f67eb517cae362226feecd6812cc5611a80435af183"},
-    {file = "nowplaypadgen-0.4.11.tar.gz", hash = "sha256:a0ebf05e571791f9bf4dd6b91b55923a8dd4489c01df995bd68c1fef76950b0b"},
+    {file = "nowplaypadgen-0.5.1-py3-none-any.whl", hash = "sha256:9a844eeffc19110573a903be1bf23229fa80a6d50a262fad3cc0fe94376a6c98"},
+    {file = "nowplaypadgen-0.5.1.tar.gz", hash = "sha256:b4c2a853c86e63de96eadcf06ba8e522f8a87e88702450727ea8fa6d10d26c01"},
 ]
 
 [package.dependencies]
-mutagen = "1.47.0"
-pytz = ">=2022.7.1"
+mutagen = ">=1.47,<2.0"
+pytz = ">=2024.2,<2025.0"
 
 [[package]]
 name = "opentelemetry-api"
@@ -2211,4 +2211,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "6650303f3a007ef562031b7fc4adc471327b61a178a028659e0b54109b1722b7"
+content-hash = "7cb169b898f67ecba87b43011ec4d436826720858f1b26b1fb5adf3eaaa70912"
