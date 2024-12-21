@@ -31,7 +31,8 @@ def test_init():
 
 @patch("nowplaying.show.client.ShowClient.get_show_info")
 @pytest.mark.parametrize(
-    "saemubox_id,expected", [(1, True), (2, False), (0, False), (-1, False)]
+    ("saemubox_id", "expected"),
+    [(1, True), (2, False), (0, False), (-1, False)],
 )
 def test_handle_id(mock_get_show_info, saemubox_id, expected, event: CloudEvent):
     show_url = "http://www.rabe.ch/klangbecken/"
@@ -65,11 +66,12 @@ def test_handle(mock_get_show_info):
 
 def test_parse_event(event: CloudEvent):
     expected_track = Track()
-    expected_track.artist = "Peaches"
-    expected_track.title = "Fuck the Pain Away"
+    expected_track.set_artist("Peaches")
+    expected_track.set_title("Fuck the Pain Away")
 
     observer = KlangbeckenInputObserver(
-        "http://example.org/klangbecken/", "tests/fixtures/now-playing.xml"
+        "http://example.org/klangbecken/",
+        "tests/fixtures/now-playing.xml",
     )
 
     track = observer.parse_event(event)

@@ -1,5 +1,8 @@
 """Tests for :class:`DabAudioCompanionTrackObserver`."""
 
+# TODO(hairmare): v3 drop support
+# https://github.com/radiorabe/nowplaying/issues/179
+
 from unittest.mock import MagicMock, Mock, patch
 
 from nowplaying.track.observers.dab_audio_companion import (
@@ -15,7 +18,7 @@ def test_init():
     dab_audio_companion_track_observer = DabAudioCompanionTrackObserver(
         options=DabAudioCompanionTrackObserver.Options(
             url=_BASE_URL,
-        )
+        ),
     )
     assert dab_audio_companion_track_observer.base_url == f"{_BASE_URL}/api/setDLS"
 
@@ -25,8 +28,7 @@ def test_track_started(mock_requests_post, track_factory, show_factory):
     """Test :class:`DabAudioCompanionTrackObserver`'s :meth:`track_started` method."""
     mock_requests_post.return_value.getcode = Mock(return_value=200)
     mock_requests_post.return_value.read = Mock(
-        # TODO: mock and test real return value
-        return_value="contents"
+        return_value="contents",
     )
 
     track = track_factory()
@@ -35,7 +37,7 @@ def test_track_started(mock_requests_post, track_factory, show_factory):
     dab_audio_companion_track_observer = DabAudioCompanionTrackObserver(
         options=DabAudioCompanionTrackObserver.Options(
             url=_BASE_URL,
-        )
+        ),
     )
     # assume that last frame was DL+ on startup so we always send
     # delete tags when a show w/o dl+ starts
@@ -73,7 +75,7 @@ def test_track_started(mock_requests_post, track_factory, show_factory):
     ]
     expected.sort()
     results.sort()
-    assert all([a == b for a, b in zip(results, expected)])
+    assert all([a == b for a, b in zip(results, expected)])  # noqa: C419
 
     # once ITEM delete have been sent we send regular DLS again
     dab_audio_companion_track_observer.track_started(track)
@@ -92,10 +94,8 @@ def test_track_started(mock_requests_post, track_factory, show_factory):
 
 @patch("urllib.request.urlopen")
 def test_track_started_plain(mock_urlopen, track_factory, show_factory):
-    # TODO v3 remove when we drop plain support
     cm = MagicMock()
     cm.getcode.return_value = 200
-    # TODO: mock and test real return value
     cm.read.return_value = "contents"
     cm.__enter__.return_value = cm
     mock_urlopen.return_value = cm
@@ -107,7 +107,7 @@ def test_track_started_plain(mock_urlopen, track_factory, show_factory):
         options=DabAudioCompanionTrackObserver.Options(
             url=_BASE_URL,
             dl_plus=False,
-        )
+        ),
     )
     # last frame cannot be dl+ since the feature is inactive
     assert not o.last_frame_was_dl_plus
@@ -115,7 +115,7 @@ def test_track_started_plain(mock_urlopen, track_factory, show_factory):
     o.track_started(track)
     assert not o.last_frame_was_dl_plus
     mock_urlopen.assert_called_with(
-        "http://localhost:80/api/setDLS?dls=b%27Hairmare+and+the+Band%27+-+b%27An+Ode+to+legacy+Python+Code%27"
+        "http://localhost:80/api/setDLS?dls=b%27Hairmare+and+the+Band%27+-+b%27An+Ode+to+legacy+Python+Code%27",
     )
 
     track = track_factory(artist="Radio Bern", title="Livestream")
@@ -123,7 +123,7 @@ def test_track_started_plain(mock_urlopen, track_factory, show_factory):
 
     o.track_started(track)
     mock_urlopen.assert_called_with(
-        "http://localhost:80/api/setDLS?dls=b%27Radio+Bern%27+-+b%27Hairmare+Traveling+Medicine+Show%27"
+        "http://localhost:80/api/setDLS?dls=b%27Radio+Bern%27+-+b%27Hairmare+Traveling+Medicine+Show%27",
     )
 
 
@@ -132,6 +132,6 @@ def test_track_finished():
     dab_audio_companion_track_observer = DabAudioCompanionTrackObserver(
         options=DabAudioCompanionTrackObserver.Options(
             url=_BASE_URL,
-        )
+        ),
     )
     assert dab_audio_companion_track_observer.track_finished(Track())
