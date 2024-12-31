@@ -1,0 +1,78 @@
+# [ruff](https://docs.astral.sh/ruff/) config
+#
+# templated with https://github.com/radiorabe/backstage-software-templates
+
+extend = "./pyproject.toml"
+
+[lint]
+select = [
+	"F",       # pyflakes
+	"E",       # pycodestyle errors
+	"I",       # isort
+	"C90",     # mccabe
+	"N",       # pep8-naming
+	"D",       # pydocstyle
+	"UP",      # pyupgrade
+	"ANN",     # flake8-annotations
+	"ASYNC",   # flake8-async
+	"S",       # flake8-bandit
+	"BLE",     # flake8-blind-exception
+	"FBT",     # flake8-boolean-trap
+	"B",       # flake8-bugbear
+	"A",       # flake8-builtins
+	"COM",     # flake8-commas
+	"C4",      # flake8-comprehensions
+	"DTZ",     # flake8-datetimez
+	"T10",     # flake8-debugger
+	"EM",      # flake8-errmsg
+	"EXE",     # flake8-executable
+        "FA",      # flake8-future-annotations
+	"ISC",     # flake8-implicit-str-concat
+	"ICN",     # flake8-import-conventions
+        "G",       # flake8-logging-format
+	"INP",     # flake8-no-pep420
+	"PIE",     # flake8-pie
+	"T20",     # flake8-print
+	"PYI",     # flake8-pyi
+	"PT",      # flake8-pytest-style
+	"Q",       # flake8-quotes
+	"RSE",     # flake8-raise
+	"RET",     # flake8-return
+	"SLF",     # flake8-self
+	"SLOT",    # flake8-slots
+        "SIM",     # flake8-simplify
+	"TID",     # flake8-tidy-imports
+	"TCH",     # flake8-type-checking
+	"INT",     # flake8-gettext
+	"ARG",     # flake8-unused-arguments
+	"PTH",     # flake8-use-pathlib
+	"TD",      # flake8-todos
+	"ERA",     # eradicate
+	"PGH",     # pygrep-hooks
+	"PL",      # Pylint
+	"TRY",     # tryceratops
+	"PERF",    # Perflint
+	"RUF",     # ruff specific rules
+]
+ignore = [
+	"D203",    # we prefer blank-line-before-class (D211) for black compat
+	"D213",    # we prefer multi-line-summary-first-line (D212)
+	"COM812",  # ignore due to conflict with formatter
+	"ISC001",  # ignore due to conflict with formatter
+]
+
+[lint.per-file-ignores]
+"tests/**/*.py" = [
+	"D",       # pydocstyle is optional for tests
+	"ANN",     # flake8-annotations are optional for tests
+	"S101",    # assert is allow in tests
+	"S108",    # /tmp is allowed in tests since it's expected to be mocked
+	"DTZ001",  # tests often run in UTC
+	"INP001",  # tests do not need a dunder init
+]
+"**/__init__.py" = [
+	"D104",    # dunder init does not need a docstring because it might be empty
+]
+"docs/gen_ref_pages.py" = [
+	"INP001",  # mkdocs does not need a dunder init
+]
