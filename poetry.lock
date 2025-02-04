@@ -1250,13 +1250,13 @@ files = [
 
 [[package]]
 name = "nowplaypadgen"
-version = "0.5.2"
+version = "0.6.0"
 description = "DAB+ now playing PAD (DLS+ generator)"
 optional = false
 python-versions = "<4.0,>=3.12"
 files = [
-    {file = "nowplaypadgen-0.5.2-py3-none-any.whl", hash = "sha256:e63e29abf32731a02b548617b1de669c7edfee095cc0011367dbe66e47f4c022"},
-    {file = "nowplaypadgen-0.5.2.tar.gz", hash = "sha256:9fe7a43be86b3cc08aa157af5af77c5faf892a9029ee5d7bb9d9ffc1736b64ba"},
+    {file = "nowplaypadgen-0.6.0-py3-none-any.whl", hash = "sha256:51982df0ddfb9b79554dc6e83e9e4fcf8b8560db7ffc8daabd9e44ae1c8d3a53"},
+    {file = "nowplaypadgen-0.6.0.tar.gz", hash = "sha256:8778d8befcc76abc4064eadf470ba435853c7998fd7a88a1aa647b094d2c2c11"},
 ]
 
 [package.dependencies]
@@ -2211,4 +2211,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "ba15195985b35027b1e8f2fe0f83a772d80c725cf76b03ab01fc33ed29c3b919"
+content-hash = "0800860b72c32ab3a0248a3893b2492c37cb9d176ce1affc58c4b1e30d793ec0"
