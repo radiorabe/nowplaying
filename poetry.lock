@@ -1751,13 +1751,13 @@ pyyaml = "*"
 
 [[package]]
 name = "rabe-cridlib"
-version = "0.12.1"
+version = "0.13.0"
 description = "Generate CRIDs for RaBe"
 optional = false
 python-versions = "<4.0,>=3.11"
 files = [
-    {file = "rabe_cridlib-0.12.1-py3-none-any.whl", hash = "sha256:5d618fc1b4f5982a72e6546491a6b6ab73df102a4da509d2357c9fdb8eea94e5"},
-    {file = "rabe_cridlib-0.12.1.tar.gz", hash = "sha256:1bb94ffbac64c96c112632005a94028176c4ff753aac0c690c81dd0fa61f1845"},
+    {file = "rabe_cridlib-0.13.0-py3-none-any.whl", hash = "sha256:1e15b8856b2590c506f6420d6c31769451b563aee671c11f7a5a5157d4945608"},
+    {file = "rabe_cridlib-0.13.0.tar.gz", hash = "sha256:02e56fb654b16b739d06e281b171b5bb1b1724f04a1774f0539fe794e6ef935a"},
 ]
 
 [package.dependencies]
@@ -2211,4 +2211,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "0800860b72c32ab3a0248a3893b2492c37cb9d176ce1affc58c4b1e30d793ec0"
+content-hash = "95c662b96bddcc187a71cdc40f1216d30daa730eda1ed8b8efa4e92b9b65a54f"
