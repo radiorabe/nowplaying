@@ -457,14 +457,14 @@ packaging = "*"
 
 [[package]]
 name = "faker"
-version = "36.2.1"
+version = "36.2.2"
 description = "Faker is a Python package that generates fake data for you."
 optional = false
 python-versions = ">=3.9"
 groups = ["dev"]
 files = [
-    {file = "faker-36.2.1-py3-none-any.whl", hash = "sha256:362f66d7c3f194dcb0b6ec3b55cee00e71e65a4a64beac650976d26ab9a63d8e"},
-    {file = "faker-36.2.1.tar.gz", hash = "sha256:35fca201754e588ab11115e6dae10c7dd6e30a854e6040d06c8435b72cacc3f7"},
+    {file = "faker-36.2.2-py3-none-any.whl", hash = "sha256:14adc340dc8abed5264142ffafe6f1a0f99cf7a7525bc6863755efd5fbbd0692"},
+    {file = "faker-36.2.2.tar.gz", hash = "sha256:758bc63a26dc878fa0d76aa7639b8b65327927980ed0c3683b23bd8a5182f33f"},
 ]
 
 [package.dependencies]
