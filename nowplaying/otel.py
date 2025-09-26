@@ -6,10 +6,12 @@ This sets up our logging stack to use OpenTelemetry.
 import logging
 import os
 from datetime import datetime
+from pathlib import Path
+from typing import Self, no_type_check
 
 from opentelemetry._logs import set_logger_provider
 from opentelemetry.exporter.otlp.proto.grpc._log_exporter import OTLPLogExporter
-from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
+from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler, LogRecord
 from opentelemetry.sdk._logs.export import (
     BatchLogRecordProcessor,
     ConsoleLogExporter,
@@ -18,9 +20,10 @@ from opentelemetry.sdk._logs.export import (
 from opentelemetry.sdk.resources import Resource
 
 
-def _log_formatter(record):  # pragma: no cover
+@no_type_check
+def _log_formatter(record: LogRecord) -> str:  # pragma: no cover
     return (
-        f"{datetime.fromtimestamp(record.timestamp/1000000000)} "
+        f"{datetime.fromtimestamp(record.timestamp / 1000000000)} "  # noqa: DTZ006
         f"- {record.severity_text[:4]:4} "
         f"- {record.attributes['source_name'][11:]:14} "
         f"- {record.body} "
@@ -32,16 +35,19 @@ def _log_formatter(record):  # pragma: no cover
 class SourceAttributeFilter(logging.Filter):  # pragma: no cover
     """Used on the handler to ensure that some attributes are carried over to otel."""
 
-    def filter(self, record) -> bool:
+    @no_type_check
+    def filter(self: Self, record: LogRecord) -> bool:
+        """Carry over attributes to otel."""
         record.source_name = record.name
         record.source_pathname = os.path.relpath(
-            record.pathname, os.path.dirname(os.path.dirname(__file__))
+            record.pathname,
+            Path(__file__).parent.parent,
         )
         record.source_lineno = record.lineno
         return True
 
 
-def setup_otel(otlp_enable=False):  # pragma: no cover
+def setup_otel(*, otlp_enable: bool = False) -> None:  # pragma: no cover
     """Configure opentelemetry logging to stdout and collector."""
     root = logging.getLogger()
     root.setLevel(logging.INFO)
@@ -51,12 +57,12 @@ def setup_otel(otlp_enable=False):  # pragma: no cover
             {
                 "service.name": "nowplaying",
             },
-        )
+        ),
     )
     set_logger_provider(logger_provider)
 
     console_exporter = ConsoleLogExporter(
-        formatter=lambda record: _log_formatter(record)
+        formatter=lambda record: _log_formatter(record),
     )
     logger_provider.add_log_record_processor(SimpleLogRecordProcessor(console_exporter))
 

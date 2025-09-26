@@ -23,7 +23,7 @@ def test_run(
     now_playing.run()
 
     mock_setup_otel.assert_called_once()
-    mock_setdefaulttimeout.assert_called_once_with(Options.socketDefaultTimeout)
+    mock_setdefaulttimeout.assert_called_once_with(Options.socket_default_timeout)
     mock_run_daemon.assert_called_once()
 
 
@@ -36,7 +36,7 @@ def test_run_daemon(mock_daemon):
     now_playing = NowPlaying()
     now_playing.options = options
 
-    now_playing._run_daemon()
+    now_playing._run_daemon()  # noqa: SLF001
 
     mock_daemon.assert_called_once_with(options)
     mock_run.main.assert_called_once()

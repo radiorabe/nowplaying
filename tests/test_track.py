@@ -18,7 +18,7 @@ def test_init():
 def test_artist():
     """Test :class:`Track`'s :meth:`artist` property."""
     track = Track()
-    assert track.artist is None
+    assert track.artist == ""
     assert not track.has_default_artist()
     track.set_artist("Test")
     assert track.artist == "Test"
@@ -30,7 +30,7 @@ def test_artist():
 def test_title():
     """Test :class:`Track`'s :meth:`title` property."""
     track = Track()
-    assert track.title is None
+    assert track.title == ""
     assert not track.has_default_title()
     track.set_title("Test Title")
     assert track.title == "Test Title"
@@ -42,7 +42,7 @@ def test_title():
 def test_album():
     """Test :class:`Track`'s :meth:`album` property."""
     track = Track()
-    assert track.album is None
+    assert track.album == ""
     track.set_album("Test Album")
     assert track.album == "Test Album"
 
@@ -52,7 +52,7 @@ def test_track():
     track = Track()
     assert track.track == 1
     track.set_track(2)
-    assert track.track == 2
+    assert track.track == 2  # noqa: PLR2004
     with pytest.raises(TypeError):
         track.set_track("no strings allowed")
     with pytest.raises(TrackError):
@@ -102,4 +102,4 @@ def test_duration():
 def test_prettyprinting():
     """Test :class:`Track`'s :meth:`__str__` method."""
     track = Track()
-    assert "Track 'None'" in str(track)
+    assert "Track ''" in str(track)
