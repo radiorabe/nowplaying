@@ -7,6 +7,6 @@ on:
 
 jobs:
   pre-commit:
-    uses: radiorabe/actions/.github/workflows/test-pre-commit.yaml@v0.36.0
+    uses: radiorabe/actions/.github/workflows/test-pre-commit.yaml@v0.37.0
   test-python-poetry:
-    uses: radiorabe/actions/.github/workflows/test-python-poetry.yaml@v0.36.0
+    uses: radiorabe/actions/.github/workflows/test-python-poetry.yaml@v0.37.0
