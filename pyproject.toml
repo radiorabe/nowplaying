@@ -56,9 +56,9 @@ mkdocstrings-python = "^1.7.3"
 line_length = 120
 profile = "black"
 
-[tool.pytest.ini_options]
-minversion = "7.2"
-addopts = "-ra -q --random-order --doctest-glob='*.md' --doctest-modules --cov=nowplaying --cov-fail-under=100 --ruff --ignore docs/"
+[tool.pytest]
+minversion = "9.0"
+addopts = ["-ra", "-q", "--random-order", "--doctest-glob='*.md'", "--doctest-modules", "--cov=nowplaying", "--cov-fail-under=100", "--ruff", "--ignore=docs/"]
 filterwarnings = [
     "ignore::DeprecationWarning:cairosvg",
     "ignore::DeprecationWarning:cherrypy",
