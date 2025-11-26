@@ -1647,21 +1647,21 @@ windows-terminal = ["colorama (>=0.4.6)"]
 
 [[package]]
 name = "pylast"
-version = "6.0.0"
+version = "7.0.0"
 description = "A Python interface to Last.fm and Libre.fm"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "pylast-6.0.0-py3-none-any.whl", hash = "sha256:8570017a955a04c5694e7ad38b13081b6119531b4a10bfc771ccd0b9d4f900ee"},
-    {file = "pylast-6.0.0.tar.gz", hash = "sha256:09748dcdb97ddc812c65460bea73f7cce578b2b8ed4d9f6a0d1da122f8b05c5c"},
+    {file = "pylast-7.0.0-py3-none-any.whl", hash = "sha256:f6f7b19e65aee3b1a41c5c52b0eff27e1fdf1a010d52f96c6895c0b9bcb64739"},
+    {file = "pylast-7.0.0.tar.gz", hash = "sha256:05803f66d50e33521788f01eb30a9d4e3fbffbb4d81420826a2e3e9ca598a370"},
 ]
 
 [package.dependencies]
 httpx = ">=0.26"
 
 [package.extras]
-tests = ["flaky", "pytest", "pytest-cov", "pytest-random-order", "pyyaml"]
+tests = ["flaky", "pytest (>=9)", "pytest-cov", "pytest-random-order", "pytest-recording", "pyyaml"]
 
 [[package]]
 name = "pymdown-extensions"
@@ -2282,4 +2282,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "1a55ae3fb41dead1952c03d63140f9946c140763ae354e87d263e1c608a4b83f"
+content-hash = "27d54c3b7ed45710e2453ac8dda7fd0b75307c8c69f87af904f65b6526354750"
