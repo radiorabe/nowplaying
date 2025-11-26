@@ -9,7 +9,7 @@ on:
       - '*'
 jobs:
   release-container:
-    uses: radiorabe/actions/.github/workflows/release-container.yaml@v0.38.0
+    uses: radiorabe/actions/.github/workflows/release-container.yaml@v0.38.1
     with:
       image: 'ghcr.io/radiorabe/nowplaying'
       name: nowplaying
