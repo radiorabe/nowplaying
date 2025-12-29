@@ -1648,14 +1648,14 @@ windows-terminal = ["colorama (>=0.4.6)"]
 
 [[package]]
 name = "pylast"
-version = "7.0.0"
+version = "7.0.1"
 description = "A Python interface to Last.fm and Libre.fm"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "pylast-7.0.0-py3-none-any.whl", hash = "sha256:f6f7b19e65aee3b1a41c5c52b0eff27e1fdf1a010d52f96c6895c0b9bcb64739"},
-    {file = "pylast-7.0.0.tar.gz", hash = "sha256:05803f66d50e33521788f01eb30a9d4e3fbffbb4d81420826a2e3e9ca598a370"},
+    {file = "pylast-7.0.1-py3-none-any.whl", hash = "sha256:86f115413f31d41a787008f0b8e64304518f4533c834bbb0b8bc249006fee553"},
+    {file = "pylast-7.0.1.tar.gz", hash = "sha256:319251236ba5c3e907232aacf1d6a7ff831f2243e85ace6ec6623a552ec2e0eb"},
 ]
 
 [package.dependencies]
