@@ -51,9 +51,7 @@ class IcecastTrackObserver(TrackObserver):
             mount: str | None = None,
         ):
             # TODO v3 remove optional args and only support parsed URLs
-            (self.url, self.username, self.password, self.mount) = parse_icecast_url(
-                url
-            )
+            self.url, self.username, self.password, self.mount = parse_icecast_url(url)
             # TODO v3 remove non URL usage of username, password, ...
             if not self.username and username:
                 # grab from args if not in URL
