@@ -6,13 +6,13 @@ repos:
         args:
           - --py312-plus
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: 'v0.13.2'
+    rev: 'v0.15.7'
     hooks:
       - id: ruff
         args: [--fix]
       - id: ruff-format
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
         exclude: ^src/api/client.js$
