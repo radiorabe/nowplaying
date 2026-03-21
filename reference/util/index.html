@@ -1107,6 +1107,8 @@
 <a id="util"></a>
     <div class="doc doc-contents first">
 
+        <p>Utils for nowplaying.</p>
+
 
 
 
@@ -1166,49 +1168,18 @@
 </blockquote>
 </blockquote>
 </blockquote>
-
-
-<p><span class="doc-section-title">Parameters:</span></p>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Default</th>
-        </tr>
-      </thead>
-      <tbody>
-          <tr class="doc-section-item">
-            <td>
-                <code>url</code>
-            </td>
-            <td>
-                  <code><span title="str">str</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>The Icecast URL to parse.</p>
-              </div>
-            </td>
-            <td>
-                <em>required</em>
-            </td>
-          </tr>
-      </tbody>
-    </table>
-        <p>Returns:
-    Tuple[str, Optional[str], Optional[str], Optional[str]]:
-        The URL, username, password, and mountpoint.</p>
+        <hr />
+<div class="highlight"><pre><span></span><code>url (str): The Icecast URL to parse.
+</code></pre></div>
+        <hr />
+<div class="highlight"><pre><span></span><code>Tuple[str, Optional[str], Optional[str], Optional[str]]:
+    The URL, username, password, and mountpoint.
+</code></pre></div>
 
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>nowplaying/util.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-0-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-0-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-0-10">10</a></span>
-<span class="normal"><a href="#__codelineno-0-11">11</a></span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-11">11</a></span>
 <span class="normal"><a href="#__codelineno-0-12">12</a></span>
 <span class="normal"><a href="#__codelineno-0-13">13</a></span>
 <span class="normal"><a href="#__codelineno-0-14">14</a></span>
@@ -1240,43 +1211,55 @@
 <span class="normal"><a href="#__codelineno-0-40">40</a></span>
 <span class="normal"><a href="#__codelineno-0-41">41</a></span>
 <span class="normal"><a href="#__codelineno-0-42">42</a></span>
-<span class="normal"><a href="#__codelineno-0-43">43</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="k">def</span> <span class="nf">parse_icecast_url</span><span class="p">(</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8"></a>    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse an Icecast URL into parts relevant to :class:`IcecastTrackObserver`.</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11"></a>
-<a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="sd">    Use it to grab the username, password, and mountpoint from the URL.</span>
-<a id="__codelineno-0-13" name="__codelineno-0-13"></a>
-<a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="sd">    &gt;&gt;&gt; parse_icecast_url(&quot;http://user:password@localhost:80/?mount=foo.mp3&quot;)</span>
-<a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="sd">    (&#39;http://localhost:80/&#39;, &#39;user&#39;, &#39;password&#39;, &#39;foo.mp3&#39;)</span>
-<a id="__codelineno-0-16" name="__codelineno-0-16"></a>
-<a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="sd">    It returns None values for missing parts.</span>
-<a id="__codelineno-0-18" name="__codelineno-0-18"></a>
-<a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="sd">    &gt;&gt;&gt; parse_icecast_url(&quot;http://localhost/&quot;)</span>
-<a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="sd">    (&#39;http://localhost:80/&#39;, None, None, None)</span>
-<a id="__codelineno-0-21" name="__codelineno-0-21"></a>
-<a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="sd">    It supports https URLs.</span>
-<a id="__codelineno-0-23" name="__codelineno-0-23"></a>
-<a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="sd">    &gt;&gt;&gt; parse_icecast_url(&quot;https://localhost/&quot;)</span>
-<a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="sd">    (&#39;https://localhost:443/&#39;, None, None, None)</span>
-<a id="__codelineno-0-26" name="__codelineno-0-26"></a>
-<a id="__codelineno-0-27" name="__codelineno-0-27"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="sd">        url (str): The Icecast URL to parse.</span>
-<a id="__codelineno-0-29" name="__codelineno-0-29"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-30" name="__codelineno-0-30"></a><span class="sd">        Tuple[str, Optional[str], Optional[str], Optional[str]]:</span>
-<a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="sd">            The URL, username, password, and mountpoint.</span>
-<a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-33" name="__codelineno-0-33"></a>    <span class="n">parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<a id="__codelineno-0-34" name="__codelineno-0-34"></a>    <span class="n">port</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">port</span> <span class="ow">or</span> <span class="n">parsed</span><span class="o">.</span><span class="n">scheme</span> <span class="o">==</span> <span class="s2">&quot;https&quot;</span> <span class="ow">and</span> <span class="mi">443</span> <span class="ow">or</span> <span class="mi">80</span>
-<a id="__codelineno-0-35" name="__codelineno-0-35"></a>    <span class="n">url</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">netloc</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parsed</span><span class="o">.</span><span class="n">hostname</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">geturl</span><span class="p">()</span>
-<a id="__codelineno-0-36" name="__codelineno-0-36"></a>    <span class="n">username</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">username</span>
-<a id="__codelineno-0-37" name="__codelineno-0-37"></a>    <span class="n">password</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">password</span>
-<a id="__codelineno-0-38" name="__codelineno-0-38"></a>    <span class="n">mount</span> <span class="o">=</span> <span class="kc">None</span>
-<a id="__codelineno-0-39" name="__codelineno-0-39"></a>    <span class="k">try</span><span class="p">:</span>
-<a id="__codelineno-0-40" name="__codelineno-0-40"></a>        <span class="n">mount</span> <span class="o">=</span> <span class="n">parse_qs</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">query</span><span class="p">)[</span><span class="s2">&quot;mount&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<a id="__codelineno-0-41" name="__codelineno-0-41"></a>    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-<a id="__codelineno-0-42" name="__codelineno-0-42"></a>        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Missing mount parameter in URL </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">url</span><span class="p">)</span>
-<a id="__codelineno-0-43" name="__codelineno-0-43"></a>    <span class="k">return</span> <span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">mount</span><span class="p">)</span>
+<span class="normal"><a href="#__codelineno-0-43">43</a></span>
+<span class="normal"><a href="#__codelineno-0-44">44</a></span>
+<span class="normal"><a href="#__codelineno-0-45">45</a></span>
+<span class="normal"><a href="#__codelineno-0-46">46</a></span>
+<span class="normal"><a href="#__codelineno-0-47">47</a></span>
+<span class="normal"><a href="#__codelineno-0-48">48</a></span>
+<span class="normal"><a href="#__codelineno-0-49">49</a></span>
+<span class="normal"><a href="#__codelineno-0-50">50</a></span>
+<span class="normal"><a href="#__codelineno-0-51">51</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_icecast_url</span><span class="p">(</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12"></a>    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse an Icecast URL into parts relevant to :class:`IcecastTrackObserver`.</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15"></a>
+<a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="sd">    Use it to grab the username, password, and mountpoint from the URL.</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17"></a>
+<a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="sd">    &gt;&gt;&gt; parse_icecast_url(&quot;http://user:password@localhost:80/?mount=foo.mp3&quot;)</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="sd">    (&#39;http://localhost:80/&#39;, &#39;user&#39;, &#39;password&#39;, &#39;foo.mp3&#39;)</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20"></a>
+<a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="sd">    It returns None values for missing parts.</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22"></a>
+<a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="sd">    &gt;&gt;&gt; parse_icecast_url(&quot;http://localhost/&quot;)</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="sd">    (&#39;http://localhost:80/&#39;, None, None, None)</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25"></a>
+<a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="sd">    It supports https URLs.</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27"></a>
+<a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="sd">    &gt;&gt;&gt; parse_icecast_url(&quot;https://localhost/&quot;)</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29"></a><span class="sd">    (&#39;https://localhost:443/&#39;, None, None, None)</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30"></a>
+<a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="sd">    ----</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33"></a><span class="sd">        url (str): The Icecast URL to parse.</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34"></a>
+<a id="__codelineno-0-35" name="__codelineno-0-35"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36"></a><span class="sd">    -------</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37"></a><span class="sd">        Tuple[str, Optional[str], Optional[str], Optional[str]]:</span>
+<a id="__codelineno-0-38" name="__codelineno-0-38"></a><span class="sd">            The URL, username, password, and mountpoint.</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39"></a>
+<a id="__codelineno-0-40" name="__codelineno-0-40"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41"></a>    <span class="n">parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<a id="__codelineno-0-42" name="__codelineno-0-42"></a>    <span class="n">port</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">port</span> <span class="ow">or</span> <span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">scheme</span> <span class="o">==</span> <span class="s2">&quot;https&quot;</span> <span class="ow">and</span> <span class="mi">443</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">80</span>
+<a id="__codelineno-0-43" name="__codelineno-0-43"></a>    <span class="n">url</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">query</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">netloc</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parsed</span><span class="o">.</span><span class="n">hostname</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">geturl</span><span class="p">()</span>
+<a id="__codelineno-0-44" name="__codelineno-0-44"></a>    <span class="n">username</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">username</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45"></a>    <span class="n">password</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">password</span>
+<a id="__codelineno-0-46" name="__codelineno-0-46"></a>    <span class="n">mount</span> <span class="o">=</span> <span class="kc">None</span>
+<a id="__codelineno-0-47" name="__codelineno-0-47"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-48" name="__codelineno-0-48"></a>        <span class="n">mount</span> <span class="o">=</span> <span class="n">parse_qs</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">query</span><span class="p">)[</span><span class="s2">&quot;mount&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<a id="__codelineno-0-49" name="__codelineno-0-49"></a>    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+<a id="__codelineno-0-50" name="__codelineno-0-50"></a>        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Missing mount parameter in URL </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+<a id="__codelineno-0-51" name="__codelineno-0-51"></a>    <span class="k">return</span> <span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">mount</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
