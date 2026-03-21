@@ -49,6 +49,7 @@ class ApiServer:
         self.realm = realm
 
         self.url_map = Map([Rule("/webhook", endpoint="webhook")])
+        self._server = None
 
     def run_server(self: Self) -> None:
         """Run the API server."""
@@ -78,7 +79,8 @@ class ApiServer:
 
     def stop_server(self: Self) -> None:
         """Stop the server."""
-        self._server.stop()
+        if self._server is not None:
+            self._server.stop()
         cherrypy.engine.exit()
 
     def __call__(
