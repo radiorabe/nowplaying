@@ -11,7 +11,7 @@ classifiers = [
 ]
 readme = "README.md"
 packages = [
-    { include = "nowplaying"},
+    { include = "nowplaying" },
 ]
 
 [tool.poetry.scripts]
@@ -40,6 +40,7 @@ isort = ">=5.12,<9.0"
 pydocstyle = "^6.1.1"
 pytest = ">=7.2.3,<10.0.0"
 pytest-cov = ">=4,<8"
+pytest-mypy = "^1.0.1"
 pytest-random-order = "^1.1.0"
 pytest-ruff = ">=0.4.0,<0.6"
 ruff = ">=0.8.0,<0.15.8"
@@ -51,14 +52,15 @@ mkdocs-gen-files = ">=0.5,<0.7"
 mkdocs-literate-nav = "^0.6.1"
 mkdocs-section-index = "^0.3.8"
 mkdocstrings-python = ">=1.7.3,<3.0.0"
+types-requests = "^2.31.0.20240310"
+types-pytz = "^2024.1.0.20240203"
+types-lxml = "^2024.12.13"
+lxml-stubs = "^0.5.1"
 
-[tool.isort]
-line_length = 120
-profile = "black"
-
-[tool.pytest]
+[tool.pytest.ini_options]
 minversion = "9.0"
-addopts = ["-ra", "-q", "--random-order", "--doctest-glob='*.md'", "--doctest-modules", "--cov=nowplaying", "--cov-fail-under=100", "--ruff", "--ignore=docs/"]
+addopts = ["-ra", "-q", "--random-order", "--doctest-glob='*.md'", "--doctest-modules", "--cov=nowplaying", "--cov-fail-under=100", "--ruff", "--ruff-format", "--ignore=docs/"]
+
 filterwarnings = [
     "ignore::DeprecationWarning:cairosvg",
     "ignore::DeprecationWarning:cherrypy",

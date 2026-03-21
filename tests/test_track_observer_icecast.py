@@ -2,6 +2,7 @@
 
 from unittest.mock import MagicMock, patch
 
+import configargparse
 import pytest
 import requests
 
@@ -10,7 +11,7 @@ from nowplaying.track.track import Track
 
 
 @pytest.mark.parametrize(
-    "kwargs,url,username,password,mount",
+    ("kwargs", "url", "username", "password", "mount"),
     [
         (
             {"url": "http://user:password@localhost:80/?mount=foo.mp3"},
@@ -40,6 +41,17 @@ from nowplaying.track.track import Track
             "password",
             "foo.mp3",
         ),
+        (
+            {
+                "url": "http://localhost:80/?mount=foo.mp3",
+                "username": "user",
+                "password": "password",
+            },
+            "http://localhost:80/",
+            "user",
+            "password",
+            "foo.mp3",
+        ),
     ],
 )
 def test_options(kwargs, url, username, password, mount):
@@ -51,14 +63,23 @@ def test_options(kwargs, url, username, password, mount):
     assert options.mount == mount
 
 
+def test_options_args():
+    parser = configargparse.ArgParser()
+    IcecastTrackObserver.Options.args(parser)
+    args = parser.parse_args([])
+    assert args.icecast_base == "http://icecast.example.org:8000/admin/"
+    assert args.icecast_password is None
+    assert args.icecast == []
+
+
 def test_init():
     """Test class:`IcecastTrackObserver`'s :meth:`.__init__` method."""
     icecast_track_observer = IcecastTrackObserver(
         options=IcecastTrackObserver.Options(
             url="http://localhost:80/?mount=foo.mp3",
             username="foo",
-            password="bar",
-        )
+            password="bar",  # noqa: S106
+        ),
     )
     assert icecast_track_observer.options.url == "http://localhost:80/"
     assert icecast_track_observer.options.mount == "foo.mp3"
@@ -67,23 +88,23 @@ def test_init():
         options=IcecastTrackObserver.Options(
             url="http://localhost:80/",
             username="foo",
-            password="bar",
+            password="bar",  # noqa: S106
             mount="foo.mp3",
-        )
+        ),
     )
     assert icecast_track_observer.options.url == "http://localhost:80/"
     assert icecast_track_observer.options.mount == "foo.mp3"
 
     # test for exception if mount is missing
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Missing required parameter mount"):
         IcecastTrackObserver.Options(
             url="http://localhost:80/",
             username="foo",
-            password="bar",
+            password="bar",  # noqa: S106
         )
 
     # test for exception if password is missing
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Missing required parameter password "):
         IcecastTrackObserver.Options(
             url="http://localhost:80/?mount=foo.mp3",
             username="foo",
@@ -95,7 +116,6 @@ def test_track_started(mock_requests_get, track_factory, show_factory):
     """Test :class:`IcecastTrackObserver`'s :meth:`track_started` method."""
     mock_resp = MagicMock()
     mock_resp.getcode.return_value = 200
-    # TODO: mock and test real return value
     mock_resp.read.return_value = "contents"
     mock_resp.__enter__.return_value = mock_resp
     mock_requests_get.return_value = mock_resp
@@ -107,8 +127,8 @@ def test_track_started(mock_requests_get, track_factory, show_factory):
         options=IcecastTrackObserver.Options(
             url="http://localhost:80/?mount=foo.mp3",
             username="foo",
-            password="bar",
-        )
+            password="bar",  # noqa: S106
+        ),
     )
     icecast_track_observer.track_started(track)
 
@@ -121,6 +141,7 @@ def test_track_started(mock_requests_get, track_factory, show_factory):
             "charset": "utf-8",
             "song": "Hairmare and the Band - An Ode to legacy Python Code",
         },
+        timeout=60,
     )
     track = track_factory(artist="Radio Bern", title="Livestream")
     track.show = show_factory()
@@ -135,6 +156,7 @@ def test_track_started(mock_requests_get, track_factory, show_factory):
             "charset": "utf-8",
             "song": "Radio Bern - Hairmare Traveling Medicine Show",
         },
+        timeout=60,
     )
 
     # test for ignoring of failed requests
@@ -150,6 +172,7 @@ def test_track_started(mock_requests_get, track_factory, show_factory):
             "charset": "utf-8",
             "song": "Radio Bern - Hairmare Traveling Medicine Show",
         },
+        timeout=60,
     )
 
 
@@ -159,7 +182,7 @@ def test_track_finished():
         options=IcecastTrackObserver.Options(
             url="http://localhost:80/?mount=foo.mp3",
             username="foo",
-            password="bar",
-        )
+            password="bar",  # noqa: S106
+        ),
     )
-    assert icecast_track_observer.track_finished(Track())
+    icecast_track_observer.track_finished(Track())

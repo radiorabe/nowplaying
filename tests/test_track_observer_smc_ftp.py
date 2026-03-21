@@ -12,8 +12,8 @@ def test_init():
         options=SmcFtpTrackObserver.Options(
             hostname="hostname",
             username="username",
-            password="password",
-        )
+            password="password",  # noqa: S106
+        ),
     )
 
 
@@ -30,10 +30,10 @@ def test_track_started(mock_ftp, track_factory, show_factory):
         options=SmcFtpTrackObserver.Options(
             hostname="hostname",
             username="username",
-            password="password",
-        )
+            password="password",  # noqa: S106
+        ),
     )
-    smc_ftp_track_observer._ftp_cls = mock_ftp
+    smc_ftp_track_observer._ftp_cls = mock_ftp  # noqa: SLF001
     smc_ftp_track_observer.track_started(track)
     mock_ftp.assert_called_once()
     mock_ftp_instance.assert_has_calls(
@@ -51,7 +51,7 @@ def test_track_started(mock_ftp, track_factory, show_factory):
             ),
             call.quit(),
             call.close(),
-        ]
+        ],
     )
 
     # test skipping short tracks
@@ -79,7 +79,7 @@ def test_track_started(mock_ftp, track_factory, show_factory):
             call.storlines("STOR /dlplus/nowplaying.dls", ANY),
             call.quit(),
             call.close(),
-        ]
+        ],
     )
 
 
@@ -89,7 +89,7 @@ def test_track_finished():
         options=SmcFtpTrackObserver.Options(
             hostname="hostname",
             username="username",
-            password="password",
-        )
+            password="password",  # noqa: S106
+        ),
     )
-    assert smc_ftp_track_observer.track_finished(Track())
+    smc_ftp_track_observer.track_finished(Track())
