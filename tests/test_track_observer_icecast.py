@@ -2,6 +2,7 @@
 
 from unittest.mock import MagicMock, patch
 
+import configargparse
 import pytest
 import requests
 
@@ -40,6 +41,17 @@ from nowplaying.track.track import Track
             "password",
             "foo.mp3",
         ),
+        (
+            {
+                "url": "http://localhost:80/?mount=foo.mp3",
+                "username": "user",
+                "password": "password",
+            },
+            "http://localhost:80/",
+            "user",
+            "password",
+            "foo.mp3",
+        ),
     ],
 )
 def test_options(kwargs, url, username, password, mount):
@@ -49,6 +61,15 @@ def test_options(kwargs, url, username, password, mount):
     assert options.username == username
     assert options.password == password
     assert options.mount == mount
+
+
+def test_options_args():
+    parser = configargparse.ArgParser()
+    IcecastTrackObserver.Options.args(parser)
+    args = parser.parse_args([])
+    assert args.icecast_base == "http://icecast.example.org:8000/admin/"
+    assert args.icecast_password is None
+    assert args.icecast == []
 
 
 def test_init():

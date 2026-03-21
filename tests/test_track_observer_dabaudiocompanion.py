@@ -75,7 +75,7 @@ def test_track_started(mock_requests_post, track_factory, show_factory):
     ]
     expected.sort()
     results.sort()
-    assert all([a == b for a, b in zip(results, expected)])  # noqa: C419
+    assert all([a == b for a, b in zip(results, expected, strict=True)])  # noqa: C419
 
     # once ITEM delete have been sent we send regular DLS again
     dab_audio_companion_track_observer.track_started(track)

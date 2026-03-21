@@ -3,6 +3,11 @@
 # templated with https://github.com/radiorabe/backstage-software-templates
 
 extend = "./pyproject.toml"
+extend-exclude = [
+	"nowplaying/misc/saemubox.py",
+	"nowplaying/track/observers/scrobbler.py",
+	"nowplaying/track/observers/dab_audio_companion.py",
+]
 
 [lint]
 select = [

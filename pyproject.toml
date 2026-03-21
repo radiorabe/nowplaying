@@ -57,7 +57,7 @@ types-pytz = "^2024.1.0.20240203"
 types-lxml = "^2024.12.13"
 lxml-stubs = "^0.5.1"
 
-[tool.pytest.init_options]
+[tool.pytest.ini_options]
 minversion = "9.0"
 addopts = ["-ra", "-q", "--random-order", "--doctest-glob='*.md'", "--doctest-modules", "--cov=nowplaying", "--cov-fail-under=100", "--ruff", "--ruff-format", "--ignore=docs/"]
 
@@ -67,13 +67,6 @@ filterwarnings = [
     "ignore::DeprecationWarning:google",
     "ignore::DeprecationWarning:importlib",
     "ignore::DeprecationWarning:pkg_resources",
-]
-
-[tool.ruff]
-extend-exclude = [
-	"nowplaying/misc/saemubox.py",
-	"nowplaying/track/observers/scrobbler.py",
-	"nowplaying/track/observers/dab_audio_companion.py",
 ]
 
 [build-system]

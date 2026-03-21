@@ -62,7 +62,7 @@ def setup_otel(*, otlp_enable: bool = False) -> None:  # pragma: no cover
     set_logger_provider(logger_provider)
 
     console_exporter = ConsoleLogExporter(
-        formatter=lambda record: _log_formatter(record),
+        formatter=_log_formatter,
     )
     logger_provider.add_log_record_processor(SimpleLogRecordProcessor(console_exporter))
 
