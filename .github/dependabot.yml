@@ -20,6 +20,16 @@ updates:
       actions:
         patterns:
           - "*"
+  - package-ecosystem: pre-commit
+    directory: /
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: "chore(ci): "
+    groups:
+      pre-commit:
+        patterns:
+          - "*"
   - package-ecosystem: pip
     directory: /
     schedule:
