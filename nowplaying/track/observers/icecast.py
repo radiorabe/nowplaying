@@ -68,7 +68,8 @@ class IcecastTrackObserver(TrackObserver):
             username: str | None = None,
             password: str | None = None,
             mount: str | None = None,
-        ):
+        ) -> None:
+            """Initialize an Icecast endpoint."""
             # TODO(hairmare): v3 remove optional args and only support parsed URLs
             # https://github.com/radiorabe/nowplaying/issues/179
             self.url, self.username, self.password, self.mount = parse_icecast_url(url)
