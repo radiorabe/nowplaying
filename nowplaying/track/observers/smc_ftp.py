@@ -101,7 +101,7 @@ class SmcFtpTrackObserver(TrackObserver):
         ftp.close()
 
         logger.info(
-            "SMC FTP hostname=%s dls=%s dlsplus=%",
+            "SMC FTP hostname=%s dls=%s dlsplus=%s",
             self._options.hostname,
             dls.getvalue().decode("latin1"),
             dlplus.getvalue().decode("latin1"),

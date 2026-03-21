@@ -44,7 +44,7 @@ class TickerTrackObserver(TrackObserver):
             """Build args."""
             args.add_argument(
                 "--xml-output",
-                dest="tickerOutputFile",
+                dest="ticker_output_file",
                 help="ticker XML output format",
                 default="/var/www/localhost/htdocs/songticker/0.9.3/current.xml",
             )
