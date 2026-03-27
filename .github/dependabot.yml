@@ -10,6 +10,8 @@ updates:
       baseimages:
         patterns:
           - "*"
+    cooldown:
+      default-days: 7
   - package-ecosystem: github-actions
     directory: /
     schedule:
@@ -20,6 +22,8 @@ updates:
       actions:
         patterns:
           - "*"
+    cooldown:
+      default-days: 7
   - package-ecosystem: pre-commit
     directory: /
     schedule:
@@ -30,6 +34,8 @@ updates:
       pre-commit:
         patterns:
           - "*"
+    cooldown:
+      default-days: 7
   - package-ecosystem: pip
     directory: /
     schedule:
@@ -38,3 +44,5 @@ updates:
       opentelemetry:
         patterns:
           - "opentelemetry-*"
+    cooldown:
+      default-days: 7
