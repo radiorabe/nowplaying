@@ -18,5 +18,7 @@ jobs:
 
   python-poetry:
     uses: radiorabe/actions/.github/workflows/release-python-poetry.yaml@479996126a091287dc3fd349786f6f8a6dd1b23c # v0.42.0
+    permissions:
+      contents: write # Required to push the gh-pages branch for documentation deployment
     secrets:
       RABE_PYPI_TOKEN: ${{ secrets.RABE_PYPI_TOKEN }}
