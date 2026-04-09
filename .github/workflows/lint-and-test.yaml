@@ -10,3 +10,8 @@ jobs:
     uses: radiorabe/actions/.github/workflows/test-pre-commit.yaml@479996126a091287dc3fd349786f6f8a6dd1b23c # v0.42.0
   test-python-poetry:
     uses: radiorabe/actions/.github/workflows/test-python-poetry.yaml@479996126a091287dc3fd349786f6f8a6dd1b23c # v0.42.0
+  github-actions:
+    permissions:
+      contents: read
+      security-events: write # so zizmor can publish results to the Security tab
+    uses: radiorabe/actions/.github/workflows/test-github-actions.yaml@479996126a091287dc3fd349786f6f8a6dd1b23c # v0.42.0
