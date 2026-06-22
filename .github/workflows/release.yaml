@@ -9,7 +9,7 @@ on:
       - '*'
 jobs:
   release-container:
-    uses: radiorabe/actions/.github/workflows/release-container.yaml@b37e51397726092d8462a2a9b676ea5a5e3a8deb # v0.44.1
+    uses: radiorabe/actions/.github/workflows/release-container.yaml@5dafb461cea1f8b296d89297dc6de7bd0891f0d2 # v0.44.2
     with:
       image: 'ghcr.io/radiorabe/nowplaying'
       name: nowplaying
@@ -17,7 +17,7 @@ jobs:
       tags: minimal rhel9 rabe python nowplaying
 
   python-poetry:
-    uses: radiorabe/actions/.github/workflows/release-python-poetry.yaml@b37e51397726092d8462a2a9b676ea5a5e3a8deb # v0.44.1
+    uses: radiorabe/actions/.github/workflows/release-python-poetry.yaml@5dafb461cea1f8b296d89297dc6de7bd0891f0d2 # v0.44.2
     permissions:
       contents: write # Required to push the gh-pages branch for documentation deployment
     secrets:
